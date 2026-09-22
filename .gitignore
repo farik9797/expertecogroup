@@ -1,0 +1,9 @@
+
+# secrets — never commit
+password.md
+
+# firecrawl local cache
+.firecrawl/
+
+# macOS
+.DS_Store
