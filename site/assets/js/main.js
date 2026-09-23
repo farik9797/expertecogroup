@@ -199,32 +199,78 @@
     if (b) b.click();
   }));
 
-  /* ---------- Форма заявки ---------- */
-  const form = $('.request-form');
-  const setPurpose = (p) => { const r = $(`input[name="purpose"][value="${p}"]`, form); if (r) r.checked = true; };
-  cta.addEventListener('click', () => {
-    form.elements.volume.value = Number.isInteger(calc.v) ? calc.v : String(calc.v).replace('.', ',');
-    setPurpose('Вода');
-    const spec = `Горизонтальная ${CATALOG[calc.type].label} ёмкость: диаметр ${calc.d} мм, длина ${calc.l} мм.`;
-    const c = form.elements.comment;
-    if (!c.value.includes('диаметр')) c.value = c.value ? `${c.value}\n${spec}` : spec;
-  });
-  $$('[data-purpose]').forEach((a) => a.addEventListener('click', () => setPurpose(a.dataset.purpose)));
+  /* ---------- Формы заявки: в секции и в попапе ---------- */
+  const forms = $$('.request-form');
+  const modal = $('#request-modal');
+  const modalForm = $('.request-form', modal);
 
-  const phone = form.elements.phone;
-  const err = $('#phone-err');
-  phone.addEventListener('input', () => { phone.removeAttribute('aria-invalid'); err.hidden = true; });
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    if (phone.value.replace(/\D/g, '').length < 10) {
-      phone.setAttribute('aria-invalid', 'true');
-      err.hidden = false;
-      phone.focus();
-      return;
-    }
-    // КОНЦЕПТ: отправка не подключена. Канал (email / Telegram / WhatsApp) согласовать с клиентом.
-    $('.form-ok', form).hidden = false;
+  const setPurpose = (form, p) => { const r = $(`input[name="purpose"][value="${p}"]`, form); if (r) r.checked = true; };
+  const addComment = (form, text) => {
+    const c = form.elements.comment;
+    if (!c.value.includes(text)) c.value = c.value ? `${c.value}\n${text}` : text;
+  };
+
+  forms.forEach((form, i) => {
+    const phone = form.elements.phone;
+    const err = $('.field__err', form);
+    err.id = `phone-err-${i}`;
+    phone.setAttribute('aria-describedby', err.id);
+    phone.addEventListener('input', () => { phone.removeAttribute('aria-invalid'); err.hidden = true; });
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (phone.value.replace(/\D/g, '').length < 10) {
+        phone.setAttribute('aria-invalid', 'true');
+        err.hidden = false;
+        phone.focus();
+        return;
+      }
+      // КОНЦЕПТ: отправка не подключена. Канал (email / Telegram / WhatsApp) согласовать с клиентом.
+      $('.form-ok', form).hidden = false;
+    });
   });
+
+  /* ---------- Попап ---------- */
+  let lastFocused = null;
+  function openModal({ purpose, volume, comment } = {}) {
+    if (purpose) setPurpose(modalForm, purpose);
+    if (volume) modalForm.elements.volume.value = volume;
+    if (comment) addComment(modalForm, comment);
+    $('.form-ok', modalForm).hidden = true;
+    lastFocused = document.activeElement;
+    modal.showModal();
+    document.body.style.overflow = 'hidden';
+  }
+  // Чистим состояние явно: событие close у <dialog> в некоторых браузерах доходит не всегда,
+  // а без него страница осталась бы заблокированной от прокрутки
+  function cleanup() {
+    document.body.style.overflow = '';
+    const ok = $('.form-ok', modalForm);
+    if (!ok.hidden) { modalForm.reset(); ok.hidden = true; }
+    if (lastFocused) { lastFocused.focus(); lastFocused = null; }
+  }
+  function closeModal() {
+    modal.close();
+    cleanup();
+  }
+  modal.addEventListener('close', cleanup);
+  modal.addEventListener('cancel', (e) => { e.preventDefault(); closeModal(); }); // Esc
+  $('.modal__close', modal).addEventListener('click', closeModal);
+  $('.modal__ok-close', modal).addEventListener('click', closeModal);
+  modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); }); // клик по фону
+
+  // Все кнопки «на заявку» открывают попап; секция с формой остаётся на странице
+  $$('a[href="#request"]').forEach((a) => a.addEventListener('click', (e) => {
+    if (a.closest('#request')) return;
+    e.preventDefault();
+    openModal({ purpose: a.dataset.purpose });
+  }));
+
+  // Кнопка калькулятора передаёт габариты
+  cta.addEventListener('click', () => openModal({
+    purpose: 'Вода',
+    volume: Number.isInteger(calc.v) ? calc.v : String(calc.v).replace('.', ','),
+    comment: `Горизонтальная ${CATALOG[calc.type].label} ёмкость: диаметр ${calc.d} мм, длина ${calc.l} мм.`,
+  }));
 
   $$('.year').forEach((y) => { y.textContent = new Date().getFullYear(); });
 
