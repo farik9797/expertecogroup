@@ -13,6 +13,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 SITE = ROOT / "site"
 DATA = json.loads((ROOT / "content/catalog.json").read_text())
+OTHER = json.loads((ROOT / "content/catalog-other.json").read_text())
 INDEX = (SITE / "index.html").read_text()
 
 PHONE_MAIN = "+7 777 484-18-22"
@@ -103,7 +104,7 @@ def crumbs(items, base):
     return f'<nav class="crumbs" aria-label="Хлебные крошки">{"".join(parts)}</nav>'
 
 
-def page_head(*, eyebrow, title, lead, base, crumb_items, actions=True):
+def page_head(*, title, lead, base, crumb_items, actions=True):
     cta = f"""
       <div class="mt-8 flex flex-wrap gap-3">
         <a href="{base}index.html#request" class="btn btn-primary">Рассчитать стоимость <i data-lucide="arrow-right" class="size-5"></i></a>
@@ -112,9 +113,8 @@ def page_head(*, eyebrow, title, lead, base, crumb_items, actions=True):
     return f"""<section class="px-4 pb-10 pt-28 md:px-6 md:pb-14 md:pt-36">
   <div class="mx-auto max-w-7xl">
     {crumbs(crumb_items, base)}
-    <div class="mt-6 max-w-3xl">
-      <span class="eyebrow">{eyebrow}</span>
-      <h1 class="section-title mt-5">{title}</h1>
+    <div class="mt-7 max-w-3xl">
+      <h1 class="section-title">{title}</h1>
       <p class="mt-5 text-[17px] leading-relaxed text-muted">{lead}</p>{cta}
     </div>
   </div>
@@ -212,7 +212,6 @@ def product_page(cat, series, v, base="../../../"):
         f'<a class="chip chip--link" href="{base}catalog/{cat["slug"]}/{series["slug"]}-{m}m3/">{m} м³</a>' for m in others
     )
     body = f"""{page_head(
-        eyebrow=cat["short"],
         title=title,
         lead=series["lead"],
         base=base,
@@ -305,7 +304,6 @@ def category_page(cat, base="../../"):
 
     intro = "".join(f'<p class="mt-4">{p}</p>' for p in cat["intro"])
     body = f"""{page_head(
-        eyebrow=cat["eyebrow"],
         title=cat["title"],
         lead=cat["lead"],
         base=base,
@@ -345,6 +343,40 @@ def category_page(cat, base="../../"):
     )
 
 
+def other_category_page(cat, base="../../"):
+    cards = []
+    for p in cat["products"]:
+        specs = "".join(f'<li><span>{sp["k"]}</span><b>{sp["v"]}</b></li>' for sp in p["specs"])
+        img = (f'<div class="item-card__ph"><img src="{base}assets/img/catalog/other/{p["image"]}" alt="{p["name"]}" loading="lazy"></div>'
+               if p["image"] else '<div class="item-card__ph item-card__ph--empty"><i data-lucide="image"></i></div>')
+        cards.append(f"""<article class="item-card">
+  {img}
+  <div class="item-card__body">
+    <h3>{p["name"]}</h3>
+    {f'<ul class="item-card__specs">{specs}</ul>' if specs else ''}
+    <button type="button" class="btn btn-ghost btn-sm mt-auto" data-request="{p["name"]}">Запросить <i data-lucide="arrow-right" class="size-4"></i></button>
+  </div>
+</article>""")
+    body = f"""{page_head(
+        title=cat["title"],
+        lead=cat["lead"],
+        base=base,
+        crumb_items=[("Каталог", f"{base}catalog/"), (cat["title"], None)],
+    )}
+
+<section class="px-4 pb-10 md:px-6">
+  <div class="mx-auto max-w-7xl">
+    <p class="text-sm font-bold text-muted">{len(cat["products"])} позиций в разделе</p>
+    <div class="item-grid mt-6">{"".join(cards)}</div>
+    <p class="mt-6 text-sm font-semibold text-muted">Характеристики уточняем под задачу. Цену считаем после заявки — она зависит от комплектации и производительности.</p>
+  </div>
+</section>
+
+{cta_band(base, "Подберём оборудование под вашу задачу")}"""
+    return layout(path="", title=f'{cat["title"]} — Expert ECO Group',
+                  description=cat["lead"][:180], body=body, base=base)
+
+
 def catalog_page(base="../"):
     cards = []
     for c in DATA["categories"]:
@@ -359,8 +391,24 @@ def catalog_page(base="../"):
     <span class="cat-card__more mt-auto pt-7">{c["products"]} моделей <i data-lucide="arrow-right" class="size-5"></i></span>
   </div>
 </a>""")
+    groups = {}
+    for c in OTHER:
+        groups.setdefault(c["group"], []).append(c)
+    groups_html = ""
+    for group, cats in groups.items():
+        links = "".join(f"""<a class="mini-card" href="{base}catalog/{c["slug"]}/">
+  <span class="mini-card__title">{c["title"]}</span>
+  <span class="mini-card__count">{len(c["products"])} позиций</span>
+  <i data-lucide="arrow-right"></i>
+</a>""" for c in cats)
+        groups_html += f"""<section class="px-4 py-8 md:px-6">
+  <div class="mx-auto max-w-7xl">
+    <h2 class="section-title">{group}</h2>
+    <div class="mini-grid mt-6">{links}</div>
+  </div>
+</section>"""
+
     body = f"""{page_head(
-        eyebrow="Каталог",
         title="Оборудование из полипропилена",
         lead="Ёмкости и резервуары для воды, противопожарного запаса и химических реагентов, а также оборудование для очистки воды и стоков. Всё производим сами в Каскелене.",
         base=base,
@@ -371,19 +419,7 @@ def catalog_page(base="../"):
   <div class="mx-auto grid max-w-7xl gap-6 md:grid-cols-3">{"".join(cards)}</div>
 </section>
 
-<section class="px-4 py-12 md:px-6">
-  <div class="mx-auto max-w-7xl">
-    <div class="more-eq">
-      <div class="more-eq__head">
-        <div>
-          <h2 class="font-display text-[1.45rem] font-medium leading-tight text-navy md:text-[1.7rem]">Другое оборудование <span class="accent text-brand">под заказ</span></h2>
-          <p class="mt-3 max-w-xl leading-relaxed text-muted">КНС, очистные сооружения, септики, жиро- и пескоуловители, компрессоры и запчасти, услуги монтажа и ремонта.</p>
-        </div>
-        <a href="{base}oborudovanie/" class="btn btn-ghost shrink-0">Смотреть список <i data-lucide="arrow-right" class="size-5"></i></a>
-      </div>
-    </div>
-  </div>
-</section>
+{groups_html}
 
 {cta_band(base)}"""
     return layout(path="", title="Каталог оборудования из полипропилена — Expert ECO Group",
@@ -416,7 +452,6 @@ def equipment_page(base="../"):
         f"""<li class="feature"><span class="feature__icon"><i data-lucide="{icon}"></i></span><div><h3>{title}</h3><p>{text}</p></div></li>"""
         for title, icon, text in SERVICES)
     body = f"""{page_head(
-        eyebrow="Оборудование и услуги",
         title="Другое оборудование под заказ",
         lead="Кроме ёмкостей производим оборудование для очистки воды и стоков, поставляем компрессоры и комплектующие, выполняем монтаж, футеровку и ремонт.",
         base=base,
@@ -456,7 +491,6 @@ def projects_page(base="../"):
   <figcaption><b>{title}</b><span>{text}</span></figcaption>
 </figure>""" for img, title, text in PROJECTS)
     body = f"""{page_head(
-        eyebrow="Проекты",
         title="С производства на объект",
         lead="Фотографии с нашего производства и объектов заказчиков: изготовление, отгрузка и монтаж ёмкостей из полипропилена.",
         base=base,
@@ -483,7 +517,6 @@ def about_page(base="../"):
     steps = "".join(f"""<li class="step step--light"><span class="step__num">{year}</span><p>{text}</p></li>""" for year, text in timeline)
     departments = ["Отдел продаж", "Проектирование", "Снабжение", "Производство", "Бухгалтерия", "Маркетинг"]
     body = f"""{page_head(
-        eyebrow="О компании",
         title="Производим оборудование из полипропилена с 2015 года",
         lead="ТОО «Expert ECO Group» — производство ёмкостей, резервуаров и оборудования для водоочистки и водоотведения. Собственный цех в Каскелене, работа по Казахстану и странам СНГ.",
         base=base,
@@ -530,7 +563,6 @@ def contacts_page(base="../"):
     ]
     rows = "".join(f"""<li><a href="{href}" class="contact-row contact-row--light"><i data-lucide="phone"></i><span><b>{num}</b><small>{who}</small></span></a></li>""" for num, href, who in phones)
     body = f"""{page_head(
-        eyebrow="Контакты",
         title="Свяжитесь с нами",
         lead="Отвечаем в рабочее время: пн–пт, 08:00–18:00. Расчёт по заявке готовим после уточнения задачи.",
         base=base,
@@ -570,6 +602,8 @@ def main():
         for s in cat["series"]:
             for m in s["models"]:
                 made.append(write(f'catalog/{cat["slug"]}/{s["slug"]}-{m}m3/index.html', product_page(cat, s, m)))
+    for cat in OTHER:
+        made.append(write(f'catalog/{cat["slug"]}/index.html', other_category_page(cat)))
     made.append(write("oborudovanie/index.html", equipment_page()))
     made.append(write("proekty/index.html", projects_page()))
     made.append(write("o-kompanii/index.html", about_page()))

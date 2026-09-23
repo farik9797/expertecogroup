@@ -272,12 +272,18 @@
   $('.modal__ok-close', modal).addEventListener('click', closeModal);
   modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); }); // клик по фону
 
-  // Все кнопки «на заявку» открывают попап; секция с формой остаётся на странице
-  $$('a[href="#request"]').forEach((a) => a.addEventListener('click', (e) => {
+  // Все кнопки «на заявку» открывают попап (на внутренних страницах ссылка ведёт на index.html#request)
+  $$('a[href$="#request"]').forEach((a) => a.addEventListener('click', (e) => {
     if (a.closest('#request')) return;
     e.preventDefault();
     openModal({ purpose: a.dataset.purpose });
   }));
+
+  // Кнопки «Запросить» в разделах оборудования подставляют название позиции
+  $$('[data-request]').forEach((b) => b.addEventListener('click', () => openModal({
+    purpose: 'Другое',
+    comment: `Интересует: ${b.dataset.request}`,
+  })));
 
   // Кнопка калькулятора передаёт габариты
   if (cta) cta.addEventListener('click', () => openModal({
