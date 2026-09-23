@@ -104,19 +104,27 @@ def crumbs(items, base):
     return f'<nav class="crumbs" aria-label="Хлебные крошки">{"".join(parts)}</nav>'
 
 
-def page_head(*, title, lead, base, crumb_items, actions=True):
+def page_head(*, title, lead, base, crumb_items, actions=True, facts=None):
     cta = f"""
       <div class="mt-8 flex flex-wrap gap-3">
         <a href="{base}index.html#request" class="btn btn-primary">Рассчитать стоимость <i data-lucide="arrow-right" class="size-5"></i></a>
         <a href="{WA}" class="btn btn-ghost" target="_blank" rel="noopener"><img src="https://cdn.simpleicons.org/whatsapp/0e8a4a" alt="" class="size-5" width="20" height="20">WhatsApp</a>
       </div>""" if actions else ""
-    return f"""<section class="px-4 pb-10 pt-28 md:px-6 md:pb-14 md:pt-36">
-  <div class="mx-auto max-w-7xl">
+    facts = facts or [
+        ("с 2015 года", "собственное производство"),
+        ("до 100 м³", "объём ёмкостей"),
+        ("12 месяцев", "гарантия на изделия"),
+        ("РК и СНГ", "доставка и монтаж"),
+    ]
+    facts_html = "".join(f"<li><b>{a}</b><span>{b}</span></li>" for a, b in facts)
+    return f"""<section class="page-hero">
+  <div class="mx-auto max-w-7xl px-4 md:px-6">
     {crumbs(crumb_items, base)}
     <div class="mt-7 max-w-3xl">
       <h1 class="section-title">{title}</h1>
       <p class="mt-5 text-[17px] leading-relaxed text-muted">{lead}</p>{cta}
     </div>
+    <ul class="page-hero__facts">{facts_html}</ul>
   </div>
 </section>"""
 
@@ -171,14 +179,21 @@ def gallery(series, base, alt):
 
 def cta_band(base, text="Рассчитаем стоимость под ваш объект"):
     return f"""<section class="px-4 py-16 md:px-6 md:py-20">
-  <div class="mx-auto flex max-w-7xl flex-col gap-6 rounded-[30px] bg-navy px-6 py-10 text-white md:flex-row md:items-center md:justify-between md:px-10 md:py-12">
-    <div>
-      <h2 class="font-display text-[1.5rem] font-medium leading-tight md:text-[2rem]">{text}</h2>
-      <p class="mt-3 max-w-xl text-white/75">Опишите задачу — подберём конструкцию и комплектацию, посчитаем срок и стоимость.</p>
-    </div>
-    <div class="flex flex-wrap gap-3">
-      <a href="{base}index.html#request" class="btn btn-primary">Оставить заявку <i data-lucide="arrow-right" class="size-5"></i></a>
-      <a href="{WA}" class="btn btn-glass" target="_blank" rel="noopener"><img src="https://cdn.simpleicons.org/whatsapp/ffffff" alt="" class="size-5" width="20" height="20">WhatsApp</a>
+  <div class="cta-band mx-auto max-w-7xl">
+    <div class="cta-band__grid">
+      <div>
+        <h2 class="cta-band__title">{text}</h2>
+        <p class="mt-4 max-w-xl leading-relaxed text-white/75">Опишите задачу — подберём конструкцию и комплектацию, посчитаем срок и стоимость. Чертёж или опросный лист можно прислать на почту.</p>
+        <div class="cta-band__phones">
+          <a href="tel:+77774841822"><i data-lucide="phone"></i><span><b>+7 777 484-18-22</b><small>Отдел продаж, Сергей</small></span></a>
+          <a href="tel:+77086265749"><i data-lucide="phone"></i><span><b>+7 708 626-57-49</b><small>Отдел продаж, Артём</small></span></a>
+        </div>
+      </div>
+      <div class="cta-band__actions">
+        <a href="{base}index.html#request" class="btn btn-primary w-full justify-center">Оставить заявку <i data-lucide="arrow-right" class="size-5"></i></a>
+        <a href="{WA}" class="btn btn-glass w-full justify-center" target="_blank" rel="noopener"><img src="https://cdn.simpleicons.org/whatsapp/ffffff" alt="" class="size-5" width="20" height="20">Написать в WhatsApp</a>
+        <p class="cta-band__hours"><i data-lucide="clock"></i>Отвечаем пн–пт, 08:00–18:00</p>
+      </div>
     </div>
   </div>
 </section>"""
