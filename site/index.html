@@ -35,7 +35,7 @@
       --ease-out-expo: cubic-bezier(.22, 1, .36, 1);
     }
   </style>
-  <link rel="stylesheet" href="assets/css/site.css?v=11">
+  <link rel="stylesheet" href="assets/css/site.css?v=14">
 </head>
 <body class="font-sans text-ink antialiased">
 <a href="#main" class="skip-link">К содержимому</a>
@@ -301,7 +301,7 @@
 <section id="production" class="px-4 py-24 md:px-6 md:py-32">
   <div class="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-2 lg:gap-16">
     <figure class="reveal relative">
-      <img src="assets/img/plant-hall.webp" alt="Вертикальные ёмкости Expert ECO Group, смонтированные в здании насосной станции" class="aspect-[4/5] w-full rounded-[32px] object-cover md:aspect-[5/5]" loading="lazy" width="1200" height="676">
+      <img data-parallax src="assets/img/plant-hall.webp" alt="Вертикальные ёмкости Expert ECO Group, смонтированные в здании насосной станции" class="aspect-[4/5] w-full rounded-[32px] object-cover md:aspect-[5/5]" loading="lazy" width="1200" height="676">
       <figcaption class="glass-light absolute bottom-4 left-4 right-4 flex items-start gap-3 rounded-[22px] p-4 md:bottom-6 md:left-6 md:right-auto md:max-w-sm md:p-5">
         <span class="grid size-10 shrink-0 place-items-center rounded-full bg-brand text-white"><i data-lucide="map-pin" class="size-5"></i></span>
         <span>
@@ -359,10 +359,10 @@
       <h2 class="section-title mt-5">С производства <span class="accent text-brand">на&nbsp;объект</span></h2>
     </div>
     <div class="gallery mt-12">
-      <figure class="reveal g-item g-item--wide"><img src="assets/img/proj-loading.webp" alt="Погрузка вертикальных резервуаров на трал краном" loading="lazy" width="1200" height="675"><figcaption>Отгрузка вертикальных резервуаров</figcaption></figure>
-      <figure class="reveal g-item g-item--tall"><img src="assets/img/proj-trench.webp" alt="Подземный резервуар в котловане перед засыпкой" loading="lazy" width="720" height="1280"><figcaption>Монтаж подземного резервуара</figcaption></figure>
-      <figure class="reveal g-item"><img src="assets/img/proj-horizontal.webp" alt="Горизонтальная наземная ёмкость на опорах" loading="lazy" width="861" height="620"><figcaption>Горизонтальная наземная ёмкость</figcaption></figure>
-      <figure class="reveal g-item"><img src="assets/img/proj-rect.webp" alt="Прямоугольная ёмкость из полипропилена с фланцами" loading="lazy" width="1000" height="670"><figcaption>Прямоугольная ёмкость с патрубками</figcaption></figure>
+      <figure class="reveal g-item g-item--wide"><img data-parallax src="assets/img/proj-loading.webp" alt="Погрузка вертикальных резервуаров на трал краном" loading="lazy" width="1200" height="675"><figcaption>Отгрузка вертикальных резервуаров</figcaption></figure>
+      <figure class="reveal g-item g-item--tall"><img data-parallax src="assets/img/proj-trench.webp" alt="Подземный резервуар в котловане перед засыпкой" loading="lazy" width="720" height="1280"><figcaption>Монтаж подземного резервуара</figcaption></figure>
+      <figure class="reveal g-item"><img data-parallax src="assets/img/proj-horizontal.webp" alt="Горизонтальная наземная ёмкость на опорах" loading="lazy" width="861" height="620"><figcaption>Горизонтальная наземная ёмкость</figcaption></figure>
+      <figure class="reveal g-item"><img data-parallax src="assets/img/proj-rect.webp" alt="Прямоугольная ёмкость из полипропилена с фланцами" loading="lazy" width="1000" height="670"><figcaption>Прямоугольная ёмкость с патрубками</figcaption></figure>
     </div>
   </div>
 </section>
@@ -521,6 +521,15 @@
   </div>
 </footer>
 
+<!-- Кнопка «наверх»: кольцо показывает прогресс прокрутки -->
+<button type="button" class="to-top" aria-label="Наверх">
+  <svg class="to-top__ring" viewBox="0 0 44 44" aria-hidden="true">
+    <circle cx="22" cy="22" r="20.5" />
+    <circle cx="22" cy="22" r="20.5" class="to-top__progress" />
+  </svg>
+  <i data-lucide="arrow-up"></i>
+</button>
+
 <!-- Мобильная панель быстрой связи -->
 <div class="quickbar fixed inset-x-3 bottom-3 z-40 grid grid-cols-2 gap-2 md:hidden">
   <a href="tel:+77774841822" class="btn btn-primary justify-center"><i data-lucide="phone" class="size-5"></i>Позвонить</a>
@@ -530,6 +539,6 @@
 <script src="https://cdn.jsdelivr.net/npm/lucide@1.47.0/dist/umd/lucide.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/ScrollTrigger.min.js" defer></script>
-<script src="assets/js/main.js?v=11" defer></script>
+<script src="assets/js/main.js?v=14" defer></script>
 </body>
 </html>

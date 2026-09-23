@@ -12,10 +12,17 @@
   const header = $('#nav');
   const hero = $('.hero');
   const quickbar = $('.quickbar');
+  const toTop = $('.to-top');
   new IntersectionObserver(([e]) => {
     header.classList.toggle('is-solid', !e.isIntersecting);
     quickbar.classList.toggle('is-shown', !e.isIntersecting); // в hero свои кнопки, панель не дублирует
+    toTop.classList.toggle('is-shown', !e.isIntersecting);
   }, { rootMargin: '-90px 0px 0px 0px' }).observe(hero);
+
+  // Нативная плавная прокрутка: не зависит от rAF и не конфликтует с CSS scroll-behavior
+  toTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+  });
 
   /* ---------- Мобильное меню ---------- */
   const menu = $('#mobile-menu');
@@ -232,6 +239,28 @@
     gsap.fromTo('.hero-img', { scale: 1.08 }, { scale: 1, duration: 1.8, ease });
     gsap.to('.hero-copy', {
       y: -60, opacity: 0.2, ease: 'none',
+      scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true },
+    });
+
+    // кольцо прогресса на кнопке «наверх»
+    const ring = $('.to-top__progress');
+    const RING = 2 * Math.PI * 20.5;
+    ScrollTrigger.create({
+      start: 0,
+      end: 'max',
+      onUpdate: (self) => { ring.style.strokeDashoffset = String(RING * (1 - self.progress)); },
+    });
+
+    // спокойный параллакс на фото
+    $$('[data-parallax]').forEach((img) => {
+      gsap.fromTo(img, { yPercent: -5, scale: 1.12 }, {
+        yPercent: 5, scale: 1.12, ease: 'none',
+        scrollTrigger: { trigger: img.parentElement, start: 'top bottom', end: 'bottom top', scrub: true },
+      });
+    });
+
+    gsap.to('.hero-img', {
+      yPercent: 7, ease: 'none',
       scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true },
     });
 
