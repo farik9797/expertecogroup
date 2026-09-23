@@ -11,7 +11,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500;1,600&family=Nunito:wght@400;600;700;800&family=Unbounded:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="preload" as="image" href="assets/img/hero.webp">
+  <link rel="preload" as="image" href="assets/img/hero-1800.webp"
+        imagesrcset="assets/img/hero-800.webp 800w, assets/img/hero-1200.webp 1200w, assets/img/hero-1800.webp 1800w, assets/img/hero-2390.webp 2390w" imagesizes="100vw">
 
   <!-- КОНЦЕПТ: Tailwind подключён через браузерную сборку. Для продакшена собрать CSS заранее. -->
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
@@ -88,7 +89,11 @@
 
 <!-- ============ HERO ============ -->
 <section id="top" class="hero relative isolate overflow-hidden text-white">
-  <img src="assets/img/hero.webp" alt="Кран поднимает подземный резервуар Expert ECO Group на площадке производства" class="hero-img absolute inset-0 -z-20 size-full object-cover" width="1280" height="960" fetchpriority="high">
+  <img src="assets/img/hero-1800.webp"
+       srcset="assets/img/hero-800.webp 800w, assets/img/hero-1200.webp 1200w, assets/img/hero-1800.webp 1800w, assets/img/hero-2390.webp 2390w"
+       sizes="100vw"
+       alt="Кран поднимает подземный резервуар Expert ECO Group на площадке производства"
+       class="hero-img absolute inset-0 -z-20 size-full object-cover" width="2390" height="1792" fetchpriority="high">
   <div class="hero-shade absolute inset-0 -z-10" aria-hidden="true"></div>
 
   <div class="mx-auto flex min-h-[100svh] max-w-7xl flex-col justify-end px-4 pb-10 pt-32 md:px-6 md:pb-16">
