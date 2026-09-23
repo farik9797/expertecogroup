@@ -14,7 +14,7 @@
 
 @layer components {
   /* ---------- Типографика ---------- */
-  .section-title { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.8rem, 3.4vw, 3rem); line-height: 1.1; letter-spacing: -.015em; color: var(--color-navy); }
+  .section-title { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.6rem, 3.4vw, 3rem); line-height: 1.1; letter-spacing: -.015em; color: var(--color-navy); }
   .accent { font-family: var(--font-serif); font-style: italic; font-weight: 500; font-size: 1.14em; letter-spacing: 0; line-height: .9; }
   .eyebrow { display: inline-flex; align-items: center; gap: .55rem; padding: .45rem .95rem; border-radius: 999px; background: var(--color-mist); color: var(--color-brand); font-size: 13px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; }
   .eyebrow::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
