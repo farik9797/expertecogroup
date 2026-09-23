@@ -13,11 +13,25 @@
   const hero = $('.hero');
   const quickbar = $('.quickbar');
   const toTop = $('.to-top');
-  new IntersectionObserver(([e]) => {
-    header.classList.toggle('is-solid', !e.isIntersecting);
-    quickbar.classList.toggle('is-shown', !e.isIntersecting); // в hero свои кнопки, панель не дублирует
-    toTop.classList.toggle('is-shown', !e.isIntersecting);
-  }, { rootMargin: '-90px 0px 0px 0px' }).observe(hero);
+  const setChrome = (past) => {
+    header.classList.toggle('is-solid', past);
+    quickbar.classList.toggle('is-shown', past); // в hero свои кнопки, панель не дублирует
+    toTop.classList.toggle('is-shown', past);
+  };
+  if (hero) {
+    new IntersectionObserver(([e]) => setChrome(!e.isIntersecting), { rootMargin: '-90px 0px 0px 0px' }).observe(hero);
+  } else {
+    // внутренние страницы: шапка сразу светлая, панели появляются после первого экрана
+    setChrome(false);
+    header.classList.add('is-solid');
+    const onScroll = () => {
+      const past = window.scrollY > 320;
+      quickbar.classList.toggle('is-shown', past);
+      toTop.classList.toggle('is-shown', past);
+    };
+    addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
 
   // Нативная плавная прокрутка: не зависит от rAF и не конфликтует с CSS scroll-behavior
   toTop.addEventListener('click', () => {
@@ -65,9 +79,10 @@
   const round1 = (x) => Math.round(x * 10) / 10;
 
   const sizer = $('.calc');
-  const bpSvg = $('.bp-svg', sizer);
-  const note = $('.bp-note', sizer);
-  const cta = $('.calc-cta', sizer);
+  const hasCalc = Boolean(sizer);
+  const bpSvg = hasCalc ? $('.bp-svg', sizer) : null;
+  const note = hasCalc ? $('.bp-note', sizer) : null;
+  const cta = hasCalc ? $('.calc-cta', sizer) : null;
   const fieldEl = (f) => $(`.stepper[data-field="${f}"] input`, sizer);
   const stepOf = (f) => (f === 'v' ? (calc.v < 10 ? 1 : 5) : f === 'd' ? 50 : 100);
 
@@ -173,6 +188,7 @@
     drawBlueprint();
   }
 
+  if (hasCalc) {
   $$('.stepper', sizer).forEach((st) => {
     const f = st.dataset.field;
     const input = $('input', st);
@@ -191,13 +207,11 @@
 
   new ResizeObserver(drawBlueprint).observe(bpSvg);
   render();
+  }
 
   // Карточка каталога открывает калькулятор в нужном исполнении
 
-  $$('.cat-card[data-series]').forEach((c) => c.addEventListener('click', () => {
-    const b = $(`.bp-type button[data-type="${c.dataset.series}"]`, sizer);
-    if (b) b.click();
-  }));
+
 
   /* ---------- Формы заявки: в секции и в попапе ---------- */
   const forms = $$('.request-form');
@@ -266,11 +280,24 @@
   }));
 
   // Кнопка калькулятора передаёт габариты
-  cta.addEventListener('click', () => openModal({
+  if (cta) cta.addEventListener('click', () => openModal({
     purpose: 'Вода',
     volume: Number.isInteger(calc.v) ? calc.v : String(calc.v).replace('.', ','),
     comment: `Горизонтальная ${CATALOG[calc.type].label} ёмкость: диаметр ${calc.d} мм, длина ${calc.l} мм.`,
   }));
+
+  /* ---------- Галерея товара ---------- */
+  const galMain = $('.gal__main');
+  if (galMain) {
+    const thumbs = $$('.gal__thumb');
+    thumbs.forEach((t, i) => {
+      if (i === 0) t.setAttribute('aria-current', 'true');
+      t.addEventListener('click', () => {
+        galMain.src = t.dataset.full;
+        thumbs.forEach((o) => o.setAttribute('aria-current', String(o === t)));
+      });
+    });
+  }
 
   $$('.year').forEach((y) => { y.textContent = new Date().getFullYear(); });
 
@@ -281,12 +308,18 @@
     gsap.registerPlugin(ScrollTrigger);
     const ease = 'expo.out';
 
-    gsap.from('.hero-in', { y: 28, opacity: 0, duration: 1.1, ease, stagger: 0.09, delay: 0.1 });
-    gsap.fromTo('.hero-img', { scale: 1.08 }, { scale: 1, duration: 1.8, ease });
-    gsap.to('.hero-copy', {
-      y: -60, opacity: 0.2, ease: 'none',
-      scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true },
-    });
+    if (hero) {
+      gsap.from('.hero-in', { y: 28, opacity: 0, duration: 1.1, ease, stagger: 0.09, delay: 0.1 });
+      gsap.fromTo('.hero-img', { scale: 1.08 }, { scale: 1, duration: 1.8, ease });
+      gsap.to('.hero-copy', {
+        y: -60, opacity: 0.2, ease: 'none',
+        scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true },
+      });
+      gsap.to('.hero-img', {
+        yPercent: 7, ease: 'none',
+        scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true },
+      });
+    }
 
     // кольцо прогресса на кнопке «наверх»
     const ring = $('.to-top__progress');
@@ -303,11 +336,6 @@
         yPercent: 5, scale: 1.12, ease: 'none',
         scrollTrigger: { trigger: img.parentElement, start: 'top bottom', end: 'bottom top', scrub: true },
       });
-    });
-
-    gsap.to('.hero-img', {
-      yPercent: 7, ease: 'none',
-      scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true },
     });
 
     gsap.set('.reveal', { y: 26, opacity: 0 });

@@ -35,7 +35,7 @@
       --ease-out-expo: cubic-bezier(.22, 1, .36, 1);
     }
   </style>
-  <link rel="stylesheet" href="assets/css/site.css?v=25">
+  <link rel="stylesheet" href="assets/css/site.css?v=28">
 </head>
 <body class="font-sans text-ink antialiased">
 <a href="#main" class="skip-link">К содержимому</a>
@@ -51,11 +51,11 @@
       </span>
     </a>
     <nav class="ml-auto hidden items-center gap-1 text-[15px] font-bold lg:flex" aria-label="Основное меню">
-      <a class="nav-link" href="#catalog">Каталог</a>
+      <a class="nav-link" href="catalog/">Каталог</a>
       <a class="nav-link" href="#sizes">Калькулятор</a>
-      <a class="nav-link" href="#production">Производство</a>
-      <a class="nav-link" href="#projects">Проекты</a>
-      <a class="nav-link" href="#contacts">Контакты</a>
+      <a class="nav-link" href="o-kompanii/">О компании</a>
+      <a class="nav-link" href="proekty/">Проекты</a>
+      <a class="nav-link" href="kontakty/">Контакты</a>
     </nav>
     <a href="tel:+77774841822" class="nav-phone ml-auto hidden items-center gap-2 rounded-full px-3 py-2 text-[15px] font-bold xl:ml-0 xl:inline-flex">
       <i data-lucide="phone" class="size-4"></i>+7 777 484-18-22
@@ -73,11 +73,11 @@
     <button type="button" class="menu-close grid size-11 place-items-center rounded-full bg-white/10" aria-label="Закрыть меню"><i data-lucide="x" class="size-6"></i></button>
   </div>
   <nav class="mt-10 flex flex-col gap-1 font-display text-2xl" aria-label="Мобильное меню">
-    <a href="#catalog" class="py-3">Каталог</a>
+    <a href="catalog/" class="py-3">Каталог</a>
     <a href="#sizes" class="py-3">Калькулятор</a>
-    <a href="#production" class="py-3">Производство</a>
-    <a href="#projects" class="py-3">Проекты</a>
-    <a href="#contacts" class="py-3">Контакты</a>
+    <a href="o-kompanii/" class="py-3">О компании</a>
+    <a href="proekty/" class="py-3">Проекты</a>
+    <a href="kontakty/" class="py-3">Контакты</a>
   </nav>
   <div class="mt-auto space-y-3">
     <a href="tel:+77774841822" class="flex items-center gap-3 text-lg font-bold"><i data-lucide="phone" class="size-5 text-sky"></i>+7 777 484-18-22</a>
@@ -153,7 +153,7 @@
 
     <div class="mt-14 grid gap-6 md:grid-cols-3">
       <!-- Вода -->
-      <a href="#sizes" data-series="under" class="cat-card reveal group">
+      <a href="catalog/voda/" class="cat-card reveal group">
         <div class="cat-card__ph"><img src="assets/img/cat-water.webp" alt="Горизонтальный резервуар для воды на трале перед отгрузкой" loading="lazy" width="1000" height="627"></div>
         <div class="flex flex-1 flex-col p-7">
           <p class="flex items-center gap-2 text-sm font-bold text-muted"><span class="dot bg-sky"></span>01 · Вода</p>
@@ -167,7 +167,7 @@
       </a>
       <!-- Пожарные -->
       <!-- ЗАГЛУШКА: на текущем сайте пожарных ёмкостей нет. Текст и фото заменить по данным клиента. -->
-      <a href="#request" data-purpose="Пожарная" class="cat-card reveal group md:mt-10 md:-mb-10">
+      <a href="catalog/pozharnye/" class="cat-card reveal group md:mt-10 md:-mb-10">
         <div class="cat-card__ph"><img src="assets/img/cat-fire.webp" alt="Подземные резервуары Expert ECO Group в котловане на объекте" loading="lazy" width="1000" height="750"></div>
         <div class="flex flex-1 flex-col p-7">
           <p class="flex items-center gap-2 text-sm font-bold text-muted"><span class="dot bg-[#ff5a36]"></span>02 · Пожарный запас</p>
@@ -176,11 +176,11 @@
           <ul class="mt-5 flex flex-wrap gap-2" aria-label="Характеристики">
             <li class="chip">подземные</li><li class="chip">наземные</li><li class="chip">по проекту</li>
           </ul>
-          <span class="cat-card__more mt-auto pt-7">Рассчитать резервуар <i data-lucide="arrow-right" class="size-5"></i></span>
+          <span class="cat-card__more mt-auto pt-7">Смотреть модели <i data-lucide="arrow-right" class="size-5"></i></span>
         </div>
       </a>
       <!-- Химия -->
-      <a href="#request" data-purpose="Химия" class="cat-card reveal group">
+      <a href="catalog/himicheskie/" class="cat-card reveal group">
         <div class="cat-card__ph"><img src="assets/img/cat-chem.webp" alt="Прямоугольные ёмкости из полипропилена в металлическом каркасе" loading="lazy" width="1000" height="562"></div>
         <div class="flex flex-1 flex-col p-7">
           <p class="flex items-center gap-2 text-sm font-bold text-muted"><span class="dot bg-[#7fbf3a]"></span>03 · Химия</p>
@@ -189,7 +189,7 @@
           <ul class="mt-5 flex flex-wrap gap-2" aria-label="Характеристики">
             <li class="chip">кислоты</li><li class="chip">щёлочи</li><li class="chip">по ТЗ</li>
           </ul>
-          <span class="cat-card__more mt-auto pt-7">Рассчитать ёмкость <i data-lucide="arrow-right" class="size-5"></i></span>
+          <span class="cat-card__more mt-auto pt-7">Смотреть модели <i data-lucide="arrow-right" class="size-5"></i></span>
         </div>
       </a>
     </div>
@@ -201,7 +201,7 @@
           <h3 class="font-display text-[1.45rem] font-medium leading-tight text-navy md:text-[1.7rem]">Другое оборудование <span class="accent text-brand">под заказ</span></h3>
           <p class="mt-3 max-w-xl leading-relaxed text-muted">Кроме ёмкостей производим оборудование для очистки воды и стоков, поставляем компрессоры и выполняем работы по монтажу и ремонту.</p>
         </div>
-        <a href="#request" data-purpose="Другое" class="btn btn-ghost shrink-0">Запросить оборудование <i data-lucide="arrow-right" class="size-5"></i></a>
+        <a href="oborudovanie/" class="btn btn-ghost shrink-0">Смотреть оборудование <i data-lucide="arrow-right" class="size-5"></i></a>
       </div>
       <ul class="more-eq__list">
         <li>Канализационные насосные станции (КНС)</li>
@@ -499,18 +499,18 @@
     <div>
       <h3 class="footer-h">Каталог</h3>
       <ul class="footer-list">
-        <li><a href="#catalog">Ёмкости для воды</a></li>
-        <li><a href="#catalog">Пожарные резервуары</a></li>
-        <li><a href="#catalog">Химические ёмкости</a></li>
-        <li><a href="#catalog">Другое оборудование</a></li>
-        <li><a href="#sizes">Калькулятор ёмкости</a></li>
+        <li><a href="catalog/voda/">Ёмкости для воды</a></li>
+        <li><a href="catalog/pozharnye/">Пожарные резервуары</a></li>
+        <li><a href="catalog/himicheskie/">Химические ёмкости</a></li>
+        <li><a href="oborudovanie/">Другое оборудование</a></li>
+        <li><a href="index.html#sizes">Калькулятор ёмкости</a></li>
       </ul>
     </div>
     <div>
       <h3 class="footer-h">Компания</h3>
       <ul class="footer-list">
-        <li><a href="#production">Производство</a></li>
-        <li><a href="#projects">Проекты</a></li>
+        <li><a href="o-kompanii/">О компании</a></li>
+        <li><a href="proekty/">Проекты</a></li>
         <li><a href="#reviews">Отзывы</a></li>
         <li><a href="#request">Расчёт стоимости</a></li>
       </ul>
@@ -592,6 +592,6 @@
 <script src="https://cdn.jsdelivr.net/npm/lucide@1.47.0/dist/umd/lucide.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/ScrollTrigger.min.js" defer></script>
-<script src="assets/js/main.js?v=25" defer></script>
+<script src="assets/js/main.js?v=28" defer></script>
 </body>
 </html>
