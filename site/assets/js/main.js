@@ -125,13 +125,15 @@
     const cap = Math.min(D * 0.12, L * 0.1);
     const INK = '#0d2c5c', THIN = '#96acc9', DIM = '#5b7aa6', GLASS = 'rgba(255,255,255,.75)';
     const s = [];
+    let groundLabel = '';
 
     s.push(`<path d="M${x - 18} ${yM} H${x + L + 18}" stroke="${THIN}" stroke-width="1" stroke-dasharray="16 4 3 4"/>`);
 
     if (under) {
       const gy = yT - NECK_H * 0.5 * k;
       s.push(`<path d="M${Math.max(padL - 30, 6)} ${gy} H${W - 8}" stroke="#b08a57" stroke-width="1.2" stroke-dasharray="7 5"/>`);
-      s.push(`<text x="${W - 10}" y="${gy - 9}" text-anchor="end" font-size="11" font-weight="700" fill="#a8895f">уровень земли</text>`);
+      // подпись рисуем последней и с подложкой, иначе крышки горловин её перекрывают
+      groundLabel = `<text x="${W - 10}" y="${gy - 9}" text-anchor="end" font-size="11" font-weight="700" fill="#a8895f" stroke="#f7fbff" stroke-width="4" paint-order="stroke">уровень земли</text>`;
     } else {
       const sw = 420 * k, sh = SUP_H * k;
       [0.24, 0.76].forEach((t) => {
@@ -170,6 +172,8 @@
     s.push(`<path d="M${x + L} ${under ? yB : yB + SUP_H * k} V${yd + 7}" stroke="${THIN}" stroke-width="1"/>`);
     s.push(`<path d="M${x} ${yd} H${x + L}" stroke="${DIM}" stroke-width="1" marker-start="url(#ar)" marker-end="url(#ar)"/>`);
     s.push(`<text x="${x + L / 2}" y="${yd}" text-anchor="middle" dominant-baseline="middle" font-size="12.5" font-weight="700" fill="${DIM}" stroke="#f7fbff" stroke-width="5" paint-order="stroke">${fmt(calc.l)}</text>`);
+
+    if (groundLabel) s.push(groundLabel);
 
     bpSvg.setAttribute('viewBox', `0 0 ${W} ${H}`);
     bpSvg.innerHTML = `<defs><marker id="ar" markerWidth="9" markerHeight="9" refX="8.5" refY="4.5" orient="auto-start-reverse" markerUnits="userSpaceOnUse"><path d="M0 0 L9 4.5 L0 9 Z" fill="${DIM}"/></marker></defs>${s.join('')}`;
