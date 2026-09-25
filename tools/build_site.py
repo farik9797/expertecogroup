@@ -395,35 +395,42 @@ def other_category_page(cat, base="../../"):
                   description=cat["lead"][:180], body=body, base=base)
 
 
+def tile(title, href, img, count, base):
+    return f"""<a class="prod-tile" href="{href}">
+  <span class="prod-tile__head">
+    <span>
+      <span class="prod-tile__title">{title}</span>
+      <span class="prod-tile__count">{count}</span>
+    </span>
+    <i data-lucide="arrow-up-right"></i>
+  </span>
+  <span class="prod-tile__ph"><img src="{img}" alt="{title}" loading="lazy"></span>
+</a>"""
+
+
 def catalog_page(base="../"):
-    cards = []
-    for c in DATA["categories"]:
-        chips = "".join(f'<li class="chip">{s["short"]}</li>' for s in c["series"])
-        cards.append(f"""<a class="cat-card" href="{base}catalog/{c["slug"]}/">
-  <div class="cat-card__ph"><img src="{base}assets/img/{c["hero"]}" alt="{c["title"]}" loading="lazy"></div>
-  <div class="flex flex-1 flex-col p-7">
-    <p class="flex items-center gap-2 text-sm font-bold text-muted"><span class="dot" style="background:{c["dot"]}"></span>{c["eyebrow"]}</p>
-    <h2 class="mt-3 font-display text-2xl font-medium">{c["title"]}</h2>
-    <p class="mt-3 leading-relaxed text-muted">{c["lead"]}</p>
-    <ul class="mt-5 flex flex-wrap gap-2">{chips}</ul>
-    <span class="cat-card__more mt-auto pt-7">{c["products"]} моделей <i data-lucide="arrow-right" class="size-5"></i></span>
-  </div>
-</a>""")
+    # ёмкости — три категории с отдельными страницами товаров
+    tanks = "".join(
+        tile(c["title"], f'{base}catalog/{c["slug"]}/', f'{base}assets/img/{c["hero"]}',
+             f'{c["products"]} моделей', base)
+        for c in DATA["categories"])
+
     groups = {}
     for c in OTHER:
         groups.setdefault(c["group"], []).append(c)
+    anchors = {"Очистные сооружения": "ochistnye", "Оборудование": "oborudovanie", "Услуги": "uslugi"}
     groups_html = ""
     for group, cats in groups.items():
-        links = "".join(f"""<a class="mini-card" href="{base}catalog/{c["slug"]}/">
-  <span class="mini-card__title">{c["title"]}</span>
-  <span class="mini-card__count">{len(c["products"])} позиций</span>
-  <i data-lucide="arrow-right"></i>
-</a>""" for c in cats)
-        anchor = {"Очистные сооружения": "ochistnye", "Оборудование": "oborudovanie", "Услуги": "uslugi"}.get(group, "")
-        groups_html += f"""<section class="px-4 py-8 md:px-6"{f' id="{anchor}"' if anchor else ''}>
+        tiles = "".join(
+            tile(c["title"], f'{base}catalog/{c["slug"]}/',
+                 f'{base}assets/img/catalog/other/{c["products"][0]["image"]}' if c["products"][0]["image"]
+                 else f'{base}assets/img/cat-water.webp',
+                 f'{len(c["products"])} позиций', base)
+            for c in cats)
+        groups_html += f"""<section class="px-4 py-8 md:px-6" id="{anchors.get(group, '')}">
   <div class="mx-auto max-w-7xl">
     <h2 class="section-title">{group}</h2>
-    <div class="mini-grid mt-6">{links}</div>
+    <div class="prod-tiles mt-8">{tiles}</div>
   </div>
 </section>"""
 
@@ -432,10 +439,15 @@ def catalog_page(base="../"):
         lead="Ёмкости и резервуары для воды, противопожарного запаса и химических реагентов, а также оборудование для очистки воды и стоков. Всё производим сами в Каскелене.",
         base=base,
         crumb_items=[("Каталог", None)],
+        facts=[("2–100 м³", "объём ёмкостей"), ("15 разделов", "в каталоге"),
+               ("190 позиций", "оборудования"), ("РК и СНГ", "доставка и монтаж")],
     )}
 
-<section id="emkosti" class="px-4 pb-8 md:px-6">
-  <div class="mx-auto grid max-w-7xl gap-6 md:grid-cols-3">{"".join(cards)}</div>
+<section id="emkosti" class="px-4 py-8 md:px-6">
+  <div class="mx-auto max-w-7xl">
+    <h2 class="section-title">Ёмкости и резервуары</h2>
+    <div class="prod-tiles mt-8">{tanks}</div>
+  </div>
 </section>
 
 {groups_html}

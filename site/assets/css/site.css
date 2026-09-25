@@ -76,6 +76,7 @@
   .prod-tile:hover { background: #fff; border-color: var(--color-line); transform: translateY(-4px); box-shadow: var(--shadow-soft); }
   .prod-tile__head { display: flex; align-items: flex-start; justify-content: space-between; gap: .6rem; }
   .prod-tile__title { font-weight: 800; font-size: 15px; line-height: 1.35; color: var(--color-navy); }
+  .prod-tile__count { display: block; margin-top: .3rem; font-size: 13px; font-weight: 700; color: var(--color-muted); }
   .prod-tile__head svg { flex-shrink: 0; width: 18px; height: 18px; color: var(--color-brand); transition: transform .4s var(--ease); }
   .prod-tile:hover .prod-tile__head svg { transform: translate(3px, -3px); }
   .prod-tile__ph { display: block; margin-top: auto; overflow: hidden; border-radius: 16px; aspect-ratio: 4 / 3; background: #fff; }
