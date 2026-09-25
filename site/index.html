@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Концепт: не индексировать, чтобы не конкурировать с настоящим сайтом клиента -->
   <meta name="robots" content="noindex, nofollow">
-  <title>Ёмкости из полипропилена для воды, пожарные и химические — Expert ECO Group</title>
-  <meta name="description" content="Производим ёмкости и резервуары из полипропилена для воды, противопожарного запаса и химических реагентов. От 2 до 100 м³ и по вашим размерам. Собственное производство с 2015 года, доставка по Казахстану и СНГ.">
+  <title>Ёмкости, КНС и очистные сооружения из полипропилена — Expert ECO Group</title>
+  <meta name="description" content="Производим оборудование из полипропилена: ёмкости и резервуары от 2 до 100 м³, канализационные насосные станции и очистные сооружения. Собственное производство с 2015 года, доставка и монтаж по Казахстану и СНГ.">
   <link rel="icon" href="assets/img/logo-eeg.webp">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -35,7 +35,7 @@
       --ease-out-expo: cubic-bezier(.22, 1, .36, 1);
     }
   </style>
-  <link rel="stylesheet" href="assets/css/site.css?v=44">
+  <link rel="stylesheet" href="assets/css/site.css?v=46">
 </head>
 <body class="font-sans text-ink antialiased">
 <a href="#main" class="skip-link">К содержимому</a>
@@ -47,12 +47,12 @@
       <span class="logo-chip"><img src="assets/img/logo-eeg.webp" alt="" width="36" height="37"></span>
       <span class="min-w-0 leading-tight max-sm:hidden lg:hidden xl:block">
         <span class="block truncate font-display text-[15px] font-medium">Expert ECO Group</span>
-        <span class="nav-sub block truncate text-[13px] font-semibold">ёмкости из полипропилена</span>
+        <span class="nav-sub block truncate text-[13px] font-semibold">оборудование из полипропилена</span>
       </span>
     </a>
     <nav class="ml-auto hidden items-center gap-1 text-[15px] font-bold lg:flex" aria-label="Основное меню">
       <a class="nav-link" href="catalog/">Каталог</a>
-      <a class="nav-link" href="#sizes">Калькулятор</a>
+      <a class="nav-link" href="catalog/emkosti/">Резервуары</a>
       <a class="nav-link" href="o-kompanii/">О компании</a>
       <a class="nav-link" href="proekty/">Проекты</a>
       <a class="nav-link" href="kontakty/">Контакты</a>
@@ -74,7 +74,7 @@
   </div>
   <nav class="mt-10 flex flex-col gap-1 font-display text-2xl" aria-label="Мобильное меню">
     <a href="catalog/" class="py-3">Каталог</a>
-    <a href="#sizes" class="py-3">Калькулятор</a>
+    <a href="catalog/emkosti/" class="py-3">Резервуары</a>
     <a href="o-kompanii/" class="py-3">О компании</a>
     <a href="proekty/" class="py-3">Проекты</a>
     <a href="kontakty/" class="py-3">Контакты</a>
@@ -87,55 +87,138 @@
 
 <main id="main">
 
-<!-- ============ HERO ============ -->
-<section id="top" class="hero relative isolate overflow-hidden text-white">
-  <img src="assets/img/hero-1800.webp"
-       srcset="assets/img/hero-800.webp 800w, assets/img/hero-1200.webp 1200w, assets/img/hero-1800.webp 1800w, assets/img/hero-2390.webp 2390w"
-       sizes="100vw"
-       alt="Кран поднимает подземный резервуар Expert ECO Group на площадке производства"
-       class="hero-img absolute inset-0 -z-20 size-full object-cover" width="2390" height="1792" fetchpriority="high">
+<!-- ============ HERO: три направления ============ -->
+<!-- Слайды: ёмкости → КНС → очистные. Фото и тексты меняются вместе, переключатели сверху. -->
+<section id="top" class="hero relative isolate overflow-hidden text-white" data-hero>
+  <div class="hero-bg absolute inset-0 -z-20" aria-hidden="true">
+    <img class="hero-img hero-bg__img is-active" data-bg="0"
+         src="assets/img/hero-1800.webp" srcset="assets/img/hero-800.webp 800w, assets/img/hero-1200.webp 1200w, assets/img/hero-1800.webp 1800w, assets/img/hero-2390.webp 2390w" sizes="100vw"
+         alt="Кран поднимает подземный резервуар Expert ECO Group" width="2390" height="1792" fetchpriority="high">
+    <img class="hero-img hero-bg__img" data-bg="1"
+         src="assets/img/hero-kns-1280.webp" srcset="assets/img/hero-kns-800.webp 800w, assets/img/hero-kns-1280.webp 1280w" sizes="100vw"
+         alt="Канализационная насосная станция из полипропилена на трале" width="1280" height="720" loading="lazy">
+    <img class="hero-img hero-bg__img" data-bg="2"
+         src="assets/img/hero-los-1280.webp" srcset="assets/img/hero-los-800.webp 800w, assets/img/hero-los-1280.webp 1280w" sizes="100vw"
+         alt="Монтаж очистных сооружений ливневых стоков в котловане" width="1280" height="720" loading="lazy">
+  </div>
   <div class="hero-shade absolute inset-0 -z-10" aria-hidden="true"></div>
 
   <div class="mx-auto flex min-h-[100svh] max-w-7xl flex-col justify-end px-4 pb-10 pt-32 md:px-6 md:pb-16">
-    <div class="grid items-end gap-8 lg:grid-cols-[1.4fr_.6fr] lg:gap-12">
-      <div class="hero-copy">
-        <a href="#reviews" class="hero-in proof-pill">
-          <span class="flex text-sky" aria-hidden="true">
-            <i data-lucide="star" class="size-4 fill-current"></i><i data-lucide="star" class="size-4 fill-current"></i><i data-lucide="star" class="size-4 fill-current"></i><i data-lucide="star" class="size-4 fill-current"></i><i data-lucide="star" class="size-4 fill-current"></i>
-          </span>
-          <span>8 из 8 отзывов<span class="hidden sm:inline"> на Satu.kz</span> — «Отлично»</span>
-        </a>
-        <h1 class="hero-in font-display text-[clamp(2.05rem,4.7vw,4.2rem)] font-medium leading-[1.04] tracking-[-0.015em]">
-          Ёмкости из полипропилена <span class="accent mt-1 block text-sky-soft">от&nbsp;2 до&nbsp;100&nbsp;м³</span>
-        </h1>
-        <p class="hero-in mt-5 max-w-[37rem] text-[17px] font-semibold leading-relaxed text-white/85 md:text-lg">
-          Изготавливаем резервуары для питьевой и технической воды, противопожарного запаса и химических реагентов. Под ваш объём и размеры, с доставкой и монтажом по Казахстану и странам СНГ.
-        </p>
-        <div class="hero-in mt-8 flex flex-wrap gap-3">
-          <a href="#request" class="btn btn-primary">Рассчитать стоимость <i data-lucide="arrow-right" class="size-5"></i></a>
-          <a href="https://wa.me/77712282203?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%A5%D0%BE%D1%87%D1%83%20%D1%80%D0%B0%D1%81%D1%81%D1%87%D0%B8%D1%82%D0%B0%D1%82%D1%8C%20%D1%81%D1%82%D0%BE%D0%B8%D0%BC%D0%BE%D1%81%D1%82%D1%8C%20%D1%91%D0%BC%D0%BA%D0%BE%D1%81%D1%82%D0%B8" class="btn btn-glass" target="_blank" rel="noopener">
-            <img src="https://cdn.simpleicons.org/whatsapp/ffffff" alt="" class="size-5" width="20" height="20">Написать в WhatsApp
-          </a>
-        </div>
-      </div>
+    <div class="hero-tabs hero-in" role="tablist" aria-label="Направления производства">
+      <button type="button" class="hero-tab is-active" data-tab="0" role="tab" aria-selected="true" aria-controls="hero-pane-0" id="hero-tab-0">Ёмкости и резервуары</button>
+      <button type="button" class="hero-tab" data-tab="1" role="tab" aria-selected="false" aria-controls="hero-pane-1" id="hero-tab-1">КНС</button>
+      <button type="button" class="hero-tab" data-tab="2" role="tab" aria-selected="false" aria-controls="hero-pane-2" id="hero-tab-2">Очистные сооружения</button>
+    </div>
 
-      <aside class="hero-in glass hidden rounded-[28px] p-6 md:block" aria-label="Коротко о продукции">
-        <p class="text-xs font-bold uppercase tracking-[.14em] text-white/70">Стандартный ряд</p>
-        <p class="mt-2 font-display text-[2.6rem] font-medium leading-none">2–100 <span class="text-2xl">м³</span></p>
-        <p class="mt-2 text-sm font-semibold text-white/75">и любой объём по вашим чертежам</p>
-        <div class="my-5 h-px bg-white/15"></div>
-        <div class="grid grid-cols-2 gap-4">
+    <div class="hero-panes mt-6 md:mt-8">
+    <div class="hero-pane is-active" id="hero-pane-0" data-pane="0" role="tabpanel" aria-labelledby="hero-tab-0">
+      <div class="grid items-end gap-8 lg:grid-cols-[1.4fr_.6fr] lg:gap-12">
+        <div class="hero-copy">
+          <h1 class="hero-in font-display text-[clamp(2.05rem,4.7vw,4.2rem)] font-medium leading-[1.04] tracking-[-0.015em]">
+            Ёмкости и резервуары <span class="accent mt-1 block text-sky-soft">из&nbsp;полипропилена</span>
+          </h1>
+          <p class="hero-in mt-5 max-w-[37rem] text-[17px] font-semibold leading-relaxed text-white/85 md:text-lg">
+            Питьевая и техническая вода, противопожарный запас, кислоты и реагенты. Наземные и подземные, от 2 до 100 м³ — по типовым размерам или вашим чертежам.
+          </p>
+          <div class="hero-in mt-8 flex flex-wrap gap-3">
+            <a href="catalog/emkosti/" class="btn btn-primary">Смотреть резервуары <i data-lucide="arrow-right" class="size-5"></i></a>
+            <a href="https://wa.me/77712282203?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%A5%D0%BE%D1%87%D1%83%20%D1%80%D0%B0%D1%81%D1%81%D1%87%D0%B8%D1%82%D0%B0%D1%82%D1%8C%20%D1%81%D1%82%D0%BE%D0%B8%D0%BC%D0%BE%D1%81%D1%82%D1%8C" class="btn btn-glass" target="_blank" rel="noopener">
+              <img src="https://cdn.simpleicons.org/whatsapp/ffffff" alt="" class="size-5" width="20" height="20">Написать в WhatsApp
+            </a>
+          </div>
+        </div>
+
+        <aside class="hero-in glass hidden rounded-[28px] p-6 md:block" aria-label="Коротко о направлении">
+          <p class="text-xs font-bold uppercase tracking-[.14em] text-white/70">Стандартный ряд</p>
+          <p class="mt-2 font-display text-[2.6rem] font-medium leading-none">2–100 <span class="text-2xl">м³</span></p>
+          <p class="mt-2 text-sm font-semibold text-white/75">и любой объём по вашим чертежам</p>
+          <div class="my-5 h-px bg-white/15"></div>
+          <div class="grid grid-cols-2 gap-4">
           <div>
             <p class="font-display text-xl font-medium">12 мес</p>
-            <p class="mt-1 text-sm font-semibold text-white/75">гарантия на&nbsp;ёмкости</p>
+            <p class="mt-1 text-sm font-semibold text-white/75">гарантия на&nbsp;изделия</p>
           </div>
           <div>
             <p class="font-display text-xl font-medium">~50 лет</p>
             <p class="mt-1 text-sm font-semibold text-white/75">срок службы полипропилена</p>
           </div>
+          </div>
+          <a href="catalog/emkosti/#calc" class="mt-6 inline-flex items-center gap-2 font-bold text-sky-soft transition-colors hover:text-white">Подобрать объём <i data-lucide="arrow-right" class="size-4"></i></a>
+        </aside>
+      </div>
+    </div>
+    <div class="hero-pane" id="hero-pane-1" data-pane="1" role="tabpanel" aria-labelledby="hero-tab-1" hidden>
+      <div class="grid items-end gap-8 lg:grid-cols-[1.4fr_.6fr] lg:gap-12">
+        <div class="hero-copy">
+          <h1 class="hero-in font-display text-[clamp(2.05rem,4.7vw,4.2rem)] font-medium leading-[1.04] tracking-[-0.015em]">
+            Канализационные <span class="accent mt-1 block text-sky-soft">насосные&nbsp;станции</span>
+          </h1>
+          <p class="hero-in mt-5 max-w-[37rem] text-[17px] font-semibold leading-relaxed text-white/85 md:text-lg">
+            Принимают и перекачивают хозяйственно-бытовые, ливневые и производственные стоки. Корпус из полипропилена, насосы, обвязка и шкаф управления — комплектуем под проект.
+          </p>
+          <div class="hero-in mt-8 flex flex-wrap gap-3">
+            <a href="catalog/kns/" class="btn btn-primary">Смотреть КНС <i data-lucide="arrow-right" class="size-5"></i></a>
+            <a href="https://wa.me/77712282203?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%A5%D0%BE%D1%87%D1%83%20%D1%80%D0%B0%D1%81%D1%81%D1%87%D0%B8%D1%82%D0%B0%D1%82%D1%8C%20%D1%81%D1%82%D0%BE%D0%B8%D0%BC%D0%BE%D1%81%D1%82%D1%8C" class="btn btn-glass" target="_blank" rel="noopener">
+              <img src="https://cdn.simpleicons.org/whatsapp/ffffff" alt="" class="size-5" width="20" height="20">Написать в WhatsApp
+            </a>
+          </div>
         </div>
-        <a href="#sizes" class="mt-6 inline-flex items-center gap-2 font-bold text-sky-soft transition-colors hover:text-white">Подобрать объём <i data-lucide="arrow-right" class="size-4"></i></a>
-      </aside>
+
+        <aside class="hero-in glass hidden rounded-[28px] p-6 md:block" aria-label="Коротко о направлении">
+          <p class="text-xs font-bold uppercase tracking-[.14em] text-white/70">Комплектация</p>
+          <p class="mt-2 font-display text-[2.6rem] font-medium leading-none">Под ключ</p>
+          <p class="mt-2 text-sm font-semibold text-white/75">корпус, насосы, обвязка, шкаф управления</p>
+          <div class="my-5 h-px bg-white/15"></div>
+          <div class="grid grid-cols-2 gap-4">
+          <div>
+            <p class="font-display text-xl font-medium">Любая глубина</p>
+            <p class="mt-1 text-sm font-semibold text-white/75">корпус под ваш проект</p>
+          </div>
+          <div>
+            <p class="font-display text-xl font-medium">Монтаж и ПНР</p>
+            <p class="mt-1 text-sm font-semibold text-white/75">шефмонтаж и запуск</p>
+          </div>
+          </div>
+          <a href="catalog/kns/" class="mt-6 inline-flex items-center gap-2 font-bold text-sky-soft transition-colors hover:text-white">Подробнее о КНС <i data-lucide="arrow-right" class="size-4"></i></a>
+        </aside>
+      </div>
+    </div>
+    <div class="hero-pane" id="hero-pane-2" data-pane="2" role="tabpanel" aria-labelledby="hero-tab-2" hidden>
+      <div class="grid items-end gap-8 lg:grid-cols-[1.4fr_.6fr] lg:gap-12">
+        <div class="hero-copy">
+          <h1 class="hero-in font-display text-[clamp(2.05rem,4.7vw,4.2rem)] font-medium leading-[1.04] tracking-[-0.015em]">
+            Очистные сооружения <span class="accent mt-1 block text-sky-soft">для&nbsp;стоков и&nbsp;ливнёвки</span>
+          </h1>
+          <p class="hero-in mt-5 max-w-[37rem] text-[17px] font-semibold leading-relaxed text-white/85 md:text-lg">
+            Песко- и нефтеуловители, комбинированные установки, жироуловители и септики. Подбираем по расходу и составу стоков, монтируем и обслуживаем.
+          </p>
+          <div class="hero-in mt-8 flex flex-wrap gap-3">
+            <a href="catalog/los/" class="btn btn-primary">Смотреть очистные <i data-lucide="arrow-right" class="size-5"></i></a>
+            <a href="https://wa.me/77712282203?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%A5%D0%BE%D1%87%D1%83%20%D1%80%D0%B0%D1%81%D1%81%D1%87%D0%B8%D1%82%D0%B0%D1%82%D1%8C%20%D1%81%D1%82%D0%BE%D0%B8%D0%BC%D0%BE%D1%81%D1%82%D1%8C" class="btn btn-glass" target="_blank" rel="noopener">
+              <img src="https://cdn.simpleicons.org/whatsapp/ffffff" alt="" class="size-5" width="20" height="20">Написать в WhatsApp
+            </a>
+          </div>
+        </div>
+
+        <aside class="hero-in glass hidden rounded-[28px] p-6 md:block" aria-label="Коротко о направлении">
+          <p class="text-xs font-bold uppercase tracking-[.14em] text-white/70">Очистка стоков</p>
+          <p class="mt-2 font-display text-[2.6rem] font-medium leading-none">ЛОС</p>
+          <p class="mt-2 text-sm font-semibold text-white/75">ливневые, хозяйственно-бытовые и промышленные</p>
+          <div class="my-5 h-px bg-white/15"></div>
+          <div class="grid grid-cols-2 gap-4">
+          <div>
+            <p class="font-display text-xl font-medium">По расходу</p>
+            <p class="mt-1 text-sm font-semibold text-white/75">подбор в л/с</p>
+          </div>
+          <div>
+            <p class="font-display text-xl font-medium">Сервис</p>
+            <p class="mt-1 text-sm font-semibold text-white/75">обслуживание после запуска</p>
+          </div>
+          </div>
+          <a href="catalog/los/" class="mt-6 inline-flex items-center gap-2 font-bold text-sky-soft transition-colors hover:text-white">Подробнее об очистных <i data-lucide="arrow-right" class="size-4"></i></a>
+        </aside>
+      </div>
+    </div>
     </div>
   </div>
 </section>
@@ -177,7 +260,7 @@
         </span>
         <span class="prod-tile__ph"><img src="assets/img/prod/zhiro.webp" alt="Жироуловители и пескоуловители" loading="lazy"></span>
       </a>
-      <a class="prod-tile reveal" href="catalog/#emkosti">
+      <a class="prod-tile reveal" href="catalog/emkosti/">
         <span class="prod-tile__head">
           <span class="prod-tile__title">Ёмкости</span>
           <i data-lucide="arrow-up-right"></i>
@@ -206,69 +289,6 @@
     </ul>
   </div>
 </div>
-
-<!-- ============ КАЛЬКУЛЯТОР ЁМКОСТИ ============ -->
-<section id="sizes" class="bg-mist px-4 py-24 md:px-6 md:py-32">
-  <div class="mx-auto max-w-7xl">
-    <div class="calc reveal grid gap-10 rounded-[32px] bg-white p-5 shadow-soft sm:p-7 lg:grid-cols-[minmax(0,.85fr)_minmax(0,1.15fr)] lg:gap-14 lg:p-10">
-
-      <div class="flex flex-col">
-        <h2 class="section-title">Рассчитайте ёмкость <span class="accent text-brand">под вашу</span> задачу</h2>
-        <p class="mt-5 leading-relaxed text-muted">Укажите параметры — подберём конструкцию, толщину листа и комплектацию, подготовим расчёт стоимости.</p>
-        <ul class="mt-8 space-y-4">
-          <li class="calc-feat"><span><i data-lucide="ruler"></i></span>Точные размеры</li>
-          <li class="calc-feat"><span><i data-lucide="file-text"></i></span>Чертежи и спецификация</li>
-          <li class="calc-feat"><span><i data-lucide="clock"></i></span>Сроки и стоимость</li>
-        </ul>
-        <a href="#request" class="calc-cta btn btn-primary mt-9 self-start">Рассчитать проект <i data-lucide="arrow-right" class="size-5"></i></a>
-        <p class="mt-6 text-sm font-semibold leading-relaxed text-muted">Нужна прямоугольная или нестандартная ёмкость? Изготовим по вашим чертежам — напишите об этом в заявке.</p>
-      </div>
-
-      <div class="calc-panel">
-        <div class="grid gap-3 sm:grid-cols-3">
-          <div class="stepper" data-field="v">
-            <label for="calc-v">Объём, м³</label>
-            <div class="stepper__box">
-              <button type="button" data-step="-1" aria-label="Уменьшить объём"><i data-lucide="minus"></i></button>
-              <input id="calc-v" type="text" inputmode="decimal" autocomplete="off" value="10">
-              <button type="button" data-step="1" aria-label="Увеличить объём"><i data-lucide="plus"></i></button>
-            </div>
-          </div>
-          <div class="stepper" data-field="d">
-            <label for="calc-d">Диаметр, мм</label>
-            <div class="stepper__box">
-              <button type="button" data-step="-1" aria-label="Уменьшить диаметр"><i data-lucide="minus"></i></button>
-              <input id="calc-d" type="text" inputmode="numeric" autocomplete="off" value="1900">
-              <button type="button" data-step="1" aria-label="Увеличить диаметр"><i data-lucide="plus"></i></button>
-            </div>
-          </div>
-          <div class="stepper" data-field="l">
-            <label for="calc-l">Длина, мм</label>
-            <div class="stepper__box">
-              <button type="button" data-step="-1" aria-label="Уменьшить длину"><i data-lucide="minus"></i></button>
-              <input id="calc-l" type="text" inputmode="numeric" autocomplete="off" value="3530">
-              <button type="button" data-step="1" aria-label="Увеличить длину"><i data-lucide="plus"></i></button>
-            </div>
-          </div>
-        </div>
-
-        <div class="blueprint mt-4">
-          <div class="bp-head">
-            <div class="bp-type" role="group" aria-label="Установка">
-              <button type="button" data-type="under" aria-pressed="true">Подземная</button>
-              <button type="button" data-type="ground" aria-pressed="false">Наземная</button>
-            </div>
-          </div>
-          <span class="bp-tag">Схема в масштабе</span>
-          <svg class="bp-svg" role="img" aria-label="Чертёж ёмкости с размерами"></svg>
-        </div>
-
-        <p class="bp-note mt-4"></p>
-      </div>
-
-    </div>
-  </div>
-</section>
 
 <!-- ============ НАШИ УСЛУГИ ============ -->
 <section id="services" class="services px-4 py-20 md:px-6 md:py-28">
@@ -334,14 +354,14 @@
     <div>
       <div class="reveal">
         <h2 class="section-title">Мы производители, <span class="accent text-brand">а&nbsp;не</span> перекупщики</h2>
-        <p class="mt-5 text-[17px] leading-relaxed text-muted">С 2014 года монтируем и обслуживаем очистные сооружения. В 2015 открыли собственное производство — потому что видели, какого качества оборудование предлагают на рынке. Теперь проектируем, варим, доставляем и обслуживаем ёмкости сами.</p>
+        <p class="mt-5 text-[17px] leading-relaxed text-muted">С 2014 года монтируем и обслуживаем очистные сооружения. В 2015 открыли собственное производство — потому что видели, какого качества оборудование предлагают на рынке. Теперь проектируем, варим, доставляем и обслуживаем оборудование сами.</p>
       </div>
       <ul class="mt-10 grid gap-x-8 gap-y-8 sm:grid-cols-2">
         <li class="reveal feature"><span class="feature__icon"><i data-lucide="factory"></i></span><div><h3>Собственное производство с 2015 года</h3><p>Сами контролируем материал, сварные швы и сроки.</p></div></li>
         <li class="reveal feature"><span class="feature__icon"><i data-lucide="ruler"></i></span><div><h3>Проект и чертежи</h3><p>Разработаем проект и чертежи под объект или изготовим по вашим.</p></div></li>
         <li class="reveal feature"><span class="feature__icon"><i data-lucide="timer"></i></span><div><h3>Короткие сроки</h3><p>Минимальные сроки изготовления, берём и срочные заказы.</p></div></li>
-        <li class="reveal feature"><span class="feature__icon"><i data-lucide="shield-check"></i></span><div><h3>Гарантия 12 месяцев</h3><p>На все ёмкости собственного производства.</p></div></li>
-        <li class="reveal feature"><span class="feature__icon"><i data-lucide="truck"></i></span><div><h3>Доставка по РК и СНГ</h3><p>Организуем транспорт, погрузку и крепление ёмкости.</p></div></li>
+        <li class="reveal feature"><span class="feature__icon"><i data-lucide="shield-check"></i></span><div><h3>Гарантия 12 месяцев</h3><p>На всё оборудование собственного производства.</p></div></li>
+        <li class="reveal feature"><span class="feature__icon"><i data-lucide="truck"></i></span><div><h3>Доставка по РК и СНГ</h3><p>Организуем транспорт, погрузку и крепление груза.</p></div></li>
         <li class="reveal feature"><span class="feature__icon"><i data-lucide="wrench"></i></span><div><h3>Монтаж и сервис</h3><p>Шефмонтаж, пусконаладка, футеровка и ремонт оборудования.</p></div></li>
       </ul>
     </div>
@@ -362,7 +382,7 @@
       <li class="step reveal"><span class="step__num">01</span><h3>Заявка</h3><p>Назначение, объём и условия установки: по телефону, в WhatsApp или через форму.</p></li>
       <li class="step reveal"><span class="step__num">02</span><h3>Проект и расчёт</h3><p>Разрабатываем чертежи, подбираем конструкцию и комплектацию, считаем стоимость.</p></li>
       <li class="step reveal"><span class="step__num">03</span><h3>Изготовление</h3><p>Раскрой и сварка полипропилена на нашем производстве в Каскелене.</p></li>
-      <li class="step reveal"><span class="step__num">04</span><h3>Доставка</h3><p>Грузим, крепим и отправляем ёмкость по Казахстану и в страны СНГ.</p></li>
+      <li class="step reveal"><span class="step__num">04</span><h3>Доставка</h3><p>Грузим, крепим и отправляем оборудование по Казахстану и в страны СНГ.</p></li>
       <li class="step reveal"><span class="step__num">05</span><h3>Монтаж</h3><p>Шефмонтаж и пусконаладка на объекте, затем сервисное обслуживание.</p></li>
     </ol>
 
@@ -370,49 +390,50 @@
   </div>
 </section>
 
-<!-- ============ ПРОЕКТЫ ============ -->
-<!-- ЗАГЛУШКА: подписи общие. Объекты, города и объёмы уточнить у клиента. -->
+<!-- ============ ФОТО С ПРОИЗВОДСТВА И ОБЪЕКТОВ ============ -->
+<!-- Фото меняются автоматически; клик по кадру и кнопка ведут в фотоальбом. -->
 <section id="projects" class="px-4 py-24 md:px-6 md:py-32">
   <div class="mx-auto max-w-7xl">
-    <div class="reveal max-w-2xl">
-      <h2 class="section-title">С производства <span class="accent text-brand">на&nbsp;объект</span></h2>
-      <p class="mt-4 max-w-xl leading-relaxed text-muted">Фотографии с производства в Каскелене и с объектов заказчиков. Нажмите на любое фото — откроется фотоальбом.</p>
-      <div class="mt-7 flex flex-wrap gap-3">
-        <a href="fotoalbom/" class="btn btn-ghost">Фотоальбом <i data-lucide="images" class="size-5"></i></a>
+    <div class="reveal flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+      <div class="max-w-2xl">
+        <h2 class="section-title">С производства <span class="accent text-brand">на&nbsp;объект</span></h2>
+        <p class="mt-4 max-w-xl leading-relaxed text-muted">Ёмкости, КНС и очистные сооружения: изготовление в Каскелене, отгрузка и монтаж на объектах заказчиков.</p>
+      </div>
+      <div class="flex flex-wrap gap-3">
+        <a href="fotoalbom/" class="btn btn-primary">Фотоальбом <i data-lucide="images" class="size-5"></i></a>
         <a href="karta-proektov/" class="btn btn-ghost">Карта проектов <i data-lucide="map-pin" class="size-5"></i></a>
       </div>
     </div>
-    <div class="gallery mt-12">
-      <a class="reveal g-item g-item--wide" href="fotoalbom/"><img data-parallax src="assets/img/proj-loading.webp" alt="Погрузка вертикальных резервуаров на трал краном" loading="lazy" width="1200" height="675"><figcaption>Отгрузка вертикальных резервуаров</figcaption></a>
-      <a class="reveal g-item g-item--tall" href="fotoalbom/"><img data-parallax src="assets/img/proj-trench.webp" alt="Подземный резервуар в котловане перед засыпкой" loading="lazy" width="720" height="1280"><figcaption>Монтаж подземного резервуара</figcaption></a>
-      <a class="reveal g-item" href="fotoalbom/"><img data-parallax src="assets/img/proj-horizontal.webp" alt="Горизонтальная наземная ёмкость на опорах" loading="lazy" width="861" height="620"><figcaption>Горизонтальная наземная ёмкость</figcaption></a>
-      <a class="reveal g-item" href="fotoalbom/"><img data-parallax src="assets/img/proj-rect.webp" alt="Прямоугольная ёмкость из полипропилена с фланцами" loading="lazy" width="1000" height="670"><figcaption>Прямоугольная ёмкость с патрубками</figcaption></a>
-    </div>
-  </div>
-</section>
 
-<!-- ============ ОТЗЫВЫ ============ -->
-<!-- Отзывы перенесены с Satu.kz с сокращениями. Согласовать публикацию с клиентом. -->
-<section id="reviews" class="bg-mist px-4 py-24 md:px-6 md:py-32">
-  <div class="mx-auto max-w-7xl">
-    <div class="reveal text-center">
-      <h2 class="section-title mx-auto max-w-3xl">Заказывают <span class="accent text-brand">снова</span> и советуют другим</h2>
+    <div class="photo-show reveal mt-12" data-photoshow>
+      <a class="photo-show__frame" href="fotoalbom/" aria-label="Открыть фотоальбом">
+        <span class="photo-show__stack">
+          <img class="photo-show__img is-active" data-photo="0" src="assets/img/proj-loading.webp" alt="Погрузка вертикальных резервуаров на трал краном" width="1200" height="675" loading="lazy">
+          <img class="photo-show__img" data-photo="1" src="assets/img/hero-kns-1280.webp" alt="Канализационная насосная станция из полипропилена перед отправкой" width="1280" height="720" loading="lazy">
+          <img class="photo-show__img" data-photo="2" src="assets/img/proj-trench.webp" alt="Подземный резервуар в котловане перед засыпкой" width="720" height="1280" loading="lazy">
+          <img class="photo-show__img" data-photo="3" src="assets/img/hero-los-1280.webp" alt="Монтаж очистных сооружений ливневых стоков в котловане" width="1280" height="720" loading="lazy">
+          <img class="photo-show__img" data-photo="4" src="assets/img/proj-horizontal.webp" alt="Горизонтальная наземная ёмкость на опорах" width="861" height="620" loading="lazy">
+          <img class="photo-show__img" data-photo="5" src="assets/img/proj-rect.webp" alt="Прямоугольная ёмкость из полипропилена с фланцами" width="1000" height="670" loading="lazy">
+        </span>
+        <span class="photo-show__bar">
+          <span class="photo-show__cap is-active" data-cap="0">Отгрузка вертикальных резервуаров</span>
+          <span class="photo-show__cap" data-cap="1">КНС перед отправкой на объект</span>
+          <span class="photo-show__cap" data-cap="2">Монтаж подземного резервуара</span>
+          <span class="photo-show__cap" data-cap="3">Очистные сооружения на объекте</span>
+          <span class="photo-show__cap" data-cap="4">Горизонтальная наземная ёмкость</span>
+          <span class="photo-show__cap" data-cap="5">Прямоугольная ёмкость с патрубками</span>
+          <span class="photo-show__go">Открыть фотоальбом <i data-lucide="arrow-up-right" class="size-4"></i></span>
+        </span>
+      </a>
+      <div class="photo-show__dots" role="group" aria-label="Переключение фотографий">
+        <button type="button" class="photo-dot is-active" data-dot="0" aria-label="Фото 1: Отгрузка вертикальных резервуаров"></button>
+        <button type="button" class="photo-dot" data-dot="1" aria-label="Фото 2: КНС перед отправкой на объект"></button>
+        <button type="button" class="photo-dot" data-dot="2" aria-label="Фото 3: Монтаж подземного резервуара"></button>
+        <button type="button" class="photo-dot" data-dot="3" aria-label="Фото 4: Очистные сооружения на объекте"></button>
+        <button type="button" class="photo-dot" data-dot="4" aria-label="Фото 5: Горизонтальная наземная ёмкость"></button>
+        <button type="button" class="photo-dot" data-dot="5" aria-label="Фото 6: Прямоугольная ёмкость с патрубками"></button>
+      </div>
     </div>
-    <div class="mt-14 grid gap-x-6 gap-y-14 md:grid-cols-3">
-      <figure class="review reveal">
-        <blockquote>«Покупали ёмкость 20&nbsp;м³. Заказ выполнили в обещанные сроки, помогли с транспортом до Актау. Что очень важно, ёмкость была протестирована до&nbsp;отправки.»</blockquote>
-        <figcaption class="review__who"><span class="review__ava">Г</span><span><b>Гера</b><small>2019 · Satu.kz</small></span></figcaption>
-      </figure>
-      <figure class="review reveal">
-        <blockquote>«Работаем с этой компанией не первый год. Директор знает всё в своём производстве и советует то, что действительно прослужит не один год. Они не&nbsp;перекупы, они производители!»</blockquote>
-        <figcaption class="review__who"><span class="review__ava">Е</span><span><b>Елена</b><small>2022 · Satu.kz</small></span></figcaption>
-      </figure>
-      <figure class="review reveal">
-        <blockquote>«Быстро, качественно, раньше обещанного срока, и ещё доставку организовали. Наш следующий объект только к&nbsp;ним.»</blockquote>
-        <figcaption class="review__who"><span class="review__ava">Н</span><span><b>Нурлан, Астана</b><small>2018 · Satu.kz</small></span></figcaption>
-      </figure>
-    </div>
-    <p class="reveal mt-12 text-center"><a href="https://expert-eco-group.satu.kz/testimonials" target="_blank" rel="noopener" class="link-arrow">Все отзывы на Satu.kz <i data-lucide="arrow-up-right" class="size-4"></i></a></p>
   </div>
 </section>
 
@@ -426,8 +447,20 @@
     </div>
     <div class="faq reveal">
       <details open>
-        <summary>Можно заказать ёмкость нестандартного размера?<i data-lucide="plus"></i></summary>
-        <p>Да. Изготавливаем по вашим размерам, чертежам или техзаданию: объём, форма, расположение патрубков, люков и перегородок.</p>
+        <summary>Можно заказать оборудование нестандартного размера?<i data-lucide="plus"></i></summary>
+        <p>Да. Ёмкости, КНС и очистные изготавливаем по вашим размерам, чертежам или техзаданию: объём, форма, расположение патрубков, люков и перегородок.</p>
+      </details>
+      <details>
+        <summary>Чем КНС из полипропилена лучше бетонной?<i data-lucide="plus"></i></summary>
+        <p>Корпус не разрушается от стоков и газов, весит меньше — монтаж проходит без тяжёлой техники. Высоту станции делаем под глубину подводящего коллектора, комплектуем насосами, обвязкой и шкафом управления.</p>
+      </details>
+      <details>
+        <summary>Как подбираются очистные сооружения?<i data-lucide="plus"></i></summary>
+        <p>По расходу стоков в литрах в секунду, их составу и требованиям к сбросу. Пришлите данные по объекту — предложим схему: пескоуловитель, нефтеуловитель, сорбционный блок или комбинированную установку.</p>
+      </details>
+      <details>
+        <summary>Нужен ли жироуловитель кафе или цеху?<i data-lucide="plus"></i></summary>
+        <p>Да, если стоки содержат жир: он оседает в трубах и приводит к засорам, а нормы запрещают сброс без очистки. Подбираем модель под мойку или промышленную — по расходу воды и количеству посадочных мест.</p>
       </details>
       <details>
         <summary>Почему на сайте нет цен?<i data-lucide="plus"></i></summary>
@@ -435,19 +468,19 @@
       </details>
       <details>
         <summary>Подходят ли ёмкости для питьевой воды?<i data-lucide="plus"></i></summary>
-        <p>Да. Полипропилен не вступает в реакцию с водой, и вода не приобретает постороннего вкуса и запаха.</p>
-      </details>
-      <details>
-        <summary>Можно установить ёмкость под землёй?<i data-lucide="plus"></i></summary>
-        <p>Да, для этого есть подземное исполнение: горизонтальный цилиндр с рёбрами жёсткости и горловиной. Конструкцию подбираем с учётом глубины установки и грунта.</p>
+        <p>Да. Полипропилен не вступает в реакцию с водой, и вода не приобретает постороннего вкуса и запаха. Тот же корпус используют для технической воды, противопожарного запаса и химических реагентов.</p>
       </details>
       <details>
         <summary>Какие химические среды выдерживает полипропилен?<i data-lucide="plus"></i></summary>
         <p>Большинство кислот, щелочей и солевых растворов. Сообщите состав и температуру среды в заявке, и мы проверим стойкость материала под вашу задачу.</p>
       </details>
       <details>
+        <summary>Обслуживаете оборудование после запуска?<i data-lucide="plus"></i></summary>
+        <p>Да. Делаем шефмонтаж и пусконаладку, берём очистные и КНС на регламентное обслуживание, ремонтируем компрессоры, выполняем футеровку и ремонт резервуаров.</p>
+      </details>
+      <details>
         <summary>Доставляете в другие города и страны?<i data-lucide="plus"></i></summary>
-        <p>Да, работаем по всему Казахстану и странам СНГ. Помогаем с транспортом, погрузкой и креплением ёмкости.</p>
+        <p>Да, работаем по всему Казахстану и странам СНГ. Помогаем с транспортом, погрузкой и креплением оборудования.</p>
       </details>
     </div>
   </div>
@@ -457,9 +490,9 @@
 <section id="request" class="request relative isolate overflow-hidden bg-navy px-4 py-24 text-white md:px-6 md:py-32">
   <div class="mx-auto grid max-w-7xl items-start gap-12 lg:grid-cols-[1fr_1.05fr] lg:gap-16">
     <div class="reveal">
-      <h2 class="section-title text-white">Рассчитаем ёмкость <span class="accent text-sky-soft">под&nbsp;ваш</span> объект</h2>
+      <h2 class="section-title text-white">Подберём оборудование <span class="accent text-sky-soft">под&nbsp;ваш</span> объект</h2>
       <p class="mt-5 max-w-md text-[17px] leading-relaxed text-white/80">Опишите задачу, и менеджер перезвонит в рабочее время. Можно сразу написать в WhatsApp.</p>
-      <p class="discount mt-8"><i data-lucide="percent" class="size-5"></i>Скидка при заказе от 2 ёмкостей</p>
+      <p class="discount mt-8"><i data-lucide="percent" class="size-5"></i>Скидка при заказе комплекта оборудования</p>
       <ul class="mt-10 space-y-4 text-[17px]">
         <li><a href="tel:+77774841822" class="contact-row"><i data-lucide="phone"></i><span><b>+7 777 484-18-22</b><small>Отдел продаж, Сергей</small></span></a></li>
         <li><a href="tel:+77086265749" class="contact-row"><i data-lucide="phone"></i><span><b>+7 708 626-57-49</b><small>Отдел продаж, Артём</small></span></a></li>
@@ -471,14 +504,14 @@
       <fieldset>
         <legend class="text-sm font-bold text-muted">Назначение</legend>
         <div class="seg mt-3">
-          <label><input type="radio" name="purpose" value="Вода" checked><span>Вода</span></label>
-          <label><input type="radio" name="purpose" value="Пожарная"><span>Пожарная</span></label>
-          <label><input type="radio" name="purpose" value="Химия"><span>Химия</span></label>
+          <label><input type="radio" name="purpose" value="Ёмкости" checked><span>Ёмкости</span></label>
+          <label><input type="radio" name="purpose" value="КНС"><span>КНС</span></label>
+          <label><input type="radio" name="purpose" value="Очистные"><span>Очистные</span></label>
           <label><input type="radio" name="purpose" value="Другое"><span>Другое</span></label>
         </div>
       </fieldset>
       <div class="mt-6 grid gap-5 sm:grid-cols-2">
-        <label class="field"><span>Объём, м³</span><input type="number" name="volume" min="0.5" step="0.5" inputmode="decimal" placeholder="Например, 25"></label>
+        <label class="field"><span>Объём, м³ или расход, л/с</span><input type="text" name="volume" inputmode="decimal" placeholder="Например, 25 м³"></label>
         <label class="field"><span>Ваше имя</span><input type="text" name="name" autocomplete="name" placeholder="Как к вам обращаться"></label>
         <label class="field sm:col-span-2"><span>Телефон <b class="text-brand">*</b></span><input type="tel" name="phone" autocomplete="tel" inputmode="tel" placeholder="+7 ___ ___-__-__" required><em class="field__err" hidden>Укажите номер, чтобы мы могли перезвонить</em></label>
         <label class="field sm:col-span-2"><span>Комментарий</span><textarea name="comment" rows="3" placeholder="Размеры, место установки, среда, город доставки"></textarea></label>
@@ -509,11 +542,11 @@
     <div>
       <h3 class="footer-h">Каталог</h3>
       <ul class="footer-list">
-        <li><a href="catalog/voda/">Ёмкости для воды</a></li>
-        <li><a href="catalog/pozharnye/">Пожарные резервуары</a></li>
-        <li><a href="catalog/himicheskie/">Химические ёмкости</a></li>
-        <li><a href="oborudovanie/">Другое оборудование</a></li>
-        <li><a href="index.html#sizes">Калькулятор ёмкости</a></li>
+        <li><a href="catalog/emkosti/">Ёмкости и резервуары</a></li>
+        <li><a href="catalog/kns/">Канализационные насосные станции</a></li>
+        <li><a href="catalog/los/">Очистные сооружения</a></li>
+        <li><a href="catalog/">Всё оборудование</a></li>
+        <li><a href="catalog/emkosti/#calc">Калькулятор ёмкости</a></li>
       </ul>
     </div>
     <div>
@@ -523,7 +556,6 @@
         <li><a href="proekty/">Проекты</a></li>
         <li><a href="fotoalbom/">Фотоальбом</a></li>
         <li><a href="karta-proektov/">Карта проектов</a></li>
-        <li><a href="#reviews">Отзывы</a></li>
         <li><a href="#request">Расчёт стоимости</a></li>
       </ul>
     </div>
@@ -555,14 +587,14 @@
       <fieldset>
         <legend class="text-sm font-bold text-muted">Назначение</legend>
         <div class="seg mt-3">
-          <label><input type="radio" name="purpose" value="Вода" checked><span>Вода</span></label>
-          <label><input type="radio" name="purpose" value="Пожарная"><span>Пожарная</span></label>
-          <label><input type="radio" name="purpose" value="Химия"><span>Химия</span></label>
+          <label><input type="radio" name="purpose" value="Ёмкости" checked><span>Ёмкости</span></label>
+          <label><input type="radio" name="purpose" value="КНС"><span>КНС</span></label>
+          <label><input type="radio" name="purpose" value="Очистные"><span>Очистные</span></label>
           <label><input type="radio" name="purpose" value="Другое"><span>Другое</span></label>
         </div>
       </fieldset>
       <div class="mt-4 grid grid-cols-2 gap-3">
-        <label class="field"><span>Объём, м³</span><input type="number" name="volume" min="0.5" step="0.5" inputmode="decimal" placeholder="Например, 25"></label>
+        <label class="field"><span>Объём, м³ или расход, л/с</span><input type="text" name="volume" inputmode="decimal" placeholder="Например, 25 м³"></label>
         <label class="field"><span>Ваше имя</span><input type="text" name="name" autocomplete="name" placeholder="Как к вам обращаться"></label>
         <label class="field col-span-2"><span>Телефон <b class="text-brand">*</b></span><input type="tel" name="phone" autocomplete="tel" inputmode="tel" placeholder="+7 ___ ___-__-__" required><em class="field__err" hidden>Укажите номер, чтобы мы могли перезвонить</em></label>
         <label class="field col-span-2"><span>Комментарий</span><textarea name="comment" rows="2" placeholder="Размеры, место установки, среда, город"></textarea></label>
@@ -603,6 +635,6 @@
 <script src="https://cdn.jsdelivr.net/npm/lucide@1.47.0/dist/umd/lucide.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/ScrollTrigger.min.js" defer></script>
-<script src="assets/js/main.js?v=44" defer></script>
+<script src="assets/js/main.js?v=46" defer></script>
 </body>
 </html>

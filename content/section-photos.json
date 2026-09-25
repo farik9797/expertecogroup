@@ -1,0 +1,186 @@
+{
+  "kns": [
+    {
+      "image": "228335973_kns-kanalizatsionnaya-nasosnaya.webp",
+      "alt": "КНС Канализационная насосная станция 10 м3/час H-10м"
+    },
+    {
+      "image": "158490748_kanalizatsionnaya-nasosnaya-stantsiya.webp",
+      "alt": "Канализационная насосная станция КНС индивидуального размера"
+    },
+    {
+      "image": "202618481_kns-kanalizatsionnaya-nasosnaya.webp",
+      "alt": "КНС Канализационная насосная станция 15 м3/час H-20м"
+    },
+    {
+      "image": "228335975_kns-kanalizatsionnaya-nasosnaya.webp",
+      "alt": "КНС Канализационная насосная станция 60 м3/час H-13м"
+    },
+    {
+      "image": "202618676_kns-kanalizatsionnaya-nasosnaya.webp",
+      "alt": "КНС Канализационная насосная станция 100 м3/час H-15м"
+    }
+  ],
+  "los": [
+    {
+      "image": "123090063_los-kombinirovannyj-pesko-nefteulovitel.webp",
+      "alt": "ЛОС комбинированный песко-нефтеуловитель 6 л/с"
+    },
+    {
+      "image": "125382107_ochistnoe-sooruzhenie-livnevyh.webp",
+      "alt": "Очистное сооружение ливневых сточных вод 50 л/сек"
+    },
+    {
+      "image": "125384769_ochistnoe-sooruzhenie-livnevyh.webp",
+      "alt": "Очистное сооружение ливневых сточных вод от 1 до 80 л/сек"
+    }
+  ],
+  "septiki": [
+    {
+      "image": "197759884_septik-evrolos.webp",
+      "alt": "Септик Евролос"
+    },
+    {
+      "image": "178989966_septik-yunilos-astra.webp",
+      "alt": "Септик Юнилос Астра 4"
+    },
+    {
+      "image": "239178583_septik-individualnyj.webp",
+      "alt": "Септик индивидуальный"
+    }
+  ],
+  "zhirouloviteli": [
+    {
+      "image": "191049502_zhiroulovitel-pod-mojku.webp",
+      "alt": "Жироуловитель под мойку 0,5-30"
+    },
+    {
+      "image": "73302226_zhiroulovitel-promyshlennyj-iz.webp",
+      "alt": "Жироуловитель промышленный из полипропилена KR 3,6-240"
+    },
+    {
+      "image": "107355522_zhiroulovitel-iz-polipropilena.webp",
+      "alt": "Жироуловитель из полипропилена промышленный"
+    },
+    {
+      "image": "121928028_zhiroulovitel-iz-polipropilena.webp",
+      "alt": "Жироуловитель из полипропилена индивидуального размера"
+    }
+  ],
+  "peskouloviteli": [
+    {
+      "image": "178378130_peskouloviteli-v-15.webp",
+      "alt": "Пескоуловители V 15 м3"
+    },
+    {
+      "image": "189428251_peskouloviteli-bytovye-0540.webp",
+      "alt": "Пескоуловители бытовые 0,5*40"
+    }
+  ],
+  "kompressory": [
+    {
+      "image": "170008214_komplekt-dlya-aeratsii.webp",
+      "alt": "Комплект для аэрации пруда от 100-500 м3"
+    },
+    {
+      "image": "75865341_kompressor-hiblow-hp-20.webp",
+      "alt": "Компрессор HIBLOW HP-20"
+    },
+    {
+      "image": "238770650_kompressor-airmac-dbmx-120.webp",
+      "alt": "Компрессор Airmac DBMX-120"
+    },
+    {
+      "image": "239616414_kompressor-jecod-pa-100.webp",
+      "alt": "Компрессор Jecod PA-100"
+    },
+    {
+      "image": "243128148_plavayuschij-fontan-dlya.webp",
+      "alt": "Плавающий фонтан для пруда Pondtech HP 100K-WL с Белой LED подсветкой"
+    },
+    {
+      "image": "243128158_plavayuschij-fontan-pondtech.webp",
+      "alt": "Плавающий фонтан Pondtech HP 100K комплект с подсветкой RGB фонтан аэратор"
+    }
+  ],
+  "zapchasti": [
+    {
+      "image": "240425100_membrany-hiblow-hp-100120.webp",
+      "alt": "Мембраны HIBLOW HP-100/120"
+    },
+    {
+      "image": "240425258_sistema-zaschity-dlya.webp",
+      "alt": "Система защиты для компрессора HIBLOW HP-100/120"
+    },
+    {
+      "image": "240199212_remont-kompressorov-hiblow.webp",
+      "alt": "Ремонт компрессоров Hiblow"
+    },
+    {
+      "image": "216130615_membrany-dlya-kompressora.webp",
+      "alt": "Мембраны для компрессора AirMac DB-120"
+    }
+  ],
+  "nasosy": [
+    {
+      "image": "200846895_pogruzhnoj-nasos-50wqd10-10-075.webp",
+      "alt": "Погружной насос 50WQD10-10-0.75"
+    }
+  ],
+  "shkafy": [
+    {
+      "image": "115769323_shkaf-upravleniya-kns.webp",
+      "alt": "Шкаф управления КНС (канализационная насосная станция)"
+    }
+  ],
+  "biopreparaty": [
+    {
+      "image": "239617859_bakterii-unibac-start-05.webp",
+      "alt": "Бактерии UNIBAC-Start 0,5 л"
+    },
+    {
+      "image": "239618075_bakterii-unibac-effect-05.webp",
+      "alt": "Бактерии UNIBAC-effect 0,5 л"
+    },
+    {
+      "image": "239618065_bakterii-unibac-winter-05.webp",
+      "alt": "Бактерии UNIBAC-Winter 0,5 л"
+    },
+    {
+      "image": "239617891_biopreparat-liquazyme-likvazim.webp",
+      "alt": "Биопрепарат LIQUAZYME (Ликвазим) для очистки труб, канализации и септиков"
+    }
+  ],
+  "tehnofiltr": [
+    {
+      "image": "239630384_patronnye-filtry.webp",
+      "alt": "Патронные фильтры"
+    },
+    {
+      "image": "239630674_kapsulnye-filtry.webp",
+      "alt": "Капсульные фильтры"
+    },
+    {
+      "image": "239630669_pribory-kontrolya-tselostnosti.webp",
+      "alt": "Приборы контроля целостности мембранных фильтрационных систем Техночек (Technocheck)"
+    },
+    {
+      "image": "239630592_filtratsionnye-ustanovki.webp",
+      "alt": "Фильтрационные установки"
+    },
+    {
+      "image": "239630577_filtroderzhateli.webp",
+      "alt": "Фильтродержатели"
+    }
+  ],
+  "uslugi": [
+    {
+      "image": "82721117_futerovka-i-remont.webp",
+      "alt": "Футеровка и ремонт ёмкостей, резервуаров, баков"
+    },
+    {
+      "image": "82721103_restavratsiya-i-remont.webp",
+      "alt": "Реставрация и ремонт ёмкостей, резервуаров, баков"
+    }
+  ]
+}

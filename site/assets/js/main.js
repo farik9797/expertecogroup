@@ -287,7 +287,7 @@
 
   // Кнопка калькулятора передаёт габариты
   if (cta) cta.addEventListener('click', () => openModal({
-    purpose: 'Вода',
+    purpose: 'Ёмкости',
     volume: Number.isInteger(calc.v) ? calc.v : String(calc.v).replace('.', ','),
     comment: `Горизонтальная ${CATALOG[calc.type].label} ёмкость: диаметр ${calc.d} мм, длина ${calc.l} мм.`,
   }));
@@ -349,6 +349,75 @@
       t.addEventListener('mouseenter', () => show(t.dataset.srv));
     });
   }
+
+  /* ---------- Hero: три направления (ёмкости → КНС → очистные) ----------
+     Фон, текст и карточка меняются вместе. Автосмена останавливается при наведении,
+     фокусе и при выборе вкладки вручную, а при prefers-reduced-motion не запускается. */
+  (() => {
+    const root = $('[data-hero]');
+    if (!root) return;
+    const tabs = $$('.hero-tab', root);
+    const panes = $$('.hero-pane', root);
+    const bgs = $$('.hero-bg__img', root);
+    if (tabs.length < 2) return;
+
+    const DELAY = 7000;
+    let current = 0;
+    let timer = null;
+
+    const show = (n) => {
+      current = (n + tabs.length) % tabs.length;
+      tabs.forEach((t, i) => {
+        t.classList.toggle('is-active', i === current);
+        t.setAttribute('aria-selected', String(i === current));
+      });
+      panes.forEach((p, i) => {
+        p.classList.toggle('is-active', i === current);
+        p.hidden = i !== current;
+      });
+      bgs.forEach((b, i) => b.classList.toggle('is-active', i === current));
+    };
+
+    const stop = () => { clearInterval(timer); timer = null; };
+    const play = () => { if (!reduceMotion && !timer) timer = setInterval(() => show(current + 1), DELAY); };
+
+    tabs.forEach((t, i) => t.addEventListener('click', () => { stop(); show(i); }));
+    root.addEventListener('mouseenter', stop);
+    root.addEventListener('mouseleave', play);
+    root.addEventListener('focusin', stop);
+    document.addEventListener('visibilitychange', () => (document.hidden ? stop() : play()));
+    play();
+  })();
+
+  /* ---------- Фото с производства: слайд-шоу ---------- */
+  (() => {
+    const root = $('[data-photoshow]');
+    if (!root) return;
+    const imgs = $$('.photo-show__img', root);
+    const caps = $$('.photo-show__cap', root);
+    const dots = $$('.photo-dot', root);
+    if (imgs.length < 2) return;
+
+    const DELAY = 4500;
+    let current = 0;
+    let timer = null;
+
+    const show = (n) => {
+      current = (n + imgs.length) % imgs.length;
+      [imgs, caps, dots].forEach((list) => list.forEach((el, i) => el.classList.toggle('is-active', i === current)));
+      dots.forEach((d, i) => d.setAttribute('aria-current', String(i === current)));
+    };
+
+    const stop = () => { clearInterval(timer); timer = null; };
+    const play = () => { if (!reduceMotion && !timer) timer = setInterval(() => show(current + 1), DELAY); };
+
+    dots.forEach((d, i) => d.addEventListener('click', () => { stop(); show(i); }));
+    root.addEventListener('mouseenter', stop);
+    root.addEventListener('mouseleave', play);
+    document.addEventListener('visibilitychange', () => (document.hidden ? stop() : play()));
+    show(0);
+    play();
+  })();
 
   /* ---------- Галерея товара ---------- */
   const galMain = $('.gal__main');

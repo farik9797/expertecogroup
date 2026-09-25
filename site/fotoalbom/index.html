@@ -31,7 +31,7 @@
       --ease-out-expo: cubic-bezier(.22, 1, .36, 1);
     }
   </style>
-  <link rel="stylesheet" href="../assets/css/site.css?v=44">
+  <link rel="stylesheet" href="../assets/css/site.css?v=46">
   
 </head>
 <body class="font-sans text-ink antialiased page-inner">
@@ -43,12 +43,12 @@
       <span class="logo-chip"><img src="../assets/img/logo-eeg.webp" alt="" width="36" height="37"></span>
       <span class="min-w-0 leading-tight max-sm:hidden lg:hidden xl:block">
         <span class="block truncate font-display text-[15px] font-medium">Expert ECO Group</span>
-        <span class="nav-sub block truncate text-[13px] font-semibold">ёмкости из полипропилена</span>
+        <span class="nav-sub block truncate text-[13px] font-semibold">оборудование из полипропилена</span>
       </span>
     </a>
     <nav class="ml-auto hidden items-center gap-1 text-[15px] font-bold lg:flex" aria-label="Основное меню">
       <a class="nav-link" href="../catalog/">Каталог</a>
-      <a class="nav-link" href="../index.html#sizes">Калькулятор</a>
+      <a class="nav-link" href="../catalog/emkosti/">Резервуары</a>
       <a class="nav-link" href="../o-kompanii/">О компании</a>
       <a class="nav-link" href="../proekty/">Проекты</a>
       <a class="nav-link" href="../kontakty/">Контакты</a>
@@ -69,7 +69,7 @@
   </div>
   <nav class="mt-10 flex flex-col gap-1 font-display text-2xl" aria-label="Мобильное меню">
     <a href="../catalog/" class="py-3">Каталог</a>
-    <a href="../index.html#sizes" class="py-3">Калькулятор</a>
+    <a href="../catalog/emkosti/" class="py-3">Резервуары</a>
     <a href="../o-kompanii/" class="py-3">О компании</a>
     <a href="../proekty/" class="py-3">Проекты</a>
     <a href="../kontakty/" class="py-3">Контакты</a>
@@ -165,14 +165,14 @@
       <fieldset>
         <legend class="text-sm font-bold text-muted">Назначение</legend>
         <div class="seg mt-3">
-          <label><input type="radio" name="purpose" value="Вода" checked><span>Вода</span></label>
-          <label><input type="radio" name="purpose" value="Пожарная"><span>Пожарная</span></label>
-          <label><input type="radio" name="purpose" value="Химия"><span>Химия</span></label>
+          <label><input type="radio" name="purpose" value="Ёмкости" checked><span>Ёмкости</span></label>
+          <label><input type="radio" name="purpose" value="КНС"><span>КНС</span></label>
+          <label><input type="radio" name="purpose" value="Очистные"><span>Очистные</span></label>
           <label><input type="radio" name="purpose" value="Другое"><span>Другое</span></label>
         </div>
       </fieldset>
       <div class="mt-4 grid grid-cols-2 gap-3">
-        <label class="field"><span>Объём, м³</span><input type="number" name="volume" min="0.5" step="0.5" inputmode="decimal" placeholder="Например, 25"></label>
+        <label class="field"><span>Объём, м³ или расход, л/с</span><input type="text" name="volume" inputmode="decimal" placeholder="Например, 25 м³"></label>
         <label class="field"><span>Ваше имя</span><input type="text" name="name" autocomplete="name" placeholder="Как к вам обращаться"></label>
         <label class="field col-span-2"><span>Телефон <b class="text-brand">*</b></span><input type="tel" name="phone" autocomplete="tel" inputmode="tel" placeholder="+7 ___ ___-__-__" required><em class="field__err" hidden>Укажите номер, чтобы мы могли перезвонить</em></label>
         <label class="field col-span-2"><span>Комментарий</span><textarea name="comment" rows="2" placeholder="Размеры, место установки, среда, город"></textarea></label>
@@ -217,11 +217,11 @@
     <div>
       <h3 class="footer-h">Каталог</h3>
       <ul class="footer-list">
-        <li><a href="../catalog/voda/">Ёмкости для воды</a></li>
-        <li><a href="../catalog/pozharnye/">Пожарные резервуары</a></li>
-        <li><a href="../catalog/himicheskie/">Химические ёмкости</a></li>
-        <li><a href="../oborudovanie/">Другое оборудование</a></li>
-        <li><a href="../index.html#sizes">Калькулятор ёмкости</a></li>
+        <li><a href="../catalog/emkosti/">Ёмкости и резервуары</a></li>
+        <li><a href="../catalog/kns/">Канализационные насосные станции</a></li>
+        <li><a href="../catalog/los/">Очистные сооружения</a></li>
+        <li><a href="../catalog/">Всё оборудование</a></li>
+        <li><a href="../catalog/emkosti/#calc">Калькулятор ёмкости</a></li>
       </ul>
     </div>
     <div>
@@ -231,7 +231,6 @@
         <li><a href="../proekty/">Проекты</a></li>
         <li><a href="../fotoalbom/">Фотоальбом</a></li>
         <li><a href="../karta-proektov/">Карта проектов</a></li>
-        <li><a href="../index.html#reviews">Отзывы</a></li>
         <li><a href="../index.html#request">Расчёт стоимости</a></li>
       </ul>
     </div>
@@ -255,7 +254,7 @@
 <script src="https://cdn.jsdelivr.net/npm/lucide@1.47.0/dist/umd/lucide.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/ScrollTrigger.min.js" defer></script>
-<script src="../assets/js/main.js?v=44" defer></script>
+<script src="../assets/js/main.js?v=46" defer></script>
 
 </body>
 </html>
