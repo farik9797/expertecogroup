@@ -70,12 +70,13 @@
   .chip { padding: .35rem .8rem; border-radius: 999px; background: var(--color-mist); color: var(--color-navy); font-size: 14px; font-weight: 700; }
 
   /* ---------- Наша продукция (плитки) ---------- */
-  .prod-tiles { display: grid; gap: 1rem; grid-template-columns: repeat(2, 1fr); }
-  @media (min-width: 768px) { .prod-tiles { grid-template-columns: repeat(4, 1fr); gap: 1.25rem; } }
+  .prod-tiles { display: grid; gap: 1rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  @media (min-width: 768px) { .prod-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; } }
+  @media (min-width: 1100px) { .prod-tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
   .prod-tile { display: flex; flex-direction: column; gap: 1rem; padding: 1.1rem 1.1rem 1.1rem; border-radius: 24px; background: var(--color-mist); border: 1px solid transparent; transition: background-color .35s, border-color .35s, transform .5s var(--ease), box-shadow .5s var(--ease); }
   .prod-tile:hover { background: #fff; border-color: var(--color-line); transform: translateY(-4px); box-shadow: var(--shadow-soft); }
   .prod-tile__head { display: flex; align-items: flex-start; justify-content: space-between; gap: .6rem; }
-  .prod-tile__title { font-weight: 800; font-size: 15px; line-height: 1.35; color: var(--color-navy); }
+  .prod-tile__title { font-weight: 800; font-size: 15px; line-height: 1.35; color: var(--color-navy); overflow-wrap: anywhere; }
   .prod-tile__count { display: block; margin-top: .3rem; font-size: 13px; font-weight: 700; color: var(--color-muted); }
   .prod-tile__head svg { flex-shrink: 0; width: 18px; height: 18px; color: var(--color-brand); transition: transform .4s var(--ease); }
   .prod-tile:hover .prod-tile__head svg { transform: translate(3px, -3px); }
@@ -177,7 +178,7 @@
   .step::before { content: ""; position: absolute; left: 26px; top: 52px; bottom: -2rem; width: 1.5px; background: rgba(103, 181, 255, .25); }
   .step:last-child::before { display: none; }
   @media (min-width: 1024px) {
-    .steps { grid-template-columns: repeat(5, 1fr); gap: 1.5rem; }
+    .steps { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 1.5rem; }
     .step { padding-left: 0; padding-top: 5rem; }
     .step h3 { padding-top: 0; }
     .step::before { left: 60px; right: -1.5rem; top: 26px; bottom: auto; width: auto; height: 1.5px; }
@@ -224,7 +225,7 @@
   .contact-row b { display: block; color: #fff; }
   .contact-row small { display: block; font-size: 14px; color: rgba(255, 255, 255, .6); }
   .request-form { position: relative; }
-  .seg { display: grid; grid-template-columns: repeat(4, 1fr); gap: .35rem; padding: .35rem; border-radius: 18px; background: var(--color-mist); }
+  .seg { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .35rem; padding: .35rem; border-radius: 18px; background: var(--color-mist); }
   .seg label { position: relative; }
   .seg input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
   .seg span { display: grid; place-items: center; min-height: 44px; padding: 0 .4rem; border-radius: 13px; font-weight: 800; font-size: 14px; color: var(--color-muted); transition: background-color .25s, color .25s, box-shadow .25s; }
