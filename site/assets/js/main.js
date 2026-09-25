@@ -292,6 +292,64 @@
     comment: `Горизонтальная ${CATALOG[calc.type].label} ёмкость: диаметр ${calc.d} мм, длина ${calc.l} мм.`,
   }));
 
+  /* ---------- Карта проектов ---------- */
+  const mapEl = $('#kz-map');
+  if (mapEl && window.L) {
+    const projects = JSON.parse(mapEl.dataset.projects);
+    const map = L.map(mapEl, { scrollWheelZoom: false }).setView([48.3, 67.5], 4);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 18,
+      attribution: '&copy; OpenStreetMap',
+    }).addTo(map);
+
+    const cards = $$('.pin-card');
+    const openCard = (id, fly) => {
+      cards.forEach((c) => c.classList.toggle('is-open', c.dataset.pin === id));
+      const card = cards.find((c) => c.dataset.pin === id);
+      const project = projects.find((p) => p.id === id);
+      if (card) card.scrollIntoView({ block: 'nearest', behavior: reduceMotion ? 'auto' : 'smooth' });
+      if (fly && project) map.flyTo(project.coords, 7, { duration: reduceMotion ? 0 : 0.8 });
+    };
+
+    projects.forEach((p) => {
+      const icon = L.divIcon({
+        className: '',
+        html: `<span class="map-pin${p.confirmed ? '' : ' map-pin--draft'}"><span>${p.city[0]}</span></span>`,
+        iconSize: [30, 30],
+        iconAnchor: [15, 30],
+      });
+      L.marker(p.coords, { icon, title: `${p.city} — ${p.title}` })
+        .addTo(map)
+        .bindPopup(`<b>${p.city}</b><br>${p.title}`)
+        .on('click', () => openCard(p.id, false));
+    });
+
+    cards.forEach((c) => $('.pin-card__head', c).addEventListener('click', () => {
+      const isOpen = c.classList.contains('is-open');
+      cards.forEach((o) => o.classList.remove('is-open'));
+      if (!isOpen) openCard(c.dataset.pin, true);
+    }));
+    cards[0]?.classList.add('is-open');
+  }
+
+  /* ---------- Наши услуги: переключение ---------- */
+  const srvTabs = $$('.srv-tab');
+  if (srvTabs.length) {
+    const panels = $$('.srv-panel');
+    const show = (slug) => {
+      srvTabs.forEach((t) => {
+        const on = t.dataset.srv === slug;
+        t.classList.toggle('is-active', on);
+        t.setAttribute('aria-pressed', String(on));
+      });
+      panels.forEach((p) => p.classList.toggle('is-active', p.dataset.srv === slug));
+    };
+    srvTabs.forEach((t) => {
+      t.addEventListener('click', () => show(t.dataset.srv));
+      t.addEventListener('mouseenter', () => show(t.dataset.srv));
+    });
+  }
+
   /* ---------- Галерея товара ---------- */
   const galMain = $('.gal__main');
   if (galMain) {

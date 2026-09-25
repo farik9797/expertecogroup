@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parent.parent
 SITE = ROOT / "site"
 DATA = json.loads((ROOT / "content/catalog.json").read_text())
 OTHER = json.loads((ROOT / "content/catalog-other.json").read_text())
+MAP_PROJECTS = json.loads((ROOT / "content/projects.json").read_text())["projects"]
 INDEX = (SITE / "index.html").read_text()
 
 PHONE_MAIN = "+7 777 484-18-22"
@@ -48,7 +49,7 @@ def relink(html, base):
     return html
 
 
-def layout(*, path, title, description, body, base):
+def layout(*, path, title, description, body, base, head_extra="", body_extra=""):
     head_chrome = relink(HEADER + "\n" + MOBILE_MENU, base)
     tail_chrome = relink(MODAL + "\n" + TOTOP + "\n" + QUICKBAR + "\n" + FOOTER, base)
     theme = block(r'<style type="text/tailwindcss">.*?</style>')
@@ -68,6 +69,7 @@ def layout(*, path, title, description, body, base):
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   {theme}
   <link rel="stylesheet" href="{base}assets/css/site.css?v={ASSET_V}">
+  {head_extra}
 </head>
 <body class="font-sans text-ink antialiased page-inner">
 <a href="#main" class="skip-link">К содержимому</a>
@@ -84,6 +86,7 @@ def layout(*, path, title, description, body, base):
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/ScrollTrigger.min.js" defer></script>
 <script src="{base}assets/js/main.js?v={ASSET_V}" defer></script>
+{body_extra}
 </body>
 </html>
 """
@@ -501,16 +504,24 @@ PROJECTS = [
 
 
 def projects_page(base="../"):
-    items = "".join(f"""<figure class="proj-card">
+    items = "".join(f"""<a class="proj-card" href="{base}fotoalbom/">
   <img src="{base}assets/img/{img}.webp" alt="{title}" loading="lazy">
-  <figcaption><b>{title}</b><span>{text}</span></figcaption>
-</figure>""" for img, title, text in PROJECTS)
+  <span class="proj-card__cap"><b>{title}</b><span>{text}</span></span>
+</a>""" for img, title, text in PROJECTS)
     body = f"""{page_head(
         title="С производства на объект",
         lead="Фотографии с нашего производства и объектов заказчиков: изготовление, отгрузка и монтаж ёмкостей из полипропилена.",
         base=base,
         crumb_items=[("Проекты", None)],
+        actions=False,
     )}
+
+<section class="px-4 pb-8 md:px-6">
+  <div class="mx-auto flex max-w-7xl flex-wrap gap-3">
+    <a href="{base}karta-proektov/" class="btn btn-primary">Карта проектов <i data-lucide="map-pin" class="size-5"></i></a>
+    <a href="{base}fotoalbom/" class="btn btn-ghost">Фотоальбом <i data-lucide="images" class="size-5"></i></a>
+  </div>
+</section>
 
 <section class="px-4 pb-10 md:px-6">
   <div class="mx-auto grid max-w-7xl gap-6 md:grid-cols-2 lg:grid-cols-3">{items}</div>
@@ -609,6 +620,133 @@ def contacts_page(base="../"):
                   body=body, base=base)
 
 
+
+ALBUMS = [
+    ("proizvodstvo", "Производство", "Цех в Каскелене: раскрой листа, сварка, сборка ёмкостей и очистных.",
+     "plant-hall.webp", ["plant-hall.webp", "proj-rect.webp"]),
+    ("emkosti", "Ёмкости и резервуары", "Готовые ёмкости для воды, химии и противопожарного запаса.",
+     "cat-water.webp", ["cat-water.webp", "proj-horizontal.webp", "catalog/gorizontalnaya-nazemnaya-1.webp",
+                        "catalog/vertikalnaya-nazemnaya-1.webp", "catalog/pryamougolnaya-nazemnaya-1.webp"]),
+    ("montazh", "Монтаж на объектах", "Установка подземных и наземных резервуаров, обвязка и пусконаладка.",
+     "cat-fire.webp", ["cat-fire.webp", "proj-trench.webp", "catalog/gorizontalnaya-podzemnaya-2.webp"]),
+    ("otgruzka", "Отгрузка и доставка", "Погрузка краном, крепление на трале и доставка по Казахстану и СНГ.",
+     "proj-loading.webp", ["proj-loading.webp", "proj-vertical.webp", "hero-1200.webp"]),
+    ("kns", "КНС и очистные сооружения", "Канализационные насосные станции, ЛОС, жиро- и пескоуловители.", "prod/kns.webp", []),
+    ("himiya", "Химическое оборудование", "Ёмкости для кислот, щелочей и реагентов, гальванические ванны.", "cat-chem.webp", []),
+    ("septiki", "Септики", "Септики собственного производства, Юнилос и Евролос.", "prod/septiki.webp", []),
+    ("futerovka", "Футеровка и ремонт", "Облицовка бетонных и стальных резервуаров, ремонт оборудования.", "prod/los.webp", []),
+]
+
+
+def album_page(slug, title, lead, photos, base="../../"):
+    items = "".join(
+        f'<figure class="album-photo"><img src="{base}assets/img/{ph}" alt="{title}" loading="lazy"></figure>'
+        for ph in photos)
+    body = f"""{page_head(
+        title=title,
+        lead=lead,
+        base=base,
+        crumb_items=[("Фотоальбом", f"{base}fotoalbom/"), (title, None)],
+        actions=False,
+        facts=[("Фото", "с производства и объектов"), ("Каскелен", "собственный цех"),
+               ("РК и СНГ", "география работ"), ("2015", "год запуска производства")],
+    )}
+
+<section class="px-4 pb-16 md:px-6">
+  <div class="mx-auto max-w-7xl">
+    <div class="album-grid">{items}</div>
+    <p class="mt-6 text-sm font-semibold text-muted">Фотоальбом пополняется — клиент передаёт съёмку с производства и объектов.</p>
+  </div>
+</section>
+
+{cta_band(base)}"""
+    return layout(path="", title=f"{title} — фотоальбом Expert ECO Group", description=lead, body=body, base=base)
+
+
+def albums_page(base="../"):
+    cards = []
+    for slug, title, lead, cover, photos in ALBUMS:
+        has = bool(photos)
+        badge = f'<span class="album-card__count">{len(photos)} фото</span>' if has else '<span class="album-card__count album-card__count--soon">скоро</span>'
+        inner = f"""<span class="album-card__ph"><img src="{base}assets/img/{cover}" alt="{title}" loading="lazy">{badge}</span>
+    <span class="album-card__body">
+      <span class="album-card__title">{title}</span>
+      <span class="album-card__lead">{lead}</span>
+    </span>"""
+        cards.append(f'<a class="album-card" href="{base}fotoalbom/{slug}/">{inner}</a>' if has
+                     else f'<span class="album-card album-card--soon">{inner}</span>')
+    body = f"""{page_head(
+        title="Фотоальбом",
+        lead="Съёмка с производства в Каскелене и с объектов заказчиков: изготовление, отгрузка, монтаж и готовые системы. Альбомы пополняются.",
+        base=base,
+        crumb_items=[("Фотоальбом", None)],
+        facts=[("Производство", "Каскелен"), ("Объекты", "по Казахстану и СНГ"),
+               ("с 2015 года", "собственный цех"), ("Фото", "пополняем"),],
+    )}
+
+<section class="px-4 pb-16 md:px-6">
+  <div class="mx-auto max-w-7xl">
+    <div class="album-cards">{"".join(cards)}</div>
+  </div>
+</section>
+
+{cta_band(base)}"""
+    return layout(path="", title="Фотоальбом — Expert ECO Group",
+                  description="Фотографии производства ёмкостей из полипропилена в Каскелене и объектов заказчиков по Казахстану.",
+                  body=body, base=base)
+
+
+def map_page(base="../"):
+    cards = []
+    for p in MAP_PROJECTS:
+        done = "".join(f"<li>{d}</li>" for d in p["done"])
+        meta = " · ".join(x for x in [p["kind"], p["year"]] if x)
+        cards.append(f"""<article class="pin-card{'' if p['confirmed'] else ' pin-card--draft'}" data-pin="{p['id']}" id="pin-{p['id']}">
+  <button type="button" class="pin-card__head">
+    <span>
+      <span class="pin-card__city">{p["city"]}{f' · {p["region"]}' if p["region"] else ''}</span>
+      <span class="pin-card__title">{p["title"]}</span>
+    </span>
+    <i data-lucide="plus"></i>
+  </button>
+  <div class="pin-card__body">
+    {f'<p class="pin-card__meta">{meta}</p>' if meta else ''}
+    <p>{p["text"]}</p>
+    {f'<ul class="uses mt-4">{done}</ul>' if done else ''}
+  </div>
+</article>""")
+    body = f"""{page_head(
+        title="Карта проектов",
+        lead="Объекты, куда поставляли и монтировали оборудование. Нажмите точку на карте или карточку в списке — раскроется описание работ.",
+        base=base,
+        crumb_items=[("Проекты", f"{base}proekty/"), ("Карта проектов", None)],
+        actions=False,
+        facts=[("РК и СНГ", "география поставок"), ("Каскелен", "собственное производство"),
+               ("с 2015 года", "на рынке"), ("Данные", "пополняем")],
+    )}
+
+<section class="px-4 pb-16 md:px-6">
+  <div class="mx-auto max-w-7xl">
+    <div class="map-layout">
+      <div id="kz-map" class="kz-map" data-projects='{json.dumps(MAP_PROJECTS, ensure_ascii=False)}'></div>
+      <div class="pin-list">{"".join(cards)}</div>
+    </div>
+    <p class="mt-5 text-sm font-semibold text-muted">Адреса, объёмы и фотографии объектов уточняем у клиента — карточки со статусом «уточняется» заменим реальными проектами.</p>
+  </div>
+</section>
+
+{cta_band(base)}"""
+    head = ('<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" '
+            'integrity="sha512-h9FcoyWjHcOcmEVkxOfTLnmZFWIH0iZhZT1H2TbOq55xssQGEJHEaIm+PgoUaZbRvQTNTluNOEfb1ZRy6D3BOw==" '
+            'crossorigin="anonymous" referrerpolicy="no-referrer">')
+    body_extra = ('<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" '
+                  'integrity="sha512-puJW3E/qXDqYp9IfhAI54BJEaWIfloJ7JWs7OeD5i6ruC9JZL1gERT1wjtwXFlh7CjE7ZJ+/vcRZRkIYIb6p4g==" '
+                  'crossorigin="anonymous" referrerpolicy="no-referrer"></script>')
+    return layout(path="", title="Карта проектов — Expert ECO Group",
+                  description="Интерактивная карта объектов Expert ECO Group по Казахстану: где поставляли и монтировали ёмкости и очистные сооружения.",
+                  body=body, base=base, head_extra=head, body_extra=body_extra)
+
+
 def main():
     made = []
     made.append(write("catalog/index.html", catalog_page()))
@@ -621,6 +759,11 @@ def main():
         made.append(write(f'catalog/{cat["slug"]}/index.html', other_category_page(cat)))
     made.append(write("oborudovanie/index.html", equipment_page()))
     made.append(write("proekty/index.html", projects_page()))
+    made.append(write("fotoalbom/index.html", albums_page()))
+    for slug, title, lead, cover, photos in ALBUMS:
+        if photos:
+            made.append(write(f"fotoalbom/{slug}/index.html", album_page(slug, title, lead, photos)))
+    made.append(write("karta-proektov/index.html", map_page()))
     made.append(write("o-kompanii/index.html", about_page()))
     made.append(write("kontakty/index.html", contacts_page()))
     print(f"страниц собрано: {len(made)}")

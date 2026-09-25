@@ -35,7 +35,7 @@
       --ease-out-expo: cubic-bezier(.22, 1, .36, 1);
     }
   </style>
-  <link rel="stylesheet" href="assets/css/site.css?v=33">
+  <link rel="stylesheet" href="assets/css/site.css?v=36">
 </head>
 <body class="font-sans text-ink antialiased">
 <a href="#main" class="skip-link">К содержимому</a>
@@ -140,91 +140,71 @@
   </div>
 </section>
 
-<!-- ============ КАТЕГОРИИ ============ -->
+<!-- ============ НАША ПРОДУКЦИЯ ============ -->
 <section id="catalog" class="px-4 py-24 md:px-6 md:py-32">
   <div class="mx-auto max-w-7xl">
     <div class="reveal flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-      <div class="max-w-2xl">
-        <h2 class="section-title">Три назначения, <span class="accent text-brand">одно</span> производство</h2>
-      </div>
-      <p class="max-w-md text-[17px] leading-relaxed text-muted">Все ёмкости сварены из листового полипропилена на нашем производстве в Каскелене. Выберите назначение, а форму, объём и комплектацию подберём вместе.</p>
+      <h2 class="section-title">Наша продукция</h2>
+      <a href="catalog/" class="link-arrow">Весь каталог <i data-lucide="arrow-right" class="size-4"></i></a>
     </div>
 
-    <div class="mt-14 grid gap-6 md:grid-cols-3">
-      <!-- Вода -->
-      <a href="catalog/voda/" class="cat-card reveal group">
-        <div class="cat-card__ph"><img src="assets/img/cat-water.webp" alt="Горизонтальный резервуар для воды на трале перед отгрузкой" loading="lazy" width="1000" height="627"></div>
-        <div class="flex flex-1 flex-col p-7">
-          <p class="flex items-center gap-2 text-sm font-bold text-muted"><span class="dot bg-sky"></span>01 · Вода</p>
-          <h3 class="mt-3 font-display text-2xl font-medium">Ёмкости для воды</h3>
-          <p class="mt-3 leading-relaxed text-muted">Питьевая и техническая вода, полив, накопительные баки. Наземные и подземные, горизонтальные, вертикальные и прямоугольные.</p>
-          <ul class="mt-5 flex flex-wrap gap-2" aria-label="Характеристики">
-            <li class="chip">2–100 м³</li><li class="chip">наземные</li><li class="chip">подземные</li>
-          </ul>
-          <span class="cat-card__more mt-auto pt-7">Размеры и модели <i data-lucide="arrow-right" class="size-5"></i></span>
-        </div>
+    <div class="prod-tiles mt-12">
+      <a class="prod-tile reveal" href="catalog/voda/">
+        <span class="prod-tile__head">
+          <span class="prod-tile__title">Ёмкости для воды</span>
+          <i data-lucide="arrow-up-right"></i>
+        </span>
+        <span class="prod-tile__ph"><img src="assets/img/cat-water.webp" alt="Ёмкости для воды" loading="lazy"></span>
       </a>
-      <!-- Пожарные -->
-      <!-- ЗАГЛУШКА: на текущем сайте пожарных ёмкостей нет. Текст и фото заменить по данным клиента. -->
-      <a href="catalog/pozharnye/" class="cat-card reveal group md:mt-10 md:-mb-10">
-        <div class="cat-card__ph"><img src="assets/img/cat-fire.webp" alt="Подземные резервуары Expert ECO Group в котловане на объекте" loading="lazy" width="1000" height="750"></div>
-        <div class="flex flex-1 flex-col p-7">
-          <p class="flex items-center gap-2 text-sm font-bold text-muted"><span class="dot bg-[#ff5a36]"></span>02 · Пожарный запас</p>
-          <h3 class="mt-3 font-display text-2xl font-medium">Пожарные резервуары</h3>
-          <p class="mt-3 leading-relaxed text-muted">Резервуары для неприкосновенного запаса воды на тушение пожара. Подземная и наземная установка, объём по вашему проекту.</p>
-          <ul class="mt-5 flex flex-wrap gap-2" aria-label="Характеристики">
-            <li class="chip">подземные</li><li class="chip">наземные</li><li class="chip">по проекту</li>
-          </ul>
-          <span class="cat-card__more mt-auto pt-7">Смотреть модели <i data-lucide="arrow-right" class="size-5"></i></span>
-        </div>
+      <a class="prod-tile reveal" href="catalog/pozharnye/">
+        <span class="prod-tile__head">
+          <span class="prod-tile__title">Пожарные резервуары</span>
+          <i data-lucide="arrow-up-right"></i>
+        </span>
+        <span class="prod-tile__ph"><img src="assets/img/cat-fire.webp" alt="Пожарные резервуары" loading="lazy"></span>
       </a>
-      <!-- Химия -->
-      <a href="catalog/himicheskie/" class="cat-card reveal group">
-        <div class="cat-card__ph"><img src="assets/img/cat-chem.webp" alt="Прямоугольные ёмкости из полипропилена в металлическом каркасе" loading="lazy" width="1000" height="562"></div>
-        <div class="flex flex-1 flex-col p-7">
-          <p class="flex items-center gap-2 text-sm font-bold text-muted"><span class="dot bg-[#7fbf3a]"></span>03 · Химия</p>
-          <h3 class="mt-3 font-display text-2xl font-medium">Химические ёмкости</h3>
-          <p class="mt-3 leading-relaxed text-muted">Для кислот, щелочей и реагентов: полипропилен устойчив к агрессивным средам и не боится коррозии. Прямоугольные в каркасе и вертикальные.</p>
-          <ul class="mt-5 flex flex-wrap gap-2" aria-label="Характеристики">
-            <li class="chip">кислоты</li><li class="chip">щёлочи</li><li class="chip">по ТЗ</li>
-          </ul>
-          <span class="cat-card__more mt-auto pt-7">Смотреть модели <i data-lucide="arrow-right" class="size-5"></i></span>
-        </div>
+      <a class="prod-tile reveal" href="catalog/himicheskie/">
+        <span class="prod-tile__head">
+          <span class="prod-tile__title">Химические ёмкости</span>
+          <i data-lucide="arrow-up-right"></i>
+        </span>
+        <span class="prod-tile__ph"><img src="assets/img/cat-chem.webp" alt="Химические ёмкости" loading="lazy"></span>
       </a>
-    </div>
-
-    <!-- Другое оборудование: полноценные карточки будут на отдельной странице, здесь — краткий список -->
-    <div class="more-eq reveal mt-16 md:mt-24">
-      <div class="more-eq__head">
-        <div>
-          <h3 class="font-display text-[1.45rem] font-medium leading-tight text-navy md:text-[1.7rem]">Другое оборудование <span class="accent text-brand">под заказ</span></h3>
-          <p class="mt-3 max-w-xl leading-relaxed text-muted">Кроме ёмкостей производим оборудование для очистки воды и стоков, поставляем компрессоры и выполняем работы по монтажу и ремонту.</p>
-        </div>
-        <a href="oborudovanie/" class="btn btn-ghost shrink-0">Смотреть оборудование <i data-lucide="arrow-right" class="size-5"></i></a>
-      </div>
-      <ul class="more-eq__list">
-        <li><a href="catalog/kns/">Канализационные насосные станции (КНС)</a></li>
-        <li><a href="catalog/los/">Локальные очистные сооружения</a></li>
-        <li><a href="catalog/septiki/">Септики</a></li>
-        <li><a href="catalog/zhirouloviteli/">Жироуловители</a></li>
-        <li><a href="catalog/peskouloviteli/">Пескоуловители</a></li>
-        <li><a href="catalog/los/">Песко-нефтеуловители</a></li>
-        <li><a href="catalog/kompressory/">Компрессоры и системы аэрации</a></li>
-        <li><a href="catalog/nasosy/">Погружные насосы</a></li>
-        <li><a href="catalog/zapchasti/">Запчасти для компрессоров</a></li>
-        <li><a href="catalog/septiki/">Станции биоочистки Юнилос и Астра</a></li>
-        <li><a href="catalog/biopreparaty/">Биопрепараты</a></li>
-        <li><a href="catalog/tehnofiltr/">Фильтроэлементы «Технофильтр»</a></li>
-        <li><a href="catalog/shkafy/">Шкафы управления для КНС</a></li>
-      </ul>
-      <p class="more-eq__label">Услуги</p>
-      <ul class="more-eq__list more-eq__list--services">
-        <li><a href="catalog/uslugi/">Проектирование и чертежи</a></li>
-        <li><a href="catalog/uslugi/">Шефмонтаж и пусконаладка</a></li>
-        <li><a href="catalog/uslugi/">Футеровка бетонных и стальных резервуаров</a></li>
-        <li><a href="catalog/uslugi/">Ремонт полипропиленового оборудования</a></li>
-        <li><a href="catalog/uslugi/">Ремонт компрессоров</a></li>
-      </ul>
+      <a class="prod-tile reveal" href="catalog/kns/">
+        <span class="prod-tile__head">
+          <span class="prod-tile__title">Канализационные насосные станции</span>
+          <i data-lucide="arrow-up-right"></i>
+        </span>
+        <span class="prod-tile__ph"><img src="assets/img/prod/kns.webp" alt="Канализационные насосные станции" loading="lazy"></span>
+      </a>
+      <a class="prod-tile reveal" href="catalog/los/">
+        <span class="prod-tile__head">
+          <span class="prod-tile__title">Локальные очистные сооружения</span>
+          <i data-lucide="arrow-up-right"></i>
+        </span>
+        <span class="prod-tile__ph"><img src="assets/img/prod/los.webp" alt="Локальные очистные сооружения" loading="lazy"></span>
+      </a>
+      <a class="prod-tile reveal" href="catalog/septiki/">
+        <span class="prod-tile__head">
+          <span class="prod-tile__title">Септики</span>
+          <i data-lucide="arrow-up-right"></i>
+        </span>
+        <span class="prod-tile__ph"><img src="assets/img/prod/septiki.webp" alt="Септики" loading="lazy"></span>
+      </a>
+      <a class="prod-tile reveal" href="catalog/zhirouloviteli/">
+        <span class="prod-tile__head">
+          <span class="prod-tile__title">Жироуловители и пескоуловители</span>
+          <i data-lucide="arrow-up-right"></i>
+        </span>
+        <span class="prod-tile__ph"><img src="assets/img/prod/zhiro.webp" alt="Жироуловители и пескоуловители" loading="lazy"></span>
+      </a>
+      <a class="prod-tile reveal" href="catalog/">
+        <span class="prod-tile__head">
+          <span class="prod-tile__title">Прочее оборудование</span>
+          <i data-lucide="arrow-up-right"></i>
+        </span>
+        <span class="prod-tile__ph"><img src="assets/img/prod/prochee.webp" alt="Прочее оборудование" loading="lazy"></span>
+      </a>
     </div>
   </div>
 </section>
@@ -304,6 +284,63 @@
   </div>
 </section>
 
+<!-- ============ НАШИ УСЛУГИ ============ -->
+<section id="services" class="services px-4 py-20 md:px-6 md:py-28">
+  <div class="mx-auto max-w-7xl">
+    <div class="reveal flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+      <h2 class="section-title text-white">Наши услуги</h2>
+      <p class="max-w-md text-white/70">Берём проект целиком: от расчёта и чертежей до монтажа и обслуживания на объекте.</p>
+    </div>
+
+    <div class="srv reveal mt-12">
+      <div class="srv__stage">
+        <figure class="srv-panel is-active" data-srv="proektirovanie">
+          <img src="assets/img/proj-rect.webp" alt="Проектирование" loading="lazy">
+          <figcaption>
+            <h3>Проектирование</h3>
+            <p>Разрабатываем проект и рабочие чертежи: считаем объём и производительность, подбираем конструкцию, толщину листа, патрубки и комплектацию под объект.</p>
+          </figcaption>
+        </figure>
+        <figure class="srv-panel" data-srv="proizvodstvo">
+          <img src="assets/img/plant-hall.webp" alt="Производство" loading="lazy">
+          <figcaption>
+            <h3>Производство</h3>
+            <p>Раскрой и сварка листового полипропилена на собственном производстве в Каскелене. Контролируем материал и швы, изготавливаем и нестандартные изделия по чертежам.</p>
+          </figcaption>
+        </figure>
+        <figure class="srv-panel" data-srv="shefmontazh">
+          <img src="assets/img/proj-trench.webp" alt="Шефмонтаж и ПНР" loading="lazy">
+          <figcaption>
+            <h3>Шефмонтаж и ПНР</h3>
+            <p>Монтаж на объекте, обвязка и пусконаладочные работы. Проверяем оборудование в работе и обучаем персонал заказчика.</p>
+          </figcaption>
+        </figure>
+        <figure class="srv-panel" data-srv="servis">
+          <img src="assets/img/proj-horizontal.webp" alt="Сервисное обслуживание" loading="lazy">
+          <figcaption>
+            <h3>Сервисное обслуживание</h3>
+            <p>Регламентное обслуживание очистных и насосных станций, футеровка бетонных и стальных резервуаров, ремонт полипропиленового оборудования и компрессоров.</p>
+          </figcaption>
+        </figure>
+      </div>
+      <div class="srv__tabs">
+        <button type="button" class="srv-tab is-active" data-srv="proektirovanie" aria-pressed="true">
+          <span>Проектирование</span><i data-lucide="arrow-up-right"></i>
+        </button>
+        <button type="button" class="srv-tab" data-srv="proizvodstvo" aria-pressed="false">
+          <span>Производство</span><i data-lucide="arrow-up-right"></i>
+        </button>
+        <button type="button" class="srv-tab" data-srv="shefmontazh" aria-pressed="false">
+          <span>Шефмонтаж и ПНР</span><i data-lucide="arrow-up-right"></i>
+        </button>
+        <button type="button" class="srv-tab" data-srv="servis" aria-pressed="false">
+          <span>Сервисное обслуживание</span><i data-lucide="arrow-up-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ ПРОИЗВОДСТВО / ПОЧЕМУ МЫ ============ -->
 <section id="production" class="px-4 py-24 md:px-6 md:py-32">
   <div class="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-2 lg:gap-16">
@@ -363,12 +400,17 @@
   <div class="mx-auto max-w-7xl">
     <div class="reveal max-w-2xl">
       <h2 class="section-title">С производства <span class="accent text-brand">на&nbsp;объект</span></h2>
+      <p class="mt-4 max-w-xl leading-relaxed text-muted">Фотографии с производства в Каскелене и с объектов заказчиков. Нажмите на любое фото — откроется фотоальбом.</p>
+      <div class="mt-7 flex flex-wrap gap-3">
+        <a href="fotoalbom/" class="btn btn-ghost">Фотоальбом <i data-lucide="images" class="size-5"></i></a>
+        <a href="karta-proektov/" class="btn btn-ghost">Карта проектов <i data-lucide="map-pin" class="size-5"></i></a>
+      </div>
     </div>
     <div class="gallery mt-12">
-      <figure class="reveal g-item g-item--wide"><img data-parallax src="assets/img/proj-loading.webp" alt="Погрузка вертикальных резервуаров на трал краном" loading="lazy" width="1200" height="675"><figcaption>Отгрузка вертикальных резервуаров</figcaption></figure>
-      <figure class="reveal g-item g-item--tall"><img data-parallax src="assets/img/proj-trench.webp" alt="Подземный резервуар в котловане перед засыпкой" loading="lazy" width="720" height="1280"><figcaption>Монтаж подземного резервуара</figcaption></figure>
-      <figure class="reveal g-item"><img data-parallax src="assets/img/proj-horizontal.webp" alt="Горизонтальная наземная ёмкость на опорах" loading="lazy" width="861" height="620"><figcaption>Горизонтальная наземная ёмкость</figcaption></figure>
-      <figure class="reveal g-item"><img data-parallax src="assets/img/proj-rect.webp" alt="Прямоугольная ёмкость из полипропилена с фланцами" loading="lazy" width="1000" height="670"><figcaption>Прямоугольная ёмкость с патрубками</figcaption></figure>
+      <a class="reveal g-item g-item--wide" href="fotoalbom/"><img data-parallax src="assets/img/proj-loading.webp" alt="Погрузка вертикальных резервуаров на трал краном" loading="lazy" width="1200" height="675"><figcaption>Отгрузка вертикальных резервуаров</figcaption></a>
+      <a class="reveal g-item g-item--tall" href="fotoalbom/"><img data-parallax src="assets/img/proj-trench.webp" alt="Подземный резервуар в котловане перед засыпкой" loading="lazy" width="720" height="1280"><figcaption>Монтаж подземного резервуара</figcaption></a>
+      <a class="reveal g-item" href="fotoalbom/"><img data-parallax src="assets/img/proj-horizontal.webp" alt="Горизонтальная наземная ёмкость на опорах" loading="lazy" width="861" height="620"><figcaption>Горизонтальная наземная ёмкость</figcaption></a>
+      <a class="reveal g-item" href="fotoalbom/"><img data-parallax src="assets/img/proj-rect.webp" alt="Прямоугольная ёмкость из полипропилена с фланцами" loading="lazy" width="1000" height="670"><figcaption>Прямоугольная ёмкость с патрубками</figcaption></a>
     </div>
   </div>
 </section>
@@ -503,6 +545,8 @@
       <ul class="footer-list">
         <li><a href="o-kompanii/">О компании</a></li>
         <li><a href="proekty/">Проекты</a></li>
+        <li><a href="fotoalbom/">Фотоальбом</a></li>
+        <li><a href="karta-proektov/">Карта проектов</a></li>
         <li><a href="#reviews">Отзывы</a></li>
         <li><a href="#request">Расчёт стоимости</a></li>
       </ul>
@@ -583,6 +627,6 @@
 <script src="https://cdn.jsdelivr.net/npm/lucide@1.47.0/dist/umd/lucide.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/ScrollTrigger.min.js" defer></script>
-<script src="assets/js/main.js?v=33" defer></script>
+<script src="assets/js/main.js?v=36" defer></script>
 </body>
 </html>
