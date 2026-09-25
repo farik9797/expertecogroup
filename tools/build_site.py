@@ -419,7 +419,8 @@ def catalog_page(base="../"):
   <span class="mini-card__count">{len(c["products"])} позиций</span>
   <i data-lucide="arrow-right"></i>
 </a>""" for c in cats)
-        groups_html += f"""<section class="px-4 py-8 md:px-6">
+        anchor = {"Очистные сооружения": "ochistnye", "Оборудование": "oborudovanie", "Услуги": "uslugi"}.get(group, "")
+        groups_html += f"""<section class="px-4 py-8 md:px-6"{f' id="{anchor}"' if anchor else ''}>
   <div class="mx-auto max-w-7xl">
     <h2 class="section-title">{group}</h2>
     <div class="mini-grid mt-6">{links}</div>
@@ -433,7 +434,7 @@ def catalog_page(base="../"):
         crumb_items=[("Каталог", None)],
     )}
 
-<section class="px-4 pb-8 md:px-6">
+<section id="emkosti" class="px-4 pb-8 md:px-6">
   <div class="mx-auto grid max-w-7xl gap-6 md:grid-cols-3">{"".join(cards)}</div>
 </section>
 

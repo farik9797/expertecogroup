@@ -102,7 +102,7 @@
   .srv-tab:hover svg { transform: translate(3px, -3px); }
   .srv-tab.is-active { background: var(--color-brand); border-color: transparent; }
   .srv-tab.is-active svg { color: #fff; }
-  @media (min-width: 900px) { .srv__tabs { grid-template-rows: repeat(4, 1fr); } .srv-tab { min-height: 0; } }
+  @media (min-width: 900px) { .srv__tabs { grid-template-rows: repeat(4, 1fr); } .srv__tabs--3 { grid-template-rows: repeat(3, 1fr); } .srv-tab { min-height: 0; } }
 
   /* ---------- Другое оборудование ---------- */
   .more-eq { padding: 2rem; border-radius: 30px; border: 1px solid var(--color-line); background: var(--color-mist); }
