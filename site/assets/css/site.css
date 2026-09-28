@@ -37,7 +37,10 @@
   .is-solid .nav-shell { color: var(--color-navy); background: rgba(255, 255, 255, .94); border-color: var(--color-line); box-shadow: 0 10px 40px rgba(41, 112, 250, .12); }
   .is-solid .nav-sub { color: var(--color-muted); opacity: 1; }
   .nav-link, .nav-phone, .burger { transition: background-color .25s; cursor: pointer; }
-  .nav-link { padding: .55rem .9rem; border-radius: 999px; }
+  .nav-link { padding: .55rem .9rem; border-radius: 999px; white-space: nowrap; }
+  .nav-sub { display: block; }
+  /* 1024–1439 px: логотип, меню, телефон и кнопка в строку не помещаются — прячем подпись под логотипом */
+  @media (min-width: 1024px) and (max-width: 1439px) { .nav-sub { display: none; } }
   .nav-link:hover, .nav-phone:hover, .burger:hover { background: rgba(255, 255, 255, .14); }
   .is-solid .nav-link:hover, .is-solid .nav-phone:hover, .is-solid .burger:hover { background: var(--color-mist); }
   .logo-chip { display: grid; place-items: center; flex-shrink: 0; width: 46px; height: 46px; border-radius: 999px; background: #fff; box-shadow: 0 4px 14px rgba(8, 31, 70, .12); }
