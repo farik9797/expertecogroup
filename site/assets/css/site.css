@@ -58,6 +58,11 @@
   .nav-shell .nav-phone { --nav-d: .75s; }
   .nav-shell > .btn { --nav-d: .85s; }
   .nav-shell .burger { --nav-d: .35s; }
+  /* Меню скрыто до 1024 px — без его задержек в каскаде появлялась пауза */
+  @media (max-width: 1023px) {
+    .nav-shell .nav-phone { --nav-d: .45s; }
+    .nav-shell > .btn { --nav-d: .55s; }
+  }
   @keyframes nav-shell-in { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: none; } }
   @keyframes nav-item-in { from { opacity: 0; transform: translateY(-34px) scale(.6); } to { opacity: 1; transform: none; } }
   @media (prefers-reduced-motion: reduce) { .nav-shell, .nav-in { animation: none; } }
