@@ -166,18 +166,23 @@ def size_table(series, current=None, base="", cat_slug=None):
 <p class="mt-3 text-sm font-semibold text-muted">Размеры по данным каталога. Нужен другой объём или нестандартная форма — изготовим по вашим чертежам.</p>"""
 
 
+def img_src(name, base, small=False):
+    """Фото клиента лежат в assets/img/photo, выгрузка с Satu — в assets/img/catalog."""
+    folder = "" if name.startswith("photo/") else "catalog/"
+    return f'{base}assets/img/{folder}{name}{"-sm" if small else ""}.webp'
+
+
 def gallery(series, base, alt):
     imgs = series["images"]
     if not imgs:
         return ""
-    main = imgs[0]
     thumbs = "".join(
-        f'<button type="button" class="gal__thumb" data-full="{base}assets/img/catalog/{n}.webp">'
-        f'<img src="{base}assets/img/catalog/{n}-sm.webp" alt="" loading="lazy"></button>'
+        f'<button type="button" class="gal__thumb" data-full="{img_src(n, base)}">'
+        f'<img src="{img_src(n, base, True)}" alt="" loading="lazy"></button>'
         for n in imgs
     )
     return f"""<figure class="gal">
-  <img class="gal__main" src="{base}assets/img/catalog/{main}.webp" alt="{alt}" width="1100" height="760">
+  <img class="gal__main" src="{img_src(imgs[0], base)}" alt="{alt}" width="1100" height="760">
   <div class="gal__thumbs">{thumbs}</div>
 </figure>"""
 
@@ -224,7 +229,7 @@ TANK_TYPES = [
         "title": "Горизонтальная наземная ёмкость",
         "short": "Горизонтальная наземная",
         "lead": "Цилиндрический резервуар на опорах-сёдлах: встаёт на подготовленную площадку без котлована. Типовые объёмы 5–50 м³.",
-        "extra_images": ["pozharnaya-nazemnaya-1", "pozharnaya-nazemnaya-2"],
+        "extra_images": ["photo/gorizontalnaya-krupnaya", "photo/gorizontalnye-u-tseha", "photo/gorizontalnaya-tral", "pozharnaya-nazemnaya-1"],
         "extra_uses": ["Противопожарный запас на площадке", "Технологические ёмкости на производстве"],
         "marks": "EEG-НР-(Н)-ЦГ (вода), EEG-ПР-(Н)-ЦГ (противопожарный запас)",
     },
@@ -234,7 +239,7 @@ TANK_TYPES = [
         "title": "Горизонтальная подземная ёмкость",
         "short": "Горизонтальная подземная",
         "lead": "Подземный резервуар с частыми рёбрами жёсткости и горловиной под люк: не занимает место на участке и не промерзает. Типовые объёмы 5–100 м³.",
-        "extra_images": ["pozharnaya-podzemnaya-1", "pozharnaya-podzemnaya-2"],
+        "extra_images": ["photo/montazh-podzemnoy-1", "photo/podzemnye-ploschadka-1", "photo/montazh-podzemnoy-2", "pozharnaya-podzemnaya-1"],
         "extra_uses": ["Неприкосновенный противопожарный запас", "Склады, логистические комплексы, посёлки"],
         "marks": "EEG-НР-(П)-ЦГ (вода), EEG-ПР-(П)-ЦГ (противопожарный запас)",
     },
@@ -244,7 +249,7 @@ TANK_TYPES = [
         "title": "Вертикальная наземная ёмкость",
         "short": "Вертикальная наземная",
         "lead": "Вертикальный цилиндр с плоским дном: занимает минимум площади, удобен в насосных и помещениях с высоким потолком. Типовые объёмы 5–30 м³.",
-        "extra_images": [],
+        "extra_images": ["photo/vertikalnaya-lyuk-1", "photo/vertikalnye-osnovanie", "photo/vertikalnye-nasosnaya", "photo/vertikalnaya-obekt-1"],
         "extra_uses": ["Реагентное хозяйство", "Растворные узлы"],
         "marks": "EEG-НР-(Н)-ЦВ (вода), EEG-ХР-(Н)-ЦВ (химические реагенты)",
     },
@@ -267,7 +272,9 @@ def tank_type(t):
     if t["slug"] == "pryamougolnaya-nazemnaya":  # вес есть только в химическом ряду, размеры совпадают
         chem = {r["v"]: r for r in series_of("himicheskie", "himicheskaya-pryamougolnaya")["table"]}
         s["table"] = [{**r, "weight": r["weight"] or chem.get(r["v"], {}).get("weight")} for r in s["table"]]
-    s["images"] = s["images"] + [i for i in t["extra_images"] if i not in s["images"]]
+    extra = [i for i in t["extra_images"] if i not in s["images"]]
+    fresh = [i for i in extra if i.startswith("photo/")]  # свежие фото клиента показываем первыми
+    s["images"] = fresh + s["images"] + [i for i in extra if i not in fresh]
     s["uses"] = s["uses"] + [u for u in t["extra_uses"] if u not in s["uses"]]
     s["title"] = t["title"]
     s["short"] = t["short"]
@@ -359,7 +366,7 @@ def tanks_page(base="../../"):
         s = tank_type(t)
         vols = [r["v"] for r in s["table"]]
         cards.append(f"""<a class="type-card" href="{base}catalog/emkosti/{t["slug"]}/">
-  <span class="type-card__ph"><img src="{base}assets/img/catalog/{s["images"][0]}-sm.webp" alt="{s["title"]}" loading="lazy"></span>
+  <span class="type-card__ph"><img src="{img_src(s["images"][0], base, True)}" alt="{s["title"]}" loading="lazy"></span>
   <span class="type-card__body">
     <span class="type-card__title">{s["short"]}</span>
     <span class="type-card__lead">{s["lead"]}</span>
@@ -901,12 +908,20 @@ ALBUMS = [
     ("proizvodstvo", "Производство", "Цех в Каскелене: раскрой листа, сварка, сборка ёмкостей и очистных.",
      "plant-hall.webp", ["plant-hall.webp", "proj-rect.webp"]),
     ("emkosti", "Ёмкости и резервуары", "Готовые ёмкости для воды, химии и противопожарного запаса.",
-     "cat-water.webp", ["cat-water.webp", "proj-horizontal.webp", "catalog/gorizontalnaya-nazemnaya-1.webp",
-                        "catalog/vertikalnaya-nazemnaya-1.webp", "catalog/pryamougolnaya-nazemnaya-1.webp"]),
+     "photo/gorizontalnaya-krupnaya.webp",
+     ["photo/gorizontalnaya-krupnaya.webp", "photo/podzemnye-ploschadka-2.webp", "photo/podzemnye-ploschadka-1.webp",
+      "photo/podzemnye-ploschadka-3.webp", "photo/gorizontalnye-u-tseha.webp", "photo/vertikalnaya-lyuk-1.webp",
+      "photo/vertikalnaya-lyuk-2.webp", "photo/vertikalnye-osnovanie.webp", "cat-water.webp", "proj-horizontal.webp",
+      "catalog/gorizontalnaya-nazemnaya-1.webp", "catalog/pryamougolnaya-nazemnaya-1.webp"]),
     ("montazh", "Монтаж на объектах", "Установка подземных и наземных резервуаров, обвязка и пусконаладка.",
-     "cat-fire.webp", ["cat-fire.webp", "proj-trench.webp", "catalog/gorizontalnaya-podzemnaya-2.webp"]),
+     "photo/montazh-podzemnoy-1.webp",
+     ["photo/montazh-podzemnoy-1.webp", "photo/montazh-podzemnoy-2.webp", "photo/vertikalnaya-obekt-1.webp",
+      "photo/vertikalnaya-obekt-2.webp", "photo/vertikalnye-nasosnaya.webp", "cat-fire.webp", "proj-trench.webp",
+      "catalog/gorizontalnaya-podzemnaya-2.webp"]),
     ("otgruzka", "Отгрузка и доставка", "Погрузка краном, крепление на трале и доставка по Казахстану и СНГ.",
-     "proj-loading.webp", ["proj-loading.webp", "proj-vertical.webp", "hero-1200.webp"]),
+     "photo/otgruzka-vertikalnyh.webp",
+     ["photo/otgruzka-vertikalnyh.webp", "photo/gorizontalnaya-tral.webp", "proj-loading.webp",
+      "proj-vertical.webp", "hero-1200.webp"]),
     ("kns", "КНС и очистные сооружения", "Канализационные насосные станции, ЛОС, жиро- и пескоуловители.", "prod/kns.webp", []),
     ("himiya", "Химическое оборудование", "Ёмкости для кислот, щелочей и реагентов, гальванические ванны.", "cat-chem.webp", []),
     ("septiki", "Септики", "Септики собственного производства, Юнилос и Евролос.", "prod/septiki.webp", []),
