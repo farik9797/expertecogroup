@@ -52,7 +52,6 @@
      и оставляет элементы невидимыми, а fill-mode both всегда доводит до конечного состояния. */
   .nav-shell { animation: nav-shell-in .55s cubic-bezier(.16, 1, .3, 1) both; }
   .nav-in { animation: nav-item-in .5s cubic-bezier(.16, 1, .3, 1) both; animation-delay: var(--nav-d, 0s); }
-  .nav-shell > .nav-in:first-child { --nav-d: .15s; }
   .nav-shell nav .nav-in:nth-child(1) { --nav-d: .25s; }
   .nav-shell nav .nav-in:nth-child(2) { --nav-d: .35s; }
   .nav-shell nav .nav-in:nth-child(3) { --nav-d: .45s; }
