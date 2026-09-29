@@ -43,7 +43,7 @@
   @media (min-width: 1024px) and (max-width: 1439px) { .nav-sub { display: none; } }
   .nav-link:hover, .nav-phone:hover, .burger:hover { background: rgba(255, 255, 255, .14); }
   .is-solid .nav-link:hover, .is-solid .nav-phone:hover, .is-solid .burger:hover { background: var(--color-mist); }
-  .logo-chip { display: grid; place-items: center; flex-shrink: 0; width: 46px; height: 46px; border-radius: 999px; background: #fff; box-shadow: 0 4px 14px rgba(8, 31, 70, .12); }
+  .logo-chip { display: grid; place-items: center; flex-shrink: 0; width: 46px; height: 46px; border-radius: 999px; background: #fff; box-shadow: 0 4px 14px rgba(8, 31, 70, .12); overflow: hidden; }
   .logo-chip img { width: 34px; height: auto; }
   .mobile-menu nav a { border-bottom: 1px solid rgba(255, 255, 255, .08); }
 
