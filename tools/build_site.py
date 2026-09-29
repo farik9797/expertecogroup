@@ -239,7 +239,7 @@ TANK_TYPES = [
         "title": "Горизонтальная подземная ёмкость",
         "short": "Горизонтальная подземная",
         "lead": "Подземный резервуар с частыми рёбрами жёсткости и горловиной под люк: не занимает место на участке и не промерзает. Типовые объёмы 5–100 м³.",
-        "extra_images": ["photo/montazh-podzemnoy-1", "photo/podzemnye-ploschadka-1", "photo/montazh-podzemnoy-2", "pozharnaya-podzemnaya-1"],
+        "extra_images": ["photo/montazh-podzemnoy-1", "photo/podzemnye-ploschadka-2", "photo/montazh-podzemnoy-2", "pozharnaya-podzemnaya-1"],
         "extra_uses": ["Неприкосновенный противопожарный запас", "Склады, логистические комплексы, посёлки"],
         "marks": "EEG-НР-(П)-ЦГ (вода), EEG-ПР-(П)-ЦГ (противопожарный запас)",
     },
@@ -909,18 +909,15 @@ ALBUMS = [
      "plant-hall.webp", ["plant-hall.webp", "proj-rect.webp"]),
     ("emkosti", "Ёмкости и резервуары", "Готовые ёмкости для воды, химии и противопожарного запаса.",
      "photo/gorizontalnaya-krupnaya.webp",
-     ["photo/gorizontalnaya-krupnaya.webp", "photo/podzemnye-ploschadka-2.webp", "photo/podzemnye-ploschadka-1.webp",
-      "photo/podzemnye-ploschadka-3.webp", "photo/gorizontalnye-u-tseha.webp", "photo/vertikalnaya-lyuk-1.webp",
-      "photo/vertikalnaya-lyuk-2.webp", "photo/vertikalnye-osnovanie.webp", "cat-water.webp", "proj-horizontal.webp",
+     ["photo/gorizontalnaya-krupnaya.webp", "photo/podzemnye-ploschadka-2.webp", "photo/gorizontalnye-u-tseha.webp", "photo/vertikalnaya-lyuk-1.webp", "photo/vertikalnye-osnovanie.webp", "cat-water.webp", "proj-horizontal.webp",
       "catalog/gorizontalnaya-nazemnaya-1.webp", "catalog/pryamougolnaya-nazemnaya-1.webp"]),
     ("montazh", "Монтаж на объектах", "Установка подземных и наземных резервуаров, обвязка и пусконаладка.",
      "photo/montazh-podzemnoy-1.webp",
-     ["photo/montazh-podzemnoy-1.webp", "photo/montazh-podzemnoy-2.webp", "photo/vertikalnaya-obekt-1.webp",
-      "photo/vertikalnaya-obekt-2.webp", "photo/vertikalnye-nasosnaya.webp", "cat-fire.webp", "proj-trench.webp",
+     ["photo/montazh-podzemnoy-1.webp", "photo/montazh-podzemnoy-2.webp", "photo/vertikalnaya-obekt-1.webp", "photo/vertikalnye-nasosnaya.webp", "cat-fire.webp", "proj-trench.webp",
       "catalog/gorizontalnaya-podzemnaya-2.webp"]),
     ("otgruzka", "Отгрузка и доставка", "Погрузка краном, крепление на трале и доставка по Казахстану и СНГ.",
      "photo/otgruzka-vertikalnyh.webp",
-     ["photo/otgruzka-vertikalnyh.webp", "photo/gorizontalnaya-tral.webp", "proj-loading.webp",
+     ["photo/otgruzka-vertikalnyh.webp", "photo/gorizontalnaya-tral.webp",
       "proj-vertical.webp", "hero-1200.webp"]),
     ("kns", "КНС и очистные сооружения", "Канализационные насосные станции, ЛОС, жиро- и пескоуловители.", "prod/kns.webp", []),
     ("himiya", "Химическое оборудование", "Ёмкости для кислот, щелочей и реагентов, гальванические ванны.", "cat-chem.webp", []),
@@ -929,9 +926,20 @@ ALBUMS = [
 ]
 
 
+def photo_img(ph, base, alt, cls=""):
+    """Для фото клиента отдаём три размера — на телефоне грузится лёгкий файл."""
+    src = f"{base}assets/img/{ph}"
+    attrs = f' class="{cls}"' if cls else ""
+    if ph.startswith("photo/"):
+        stem = f"{base}assets/img/{ph[:-5]}"
+        return (f'<img{attrs} src="{src}" srcset="{stem}-sm.webp 520w, {stem}-md.webp 900w, {src} 1400w" '
+                f'sizes="(max-width: 767px) 100vw, (max-width: 1099px) 50vw, 33vw" alt="{alt}" loading="lazy">')
+    return f'<img{attrs} src="{src}" alt="{alt}" loading="lazy">'
+
+
 def album_page(slug, title, lead, photos, base="../../"):
     items = "".join(
-        f'<figure class="album-photo"><img src="{base}assets/img/{ph}" alt="{title}" loading="lazy"></figure>'
+        f'<figure class="album-photo">{photo_img(ph, base, title)}</figure>'
         for ph in photos)
     body = f"""{page_head(
         title=title,
