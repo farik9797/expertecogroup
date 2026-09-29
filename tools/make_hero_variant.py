@@ -20,14 +20,14 @@ s = re.sub(r'(imagesrcset|srcset)="([^"]+)"',
            lambda m: f'{m.group(1)}="' + re.sub(r'(^|,\s*)(?!https?:)', lambda x: x.group(1) + '../', m.group(2)) + '"', s)
 s = s.replace('href="#', 'href="../index.html#')
 
-# фон первого слайда — монтаж на объекте
-s = re.sub(r'src="\.\./assets/img/hero-obzor-1280\.webp" srcset="[^"]+"',
-           'src="../assets/img/hero-obzor2-1280.webp" srcset="../assets/img/hero-obzor2-800.webp 800w, ../assets/img/hero-obzor2-1280.webp 1280w"', s)
-s = s.replace('href="../assets/img/hero-obzor-1280.webp"', 'href="../assets/img/hero-obzor2-1280.webp"')
-s = s.replace('imagesrcset="../assets/img/hero-obzor-800.webp 800w, ../assets/img/hero-obzor-1280.webp 1280w"',
-              'imagesrcset="../assets/img/hero-obzor2-800.webp 800w, ../assets/img/hero-obzor2-1280.webp 1280w"')
-s = s.replace('alt="Полипропиленовые резервуары у цеха Expert ECO Group" width="1280" height="960"',
-              'alt="Монтаж подземного резервуара на объекте" width="1280" height="960"')
+# фон первого слайда — участок частного дома в разрезе
+s = re.sub(r'src="\.\./assets/img/hero-all-1376\.webp" srcset="[^"]+"',
+           'src="../assets/img/hero-house-1920.webp" srcset="../assets/img/hero-house-800.webp 800w, ../assets/img/hero-house-1280.webp 1280w, ../assets/img/hero-house-1920.webp 1920w"', s)
+s = s.replace('href="../assets/img/hero-all-1376.webp"', 'href="../assets/img/hero-house-1920.webp"')
+s = s.replace('imagesrcset="../assets/img/hero-all-800.webp 800w, ../assets/img/hero-all-1280.webp 1280w, ../assets/img/hero-all-1376.webp 1376w"',
+              'imagesrcset="../assets/img/hero-house-800.webp 800w, ../assets/img/hero-house-1280.webp 1280w, ../assets/img/hero-house-1920.webp 1920w"')
+s = s.replace('alt="Посёлок и подземный комплекс очистки сточных вод в разрезе" width="1376" height="768"',
+              'alt="Участок частного дома и ступени очистки стоков в разрезе" width="1920" height="1071"')
 
 # содержимое первой панели: три направления карточками вместо карточки с фактами
 pane = re.search(r'    <div class="hero-pane is-active" id="hero-pane-0".*?\n    </div>\n', s, re.S).group(0)
