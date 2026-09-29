@@ -90,6 +90,12 @@
   .hero-img { object-position: 58% 38%; }
   .hero-bg__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; opacity: 0; transition: opacity .9s ease; }
   .hero-bg__img[data-bg="0"] { object-position: 58% 38%; }
+  /* На телефоне кадр обрезается по краям: держим в поле зрения само оборудование, оно справа */
+  @media (max-width: 767px) {
+    .hero-bg__img[data-bg="1"] { object-position: 72% center; }
+    .hero-bg__img[data-bg="2"] { object-position: 78% center; }
+    .hero-bg__img[data-bg="3"] { object-position: 82% center; }
+  }
   .hero-bg__img.is-active { opacity: 1; }
   .hero-tabs { display: flex; flex-wrap: wrap; gap: .5rem; }
   .hero-tab { padding: .6rem 1rem; border-radius: 999px; font-size: 14px; font-weight: 700; line-height: 1.2; color: rgba(255, 255, 255, .85); background: rgba(255, 255, 255, .12); border: 1px solid rgba(255, 255, 255, .22); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); cursor: pointer; transition: background-color .3s, color .3s, border-color .3s; }
