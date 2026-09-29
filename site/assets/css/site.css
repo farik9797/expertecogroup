@@ -95,6 +95,11 @@
   .hero-tab { padding: .6rem 1rem; border-radius: 999px; font-size: 14px; font-weight: 700; line-height: 1.2; color: rgba(255, 255, 255, .85); background: rgba(255, 255, 255, .12); border: 1px solid rgba(255, 255, 255, .22); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); cursor: pointer; transition: background-color .3s, color .3s, border-color .3s; }
   .hero-tab:hover { background: rgba(255, 255, 255, .24); color: #fff; }
   .hero-tab.is-active { background: #fff; color: var(--color-navy); border-color: #fff; }
+  /* Четыре направления на узком экране: ужимаем вкладки, чтобы они легли в две строки */
+  @media (max-width: 559px) {
+    .hero-tab { padding: .5rem .8rem; font-size: 13px; }
+    .hero-tabs { gap: .4rem; }
+  }
   /* Длинные слова вроде «Канализационные» на узком экране переносим по слогам */
   .hero-copy h1 { hyphens: auto; overflow-wrap: break-word; }
   /* Слайдер: панели лежат друг на друге в одной ячейке грида и разъезжаются по горизонтали */
