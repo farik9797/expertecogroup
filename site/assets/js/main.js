@@ -364,6 +364,8 @@
     const tabs = $$('.hero-tab', root);
     const panes = $$('.hero-pane', root);
     const bgs = $$('.hero-bg__img', root);
+    const status = $('.hero-status', root);
+    const bars = $$('.hero-status__bar', root);
     const total = panes.length;
     if (total < 2) return;
 
@@ -394,6 +396,14 @@
       mark(panes, n);
       mark(bgs, n);
       mark(tabs, n);
+      bars.forEach((b, k) => {
+        b.classList.toggle('is-done', k < n);
+        b.classList.remove('is-active');
+      });
+      if (bars[n]) {
+        void bars[n].offsetWidth; // перезапуск отсчёта на новой полоске
+        bars[n].classList.add('is-active');
+      }
       tabs.forEach((t, k) => t.setAttribute('aria-selected', String(k === n)));
       panes.forEach((p, k) => {
         p.setAttribute('aria-hidden', String(k !== n));
@@ -403,8 +413,11 @@
 
     panes.forEach((p, k) => { p.inert = k !== current; });
 
-    const stop = () => { clearInterval(timer); timer = null; };
-    const play = () => { if (!reduceMotion && !timer) timer = setInterval(() => go(current + 1, 1), DELAY); };
+    const stop = () => { clearInterval(timer); timer = null; status?.classList.add('is-paused'); };
+    const play = () => {
+      status?.classList.remove('is-paused');
+      if (!reduceMotion && !timer) timer = setInterval(() => go(current + 1, 1), DELAY);
+    };
     const jump = (n) => { stop(); go(n, n > current ? 1 : -1); play(); };
     const step = (dir) => { stop(); go(current + dir, dir); play(); };
 
