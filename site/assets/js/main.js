@@ -355,8 +355,8 @@
   }
 
   /* ---------- Hero: слайдер трёх направлений (ёмкости → КНС → очистные) ----------
-     Слайды разъезжаются по горизонтали. Управление: вкладки с названиями, стрелки,
-     точки, свайп и стрелки клавиатуры. Автосмена останавливается при наведении и фокусе,
+     Слайды разъезжаются по горизонтали и меняются сами. Вручную — вкладки с названиями,
+     свайп и стрелки клавиатуры. Автосмена останавливается при наведении и фокусе,
      после ручного переключения таймер стартует заново, при prefers-reduced-motion не идёт. */
   (() => {
     const root = $('[data-hero]');
@@ -364,7 +364,6 @@
     const tabs = $$('.hero-tab', root);
     const panes = $$('.hero-pane', root);
     const bgs = $$('.hero-bg__img', root);
-    const dots = $$('.hero-dot', root);
     const total = panes.length;
     if (total < 2) return;
 
@@ -394,14 +393,12 @@
       current = n;
       mark(panes, n);
       mark(bgs, n);
-      mark(dots, n);
       mark(tabs, n);
       tabs.forEach((t, k) => t.setAttribute('aria-selected', String(k === n)));
       panes.forEach((p, k) => {
         p.setAttribute('aria-hidden', String(k !== n));
         p.inert = k !== n; // ссылки скрытых слайдов не должны ловить фокус с клавиатуры
       });
-      dots.forEach((d, k) => d.setAttribute('aria-current', String(k === n)));
     };
 
     panes.forEach((p, k) => { p.inert = k !== current; });
@@ -412,10 +409,6 @@
     const step = (dir) => { stop(); go(current + dir, dir); play(); };
 
     tabs.forEach((t, i) => t.addEventListener('click', () => jump(i)));
-    dots.forEach((d, i) => d.addEventListener('click', () => jump(i)));
-    $('[data-hero-prev]', root)?.addEventListener('click', () => step(-1));
-    $('[data-hero-next]', root)?.addEventListener('click', () => step(1));
-
     $('.hero-tabs', root).addEventListener('keydown', (e) => {
       if (e.key === 'ArrowRight') { e.preventDefault(); step(1); tabs[current].focus(); }
       if (e.key === 'ArrowLeft') { e.preventDefault(); step(-1); tabs[current].focus(); }
