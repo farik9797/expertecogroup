@@ -501,6 +501,30 @@
 
   $$('.year').forEach((y) => { y.textContent = new Date().getFullYear(); });
 
+  /* ---------- Появление блоков при прокрутке ----------
+     Набор эффектов и тайминги повторяют AOS с tazau.kz. Сделано на CSS + IntersectionObserver,
+     а не на GSAP: так анимация не зависит от кадров rAF и не застревает в фоновой вкладке. */
+  (() => {
+    const items = $$('.reveal');
+    if (!items.length) return;
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+      items.forEach((el) => el.classList.add('is-in'));
+      return;
+    }
+    items.forEach((el) => {
+      const delay = el.dataset.delay;
+      if (delay) el.style.setProperty('--anim-delay', `${delay}ms`);
+    });
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        e.target.classList.add('is-in');
+        io.unobserve(e.target); // показываем один раз, повторно не прячем
+      });
+    }, { rootMargin: '0px 0px -12% 0px', threshold: 0.05 });
+    items.forEach((el) => io.observe(el));
+  })();
+
   /* ---------- Анимации (GSAP) ---------- */
   (() => {
     const { gsap, ScrollTrigger } = window;
@@ -538,11 +562,5 @@
       });
     });
 
-    gsap.set('.reveal', { y: 26, opacity: 0 });
-    ScrollTrigger.batch('.reveal', {
-      start: 'top 88%',
-      once: true,
-      onEnter: (els) => gsap.to(els, { y: 0, opacity: 1, duration: 0.85, ease, stagger: 0.08, overwrite: true }),
-    });
   })();
 })();

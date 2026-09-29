@@ -125,11 +125,11 @@ def page_head(*, title, lead, base, crumb_items, actions=True, facts=None):
     return f"""<section class="page-hero">
   <div class="mx-auto max-w-7xl px-4 md:px-6">
     {crumbs(crumb_items, base)}
-    <div class="mt-7 max-w-3xl">
+    <div class="reveal mt-7 max-w-3xl" data-anim="fade-right" data-delay="150">
       <h1 class="section-title">{title}</h1>
       <p class="mt-5 text-[17px] leading-relaxed text-muted">{lead}</p>{cta}
     </div>
-    <ul class="page-hero__facts">{facts_html}</ul>
+    <ul class="page-hero__facts reveal" data-anim="fade-up" data-delay="300">{facts_html}</ul>
   </div>
 </section>"""
 
@@ -186,7 +186,7 @@ def cta_band(base, text="Рассчитаем стоимость под ваш �
     return f"""<section class="px-4 py-16 md:px-6 md:py-20">
   <div class="cta-band mx-auto max-w-7xl">
     <div class="cta-band__grid">
-      <div>
+      <div class="reveal" data-anim="fade-right" data-delay="150">
         <h2 class="cta-band__title">{text}</h2>
         <p class="mt-4 max-w-xl leading-relaxed text-white/75">Опишите задачу — подберём конструкцию и комплектацию, посчитаем срок и стоимость. Чертёж или опросный лист можно прислать на почту.</p>
         <div class="cta-band__phones">
@@ -194,7 +194,7 @@ def cta_band(base, text="Рассчитаем стоимость под ваш �
           <a href="tel:+77086265749"><i data-lucide="phone"></i><span><b>+7 708 626-57-49</b><small>Отдел продаж, Артём</small></span></a>
         </div>
       </div>
-      <div class="cta-band__actions">
+      <div class="cta-band__actions reveal" data-anim="fade-left" data-delay="300">
         <a href="{base}index.html#request" class="btn btn-primary w-full justify-center">Оставить заявку <i data-lucide="arrow-right" class="size-5"></i></a>
         <a href="{WA}" class="btn btn-glass w-full justify-center" target="_blank" rel="noopener"><img src="https://cdn.simpleicons.org/whatsapp/ffffff" alt="" class="size-5" width="20" height="20">Написать в WhatsApp</a>
         <p class="cta-band__hours"><i data-lucide="clock"></i>Отвечаем пн–пт, 08:00–18:00</p>
@@ -310,7 +310,7 @@ def tank_type_page(t, base="../../../"):
 <section class="px-4 pb-16 md:px-6">
   <div class="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1.05fr_.95fr] lg:gap-14">
     {gallery(s, base, s["title"])}
-    <div>
+    <div class="reveal" data-anim="fade-left" data-delay="300">
       <h2 class="section-title">Коротко о конструкции</h2>
       <dl class="spec mt-6">{spec_rows}</dl>
       <div class="mt-8 flex flex-wrap gap-3">
@@ -324,11 +324,11 @@ def tank_type_page(t, base="../../../"):
 
 <section class="px-4 py-14 md:px-6">
   <div class="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1.1fr_.9fr] lg:gap-14">
-    <div>
+    <div class="reveal" data-anim="fade-right" data-delay="150">
       <h2 class="section-title">Описание</h2>
       <div class="mt-2 text-[17px] leading-relaxed text-muted">{text}</div>
     </div>
-    <div>
+    <div class="reveal" data-anim="fade-left" data-delay="300">
       <h2 class="section-title">Где применяют</h2>
       <ul class="uses mt-6">{uses}</ul>
       <div class="note mt-8">
@@ -341,9 +341,9 @@ def tank_type_page(t, base="../../../"):
 
 <section class="bg-mist px-4 py-16 md:px-6 md:py-20">
   <div class="mx-auto max-w-7xl">
-    <h2 class="section-title">Типоразмеры</h2>
+    <h2 class="section-title reveal" data-anim="fade-right" data-delay="150">Типоразмеры</h2>
     <p class="mt-4 max-w-2xl text-[17px] leading-relaxed text-muted">Ряд «{s["short"]}» — выберите ближайший объём или закажите нестандартный по чертежам.</p>
-    <div class="mt-8">{size_table(s, base=base)}</div>
+    <div class="reveal mt-8" data-anim="fade-up" data-delay="300">{size_table(s, base=base)}</div>
   </div>
 </section>
 
@@ -377,24 +377,24 @@ def tanks_page(base="../../"):
 
 <section class="px-4 pb-6 md:px-6">
   <div class="mx-auto grid max-w-7xl items-start gap-10 lg:grid-cols-[1.1fr_.9fr] lg:gap-14">
-    <div class="text-[17px] leading-relaxed text-muted">
+    <div class="reveal text-[17px] leading-relaxed text-muted" data-anim="fade-right" data-delay="150">
       <p class="mt-4">Полипропилен не ржавеет, не вступает в реакцию с водой и не требует покраски, поэтому один и тот же резервуар используют и для питьевой воды, и для кислот, щелочей и реагентов. Для агрессивных сред подбираем марку материала и толщину листа под состав и температуру.</p>
       <p class="mt-4">Изготавливаем на собственном производстве в Каскелене: раскрой и сварка листа, усиление рёбрами, установка патрубков, люков, переливов и перегородок по вашему заданию. Наземное исполнение ставится на подготовленную площадку, подземное — в котлован с обратной засыпкой.</p>
       <p class="mt-4">Ниже — четыре конструктивных типа. Если типового объёма не хватает, посчитайте габариты в калькуляторе или пришлите чертёж: изготовим ёмкость под ваши размеры.</p>
     </div>
-    <img class="aspect-[4/3] w-full rounded-[28px] object-cover" src="{base}assets/img/cat-water.webp" alt="Ёмкости из полипропилена Expert ECO Group" loading="lazy">
+    <img class="reveal aspect-[4/3] w-full rounded-[28px] object-cover" data-anim="fade-left" data-delay="300" src="{base}assets/img/cat-water.webp" alt="Ёмкости из полипропилена Expert ECO Group" loading="lazy">
   </div>
 </section>
 
 <section class="px-4 py-12 md:px-6">
   <div class="mx-auto max-w-7xl">
-    <h2 class="section-title">Типы резервуаров</h2>
-    <div class="type-grid mt-8">{"".join(cards)}</div>
+    <h2 class="section-title reveal" data-anim="fade-right" data-delay="150">Типы резервуаров</h2>
+    <div class="type-grid reveal mt-8" data-anim="fade-up" data-delay="300">{"".join(cards)}</div>
   </div>
 </section>
 
 <section id="calc" class="bg-mist px-4 py-16 md:px-6 md:py-24">
-  <div class="mx-auto max-w-7xl">
+  <div class="reveal mx-auto max-w-7xl" data-anim="fade-up" data-delay="150">
 {calc_block(base)}
   </div>
 </section>
@@ -629,7 +629,7 @@ def section_page(cat, base="../../"):
         f'<li class="feature"><span class="feature__icon"><i data-lucide="{icon}"></i></span><div><h3>{title}</h3><p>{txt}</p></div></li>'
         for icon, title, txt in meta["points"])
     uses = "".join(f"<li>{u}</li>" for u in meta["uses"])
-    lead_photo = (f'<img class="aspect-[4/3] w-full rounded-[28px] object-cover" src="{photos[0][0]}" alt="{cat["title"]}" loading="lazy">'
+    lead_photo = (f'<img class="reveal aspect-[4/3] w-full rounded-[28px] object-cover" data-anim="fade-left" data-delay="300" src="{photos[0][0]}" alt="{cat["title"]}" loading="lazy">'
                   if photos else "")
     rest = "".join(
         f'<figure class="album-photo"><img src="{src}" alt="{alt}" loading="lazy"></figure>'
@@ -637,9 +637,9 @@ def section_page(cat, base="../../"):
     gallery_block = f"""
 <section class="bg-mist px-4 py-16 md:px-6 md:py-20">
   <div class="mx-auto max-w-7xl">
-    <h2 class="section-title">Фото</h2>
+    <h2 class="section-title reveal" data-anim="fade-right" data-delay="150">Фото</h2>
     <p class="mt-4 max-w-2xl text-[17px] leading-relaxed text-muted">Наши изделия и объекты. Больше снимков — в фотоальбоме.</p>
-    <div class="album-grid mt-8">{rest}</div>
+    <div class="album-grid reveal mt-8" data-anim="fade-up" data-delay="300">{rest}</div>
     <a href="{base}fotoalbom/" class="btn btn-ghost mt-8">Открыть фотоальбом <i data-lucide="images" class="size-5"></i></a>
   </div>
 </section>""" if rest else ""
@@ -654,25 +654,25 @@ def section_page(cat, base="../../"):
 
 <section class="px-4 pb-10 md:px-6">
   <div class="mx-auto grid max-w-7xl items-start gap-10 lg:grid-cols-[1.1fr_.9fr] lg:gap-14">
-    <div class="text-[17px] leading-relaxed text-muted">{text}</div>
+    <div class="reveal text-[17px] leading-relaxed text-muted" data-anim="fade-right" data-delay="150">{text}</div>
     {lead_photo}
   </div>
 </section>
 
 <section class="px-4 py-12 md:px-6">
   <div class="mx-auto max-w-7xl">
-    <h2 class="section-title">Что берём на себя</h2>
-    <ul class="mt-10 grid gap-x-8 gap-y-8 md:grid-cols-2">{points}</ul>
+    <h2 class="section-title reveal" data-anim="fade-right" data-delay="150">Что берём на себя</h2>
+    <ul class="reveal mt-10 grid gap-x-8 gap-y-8 md:grid-cols-2" data-anim="fade-up" data-delay="300">{points}</ul>
   </div>
 </section>
 
 <section class="px-4 pb-12 md:px-6">
   <div class="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1.1fr_.9fr] lg:gap-14">
-    <div>
+    <div class="reveal" data-anim="fade-right" data-delay="150">
       <h2 class="section-title">Где применяют</h2>
       <ul class="uses mt-6">{uses}</ul>
     </div>
-    <div class="note">
+    <div class="note reveal" data-anim="fade-left" data-delay="300">
       <i data-lucide="file-text"></i>
       <p>Пришлите исходные данные по объекту — расход, состав стоков, глубину подводящей трубы или чертёж. Подберём решение и посчитаем стоимость.</p>
     </div>
@@ -741,8 +741,8 @@ def catalog_page(base="../"):
             for c in cats)
         groups_html += f"""<section class="px-4 py-8 md:px-6" id="{anchors.get(group, '')}">
   <div class="mx-auto max-w-7xl">
-    <h2 class="section-title">{group}</h2>
-    <div class="prod-tiles mt-8">{tiles}</div>
+    <h2 class="section-title reveal" data-anim="fade-right" data-delay="150">{group}</h2>
+    <div class="prod-tiles reveal mt-8" data-anim="fade-up" data-delay="300">{tiles}</div>
   </div>
 </section>"""
 
@@ -757,7 +757,7 @@ def catalog_page(base="../"):
 
 <section id="napravleniya" class="px-4 py-8 md:px-6">
   <div class="mx-auto max-w-7xl">
-    <div class="dir-grid">{dirs}</div>
+    <div class="dir-grid reveal" data-anim="fade-up" data-delay="150">{dirs}</div>
   </div>
 </section>
 

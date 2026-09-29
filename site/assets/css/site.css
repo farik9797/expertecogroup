@@ -3,8 +3,8 @@
 
 @layer base {
   :root { --ease: cubic-bezier(.22, 1, .36, 1); --pp: #e7e2d4; --pp-edge: #c8c0ab; }
-  html { scroll-behavior: smooth; }
-  body { background: #fff; font-size: 17px; }
+  html { scroll-behavior: smooth; overflow-x: clip; }
+  body { background: #fff; font-size: 17px; overflow-x: clip; }  /* боковые смещения при появлении блоков не должны давать прокрутку вбок */
   section, footer { scroll-margin-top: 88px; }
   :focus-visible { outline: 3px solid var(--color-sky); outline-offset: 3px; border-radius: 8px; }
   .skip-link { position: absolute; left: 12px; top: -60px; z-index: 100; padding: .7rem 1rem; border-radius: 12px; background: #fff; color: var(--color-navy); font-weight: 800; }
@@ -69,6 +69,21 @@
   @keyframes nav-shell-in { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: none; } }
   @keyframes nav-item-in { from { opacity: 0; transform: translateY(-34px) scale(.6); } to { opacity: 1; transform: none; } }
   @media (prefers-reduced-motion: reduce) { .nav-shell, .nav-in { animation: none; } }
+
+  /* ---------- Появление блоков при прокрутке (набор эффектов как на tazau.kz) ----------
+     fade-up для контента, fade-right для заголовков, fade-left для боковых блоков,
+     zoom-in-up для подвала. Длительность 500 мс, easing ease — как в AOS у tazau. */
+  .reveal { opacity: 0; transform: translate3d(0, 60px, 0); transition: opacity .5s ease, transform .5s ease; transition-delay: var(--anim-delay, 0s); will-change: opacity, transform; }
+  .reveal[data-anim="fade-right"] { transform: translate3d(-44px, 0, 0); }
+  .reveal[data-anim="fade-left"] { transform: translate3d(44px, 0, 0); }
+  .reveal[data-anim="zoom-in-up"] { transform: translate3d(0, 60px, 0) scale(.72); }
+  .reveal[data-anim="zoom-in-down"] { transform: translate3d(0, -60px, 0) scale(.72); }
+  .reveal.is-in { opacity: 1; transform: none; }
+  /* На узких экранах боковые смещения не нужны — всё всплывает снизу, без риска прокрутки вбок */
+  @media (max-width: 767px) {
+    .reveal[data-anim="fade-right"], .reveal[data-anim="fade-left"] { transform: translate3d(0, 44px, 0); }
+  }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
 
   /* ---------- Hero ---------- */
   .hero { touch-action: pan-y; }  /* вертикальная прокрутка браузеру, горизонтальный свайп — слайдеру */
