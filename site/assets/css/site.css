@@ -89,13 +89,14 @@
   .hero-pane:not(.is-active) { pointer-events: none; }
   .hero-status { display: flex; justify-content: center; gap: .5rem; margin-top: 1.5rem; }
   .hero-status__bar { position: relative; width: 48px; height: 4px; overflow: hidden; border-radius: 999px; background: rgba(255, 255, 255, .28); }
-  .hero-status__bar i { position: absolute; left: 0; top: 0; bottom: 0; width: 0; border-radius: 999px; background: #fff; }
-  .hero-status__bar.is-done i { width: 100%; }
-  .hero-status__bar.is-active i { animation: hero-progress 7s linear forwards; }
+  /* Заполнение через scaleX, а не width: трансформации считает видеокарта, полоска растёт без рывков */
+  .hero-status__bar i { position: absolute; inset: 0; width: 100%; border-radius: 999px; background: #fff; transform: scaleX(0); transform-origin: left center; transition: transform .4s ease; will-change: transform; }
+  .hero-status__bar.is-done i { transform: scaleX(1); }
+  .hero-status__bar.is-active i { transition: none; animation: hero-progress 7s linear forwards; }
   .hero-status.is-paused .hero-status__bar.is-active i { animation-play-state: paused; }
-  @keyframes hero-progress { from { width: 0; } to { width: 100%; } }
+  @keyframes hero-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
   @media (min-width: 768px) { .hero-status { margin-top: 1.9rem; } .hero-status__bar { width: 62px; } }
-  @media (prefers-reduced-motion: reduce) { .hero-status__bar.is-active i { animation: none; width: 100%; } }
+  @media (prefers-reduced-motion: reduce) { .hero-status__bar.is-active i { animation: none; transform: scaleX(1); } }
   @media (prefers-reduced-motion: reduce) { .hero-pane { transition: none; } .hero-bg__img { transition: none; } }
   .hero-shade {
     background:
