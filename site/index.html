@@ -35,7 +35,7 @@
       --ease-out-expo: cubic-bezier(.22, 1, .36, 1);
     }
   </style>
-  <link rel="stylesheet" href="assets/css/site.css?v=64">
+  <link rel="stylesheet" href="assets/css/site.css?v=67">
 </head>
 <body class="font-sans text-ink antialiased">
 <a href="#main" class="skip-link">К содержимому</a>
@@ -103,6 +103,8 @@
   </div>
   <div class="hero-shade absolute inset-0 -z-10" aria-hidden="true"></div>
 
+  <button type="button" class="hero-arrow hero-arrow--prev" data-hero-prev aria-label="Предыдущее направление"><i data-lucide="chevron-left"></i></button>
+  <button type="button" class="hero-arrow hero-arrow--next" data-hero-next aria-label="Следующее направление"><i data-lucide="chevron-right"></i></button>
   <div class="mx-auto flex min-h-[100svh] max-w-7xl flex-col justify-end px-4 pb-10 pt-32 md:px-6 md:pb-16">
     <div class="hero-tabs hero-in" role="tablist" aria-label="Направления производства">
       <button type="button" class="hero-tab is-active" data-tab="0" role="tab" aria-selected="true" aria-controls="hero-pane-0" id="hero-tab-0">Ёмкости и резервуары</button>
@@ -111,7 +113,7 @@
     </div>
 
     <div class="hero-panes mt-6 md:mt-8">
-    <div class="hero-pane is-active" id="hero-pane-0" data-pane="0" role="tabpanel" aria-labelledby="hero-tab-0">
+    <div class="hero-pane is-active" id="hero-pane-0" data-pane="0" role="tabpanel" aria-labelledby="hero-tab-0" aria-hidden="false">
       <div class="grid items-end gap-8 lg:grid-cols-[1.4fr_.6fr] lg:gap-12">
         <div class="hero-copy">
           <h1 class="hero-in font-display text-[clamp(1.62rem,4.7vw,4.2rem)] font-medium leading-[1.04] tracking-[-0.015em]">
@@ -147,7 +149,7 @@
         </aside>
       </div>
     </div>
-    <div class="hero-pane" id="hero-pane-1" data-pane="1" role="tabpanel" aria-labelledby="hero-tab-1" hidden>
+    <div class="hero-pane" id="hero-pane-1" data-pane="1" role="tabpanel" aria-labelledby="hero-tab-1" aria-hidden="true">
       <div class="grid items-end gap-8 lg:grid-cols-[1.4fr_.6fr] lg:gap-12">
         <div class="hero-copy">
           <h1 class="hero-in font-display text-[clamp(1.62rem,4.7vw,4.2rem)] font-medium leading-[1.04] tracking-[-0.015em]">
@@ -183,7 +185,7 @@
         </aside>
       </div>
     </div>
-    <div class="hero-pane" id="hero-pane-2" data-pane="2" role="tabpanel" aria-labelledby="hero-tab-2" hidden>
+    <div class="hero-pane" id="hero-pane-2" data-pane="2" role="tabpanel" aria-labelledby="hero-tab-2" aria-hidden="true">
       <div class="grid items-end gap-8 lg:grid-cols-[1.4fr_.6fr] lg:gap-12">
         <div class="hero-copy">
           <h1 class="hero-in font-display text-[clamp(1.62rem,4.7vw,4.2rem)] font-medium leading-[1.04] tracking-[-0.015em]">
@@ -219,6 +221,12 @@
         </aside>
       </div>
     </div>
+    </div>
+
+    <div class="hero-dots" role="group" aria-label="Слайды первого экрана">
+      <button type="button" class="hero-dot is-active" data-hero-dot="0" aria-label="Слайд 1: Ёмкости и резервуары"></button>
+      <button type="button" class="hero-dot" data-hero-dot="1" aria-label="Слайд 2: КНС"></button>
+      <button type="button" class="hero-dot" data-hero-dot="2" aria-label="Слайд 3: Очистные сооружения"></button>
     </div>
   </div>
 </section>
@@ -635,6 +643,6 @@
 <script src="https://cdn.jsdelivr.net/npm/lucide@1.47.0/dist/umd/lucide.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/ScrollTrigger.min.js" defer></script>
-<script src="assets/js/main.js?v=64" defer></script>
+<script src="assets/js/main.js?v=67" defer></script>
 </body>
 </html>

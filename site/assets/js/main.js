@@ -354,38 +354,87 @@
     });
   }
 
-  /* ---------- Hero: три направления (ёмкости → КНС → очистные) ----------
-     Фон, текст и карточка меняются вместе. Автосмена останавливается при наведении,
-     фокусе и при выборе вкладки вручную, а при prefers-reduced-motion не запускается. */
+  /* ---------- Hero: слайдер трёх направлений (ёмкости → КНС → очистные) ----------
+     Слайды разъезжаются по горизонтали. Управление: вкладки с названиями, стрелки,
+     точки, свайп и стрелки клавиатуры. Автосмена останавливается при наведении и фокусе,
+     после ручного переключения таймер стартует заново, при prefers-reduced-motion не идёт. */
   (() => {
     const root = $('[data-hero]');
     if (!root) return;
     const tabs = $$('.hero-tab', root);
     const panes = $$('.hero-pane', root);
     const bgs = $$('.hero-bg__img', root);
-    if (tabs.length < 2) return;
+    const dots = $$('.hero-dot', root);
+    const total = panes.length;
+    if (total < 2) return;
 
     const DELAY = 7000;
     let current = 0;
     let timer = null;
 
-    const show = (n) => {
-      current = (n + tabs.length) % tabs.length;
-      tabs.forEach((t, i) => {
-        t.classList.toggle('is-active', i === current);
-        t.setAttribute('aria-selected', String(i === current));
+    const mark = (list, i) => list.forEach((el, k) => el.classList.toggle('is-active', k === i));
+
+    const go = (n, dir) => {
+      n = (n + total) % total;
+      if (n === current) return;
+      const from = panes[current];
+      const to = panes[n];
+
+      // входящую панель ставим за краем без анимации, затем отпускаем в нулевую позицию
+      to.style.transition = 'none';
+      to.style.transform = `translateX(${dir * 100}%)`;
+      to.style.opacity = '0';
+      void to.offsetWidth; // принудительный пересчёт, иначе браузер склеит оба состояния
+      to.style.transition = '';
+      to.style.transform = 'translateX(0)';
+      to.style.opacity = '1';
+      from.style.transform = `translateX(${-dir * 100}%)`;
+      from.style.opacity = '0';
+
+      current = n;
+      mark(panes, n);
+      mark(bgs, n);
+      mark(dots, n);
+      mark(tabs, n);
+      tabs.forEach((t, k) => t.setAttribute('aria-selected', String(k === n)));
+      panes.forEach((p, k) => {
+        p.setAttribute('aria-hidden', String(k !== n));
+        p.inert = k !== n; // ссылки скрытых слайдов не должны ловить фокус с клавиатуры
       });
-      panes.forEach((p, i) => {
-        p.classList.toggle('is-active', i === current);
-        p.hidden = i !== current;
-      });
-      bgs.forEach((b, i) => b.classList.toggle('is-active', i === current));
+      dots.forEach((d, k) => d.setAttribute('aria-current', String(k === n)));
     };
 
-    const stop = () => { clearInterval(timer); timer = null; };
-    const play = () => { if (!reduceMotion && !timer) timer = setInterval(() => show(current + 1), DELAY); };
+    panes.forEach((p, k) => { p.inert = k !== current; });
 
-    tabs.forEach((t, i) => t.addEventListener('click', () => { stop(); show(i); }));
+    const stop = () => { clearInterval(timer); timer = null; };
+    const play = () => { if (!reduceMotion && !timer) timer = setInterval(() => go(current + 1, 1), DELAY); };
+    const jump = (n) => { stop(); go(n, n > current ? 1 : -1); play(); };
+    const step = (dir) => { stop(); go(current + dir, dir); play(); };
+
+    tabs.forEach((t, i) => t.addEventListener('click', () => jump(i)));
+    dots.forEach((d, i) => d.addEventListener('click', () => jump(i)));
+    $('[data-hero-prev]', root)?.addEventListener('click', () => step(-1));
+    $('[data-hero-next]', root)?.addEventListener('click', () => step(1));
+
+    $('.hero-tabs', root).addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') { e.preventDefault(); step(1); tabs[current].focus(); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); step(-1); tabs[current].focus(); }
+    });
+
+    // свайп: листаем только на явно горизонтальном жесте, чтобы не мешать прокрутке страницы
+    let sx = 0;
+    let sy = 0;
+    root.addEventListener('touchstart', (e) => {
+      const t = e.changedTouches[0];
+      sx = t.clientX; sy = t.clientY;
+    }, { passive: true });
+    root.addEventListener('touchend', (e) => {
+      const t = e.changedTouches[0];
+      const dx = t.clientX - sx;
+      const dy = t.clientY - sy;
+      if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.4) step(dx < 0 ? 1 : -1);
+    }, { passive: true });
+
     root.addEventListener('mouseenter', stop);
     root.addEventListener('mouseleave', play);
     root.addEventListener('focusin', stop);
