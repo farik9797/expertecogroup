@@ -355,9 +355,10 @@
   }
 
   /* ---------- Hero: слайдер трёх направлений (ёмкости → КНС → очистные) ----------
-     Слайды разъезжаются по горизонтали и меняются сами. Вручную — вкладки с названиями,
-     свайп и стрелки клавиатуры. Автосмена останавливается при наведении и фокусе,
-     после ручного переключения таймер стартует заново, при prefers-reduced-motion не идёт. */
+     Слайды разъезжаются по горизонтали и меняются сами каждые 7 секунд. Вручную — вкладки
+     с названиями, свайп и стрелки клавиатуры. Автосмена замирает только в фоновой вкладке и
+     пока фокус внутри слайда, после ручного переключения таймер стартует заново,
+     при prefers-reduced-motion не идёт. */
   (() => {
     const root = $('[data-hero]');
     if (!root) return;
@@ -427,23 +428,30 @@
       if (e.key === 'ArrowLeft') { e.preventDefault(); step(-1); tabs[current].focus(); }
     });
 
-    // свайп: листаем только на явно горизонтальном жесте, чтобы не мешать прокрутке страницы
+    // Свайп по указателю (palец, стилус, мышь с зажатой кнопкой): touch-события браузер
+    // отменяет, когда принимает жест за прокрутку, поэтому слушаем pointer, а CSS
+    // touch-action: pan-y оставляет ему вертикальную прокрутку и отдаёт нам горизонталь.
     let sx = 0;
     let sy = 0;
-    root.addEventListener('touchstart', (e) => {
-      const t = e.changedTouches[0];
-      sx = t.clientX; sy = t.clientY;
-    }, { passive: true });
-    root.addEventListener('touchend', (e) => {
-      const t = e.changedTouches[0];
-      const dx = t.clientX - sx;
-      const dy = t.clientY - sy;
-      if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.4) step(dx < 0 ? 1 : -1);
-    }, { passive: true });
+    let tracking = false;
+    root.addEventListener('pointerdown', (e) => {
+      if (e.pointerType === 'mouse') return; // мышью листают вкладками, а протяжка — это выделение текста
+      sx = e.clientX; sy = e.clientY; tracking = true;
+    });
+    const endSwipe = (e) => {
+      if (!tracking) return;
+      tracking = false;
+      const dx = e.clientX - sx;
+      const dy = e.clientY - sy;
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.2) step(dx < 0 ? 1 : -1);
+    };
+    root.addEventListener('pointerup', endSwipe);
+    root.addEventListener('pointercancel', () => { tracking = false; });
 
-    root.addEventListener('mouseenter', stop);
-    root.addEventListener('mouseleave', play);
+    // Пауза только когда вкладка в фоне или пользователь зашёл в слайд с клавиатуры.
+    // По наведению мыши не останавливаем: hero занимает весь экран и курсор почти всегда над ним.
     root.addEventListener('focusin', stop);
+    root.addEventListener('focusout', (e) => { if (!root.contains(e.relatedTarget)) play(); });
     document.addEventListener('visibilitychange', () => (document.hidden ? stop() : play()));
     play();
   })();
