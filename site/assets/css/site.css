@@ -90,12 +90,6 @@
   .hero-img { object-position: 58% 38%; }
   .hero-bg__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; opacity: 0; transition: opacity .9s ease; }
   .hero-bg__img[data-bg="0"] { object-position: 58% 38%; }
-  /* На телефоне кадр обрезается по краям: держим в поле зрения само оборудование, оно справа */
-  @media (max-width: 767px) {
-    .hero-bg__img[data-bg="1"] { object-position: 72% center; }
-    .hero-bg__img[data-bg="2"] { object-position: 78% center; }
-    .hero-bg__img[data-bg="3"] { object-position: 82% center; }
-  }
   .hero-bg__img.is-active { opacity: 1; }
   .hero-tabs { display: flex; flex-wrap: wrap; gap: .5rem; }
   .hero-tab { padding: .6rem 1rem; border-radius: 999px; font-size: 14px; font-weight: 700; line-height: 1.2; color: rgba(255, 255, 255, .85); background: rgba(255, 255, 255, .12); border: 1px solid rgba(255, 255, 255, .22); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); cursor: pointer; transition: background-color .3s, color .3s, border-color .3s; }
@@ -129,14 +123,6 @@
       linear-gradient(180deg, rgba(6, 22, 58, .6) 0%, rgba(6, 22, 58, 0) 26%),
       linear-gradient(0deg, rgba(6, 22, 58, .94) 0%, rgba(6, 22, 58, .6) 36%, rgba(6, 22, 58, 0) 68%),
       linear-gradient(90deg, rgba(6, 22, 58, .5) 0%, rgba(6, 22, 58, 0) 62%);
-  }
-  /* На телефоне текст занимает почти весь кадр, а визуализации светлые — затемняем сильнее */
-  @media (max-width: 767px) {
-    .hero-shade {
-      background:
-        linear-gradient(180deg, rgba(6, 22, 58, .62) 0%, rgba(6, 22, 58, .12) 30%),
-        linear-gradient(0deg, rgba(6, 22, 58, .95) 0%, rgba(6, 22, 58, .78) 40%, rgba(6, 22, 58, .25) 72%);
-    }
   }
   .glass { background: rgba(255, 255, 255, .13); border: 1px solid rgba(255, 255, 255, .24); backdrop-filter: blur(18px) saturate(140%); -webkit-backdrop-filter: blur(18px) saturate(140%); box-shadow: 0 30px 60px rgba(4, 16, 40, .28); }
   .glass-light { background: rgba(255, 255, 255, .82); border: 1px solid rgba(255, 255, 255, .6); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: 0 16px 40px rgba(8, 31, 70, .16); }
