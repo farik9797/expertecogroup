@@ -31,7 +31,7 @@
       --ease-out-expo: cubic-bezier(.22, 1, .36, 1);
     }
   </style>
-  <link rel="stylesheet" href="../../assets/css/site.css?v=86">
+  <link rel="stylesheet" href="../../assets/css/site.css?v=88">
   
 </head>
 <body class="font-sans text-ink antialiased page-inner">
@@ -48,7 +48,6 @@
     </a>
     <nav class="ml-auto hidden items-center gap-1 text-[15px] font-bold lg:flex" aria-label="Основное меню">
       <a class="nav-in nav-link" href="../../catalog/">Каталог</a>
-      <a class="nav-in nav-link" href="../../catalog/kns/">КНС</a>
       <a class="nav-in nav-link" href="../../o-kompanii/">О компании</a>
       <a class="nav-in nav-link" href="../../proekty/">Проекты</a>
       <a class="nav-in nav-link" href="../../kontakty/">Контакты</a>
@@ -69,7 +68,6 @@
   </div>
   <nav class="mt-10 flex flex-col gap-1 font-display text-2xl" aria-label="Мобильное меню">
     <a href="../../catalog/" class="py-3">Каталог</a>
-    <a href="../../catalog/kns/" class="py-3">КНС</a>
     <a href="../../o-kompanii/" class="py-3">О компании</a>
     <a href="../../proekty/" class="py-3">Проекты</a>
     <a href="../../kontakty/" class="py-3">Контакты</a>
@@ -111,7 +109,7 @@
   <div class="mx-auto max-w-7xl">
     <h2 class="section-title reveal" data-anim="fade-right" data-delay="150">Типы резервуаров</h2>
     <div class="type-grid reveal mt-8" data-anim="fade-up" data-delay="300"><a class="type-card" href="../../catalog/emkosti/gorizontalnaya-nazemnaya/">
-  <span class="type-card__ph"><img src="../../assets/img/photo/gorizontalnaya-krupnaya-sm.webp" alt="Горизонтальная наземная ёмкость" loading="lazy"></span>
+  <span class="type-card__ph"><img src="../../assets/img/catalog/gorizontalnaya-nazemnaya-1-sm.webp" alt="Горизонтальная наземная ёмкость" loading="lazy"></span>
   <span class="type-card__body">
     <span class="type-card__title">Горизонтальная наземная</span>
     <span class="type-card__lead">Цилиндрический резервуар на опорах-сёдлах: встаёт на подготовленную площадку без котлована. Типовые объёмы 5–50 м³.</span>
@@ -144,22 +142,29 @@
 
 <section id="calc" class="bg-mist px-4 py-16 md:px-6 md:py-24">
   <div class="reveal mx-auto max-w-7xl" data-anim="fade-up" data-delay="150">
-<div class="calc reveal grid gap-10 rounded-[32px] bg-white p-5 shadow-soft sm:p-7 lg:grid-cols-[minmax(0,.85fr)_minmax(0,1.15fr)] lg:gap-14 lg:p-10">
+<div class="calc reveal grid gap-10 rounded-[32px] bg-white p-5 shadow-soft sm:p-7 lg:grid-cols-[minmax(0,.85fr)_minmax(0,1.15fr)] lg:gap-14 lg:p-10" data-calc="under">
 
       <div class="flex flex-col">
         <h2 class="section-title">Рассчитайте ёмкость <span class="accent text-brand">под вашу</span> задачу</h2>
-        <p class="mt-5 leading-relaxed text-muted">Укажите параметры — подберём конструкцию, толщину листа и комплектацию, подготовим расчёт стоимости.</p>
+        <p class="mt-5 leading-relaxed text-muted">Выберите форму и укажите размеры — чертёж перестроится, а мы подберём толщину листа и комплектацию и посчитаем стоимость.</p>
         <ul class="mt-8 space-y-4">
           <li class="calc-feat"><span><i data-lucide="ruler"></i></span>Точные размеры</li>
           <li class="calc-feat"><span><i data-lucide="file-text"></i></span>Чертежи и спецификация</li>
           <li class="calc-feat"><span><i data-lucide="clock"></i></span>Сроки и стоимость</li>
         </ul>
         <a href="../../index.html#request" class="calc-cta btn btn-primary mt-9 self-start">Рассчитать проект <i data-lucide="arrow-right" class="size-5"></i></a>
-        <p class="mt-6 text-sm font-semibold leading-relaxed text-muted">Нужна прямоугольная или нестандартная ёмкость? Изготовим по вашим чертежам — напишите об этом в заявке.</p>
+        <p class="mt-6 text-sm font-semibold leading-relaxed text-muted">Нужен нестандартный размер? Изготовим по вашим чертежам — напишите об этом в заявке.</p>
       </div>
 
       <div class="calc-panel">
-        <div class="grid gap-3 sm:grid-cols-3">
+        <div class="bp-type" role="group" aria-label="Форма резервуара">
+          <button type="button" data-type="rect" aria-pressed="false">Прямоугольный</button>
+          <button type="button" data-type="vert" aria-pressed="false">Вертикальный</button>
+          <button type="button" data-type="ground" aria-pressed="false">Горизонтальный наземный</button>
+          <button type="button" data-type="under" aria-pressed="true">Горизонтальный подземный</button>
+        </div>
+
+        <div class="calc-fields mt-3 grid gap-3 sm:grid-cols-3">
           <div class="stepper" data-field="v">
             <label for="calc-v">Объём, м³</label>
             <div class="stepper__box">
@@ -184,16 +189,27 @@
               <button type="button" data-step="1" aria-label="Увеличить длину"><i data-lucide="plus"></i></button>
             </div>
           </div>
+          <div class="stepper" data-field="w" hidden>
+            <label for="calc-w">Ширина, мм</label>
+            <div class="stepper__box">
+              <button type="button" data-step="-1" aria-label="Уменьшить ширину"><i data-lucide="minus"></i></button>
+              <input id="calc-w" type="text" inputmode="numeric" autocomplete="off" value="1500">
+              <button type="button" data-step="1" aria-label="Увеличить ширину"><i data-lucide="plus"></i></button>
+            </div>
+          </div>
+          <div class="stepper" data-field="h" hidden>
+            <label for="calc-h">Высота, мм</label>
+            <div class="stepper__box">
+              <button type="button" data-step="-1" aria-label="Уменьшить высоту"><i data-lucide="minus"></i></button>
+              <input id="calc-h" type="text" inputmode="numeric" autocomplete="off" value="1600">
+              <button type="button" data-step="1" aria-label="Увеличить высоту"><i data-lucide="plus"></i></button>
+            </div>
+          </div>
         </div>
 
         <div class="blueprint mt-4">
-          <div class="bp-head">
-            <div class="bp-type" role="group" aria-label="Установка">
-              <button type="button" data-type="under" aria-pressed="true">Подземная</button>
-              <button type="button" data-type="ground" aria-pressed="false">Наземная</button>
-            </div>
-          </div>
           <span class="bp-tag">Схема в масштабе</span>
+          <span class="bp-vol"></span>
           <svg class="bp-svg" role="img" aria-label="Чертёж ёмкости с размерами"></svg>
         </div>
 
@@ -325,7 +341,7 @@
 <script src="https://cdn.jsdelivr.net/npm/lucide@1.47.0/dist/umd/lucide.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/ScrollTrigger.min.js" defer></script>
-<script src="../../assets/js/main.js?v=86" defer></script>
+<script src="../../assets/js/main.js?v=88" defer></script>
 
 </body>
 </html>

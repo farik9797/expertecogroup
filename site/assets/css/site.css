@@ -85,6 +85,14 @@
   }
   @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
 
+  /* Текст «О компании»: длинные строки плохо читаются, поэтому ограничиваем меру,
+     а на широком экране раскладываем в две колонки без разрыва абзацев. */
+  .about-text { max-width: 76ch; }
+  @media (min-width: 1024px) {
+    .about-text { max-width: none; columns: 2; column-gap: 3.5rem; }
+    .about-text p { margin-top: 0; margin-bottom: 1.4rem; break-inside: avoid; }
+  }
+
   /* ---------- Hero ---------- */
   .hero { touch-action: pan-y; }  /* вертикальная прокрутка браузеру, горизонтальный свайп — слайдеру */
   .hero-img { object-position: 58% 38%; }
@@ -265,18 +273,20 @@
   .stepper__box button svg { width: 18px; height: 18px; }
 
   .blueprint { position: relative; overflow: hidden; border-radius: 24px; border: 1px solid var(--color-line); background-color: #f7fbff; }
-  .bp-head { position: absolute; inset: 14px 14px auto; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: .5rem; }
-  .bp-type { display: flex; gap: .25rem; padding: .25rem; border-radius: 999px; border: 1px solid var(--color-line); background: rgba(255, 255, 255, .88); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
-  .bp-type button { min-height: 32px; padding: 0 .85rem; border-radius: 999px; font-size: 13px; font-weight: 800; color: var(--color-muted); cursor: pointer; transition: background-color .25s, color .25s; }
+  /* Переключатель формы корпуса: четыре варианта, на узком экране переносятся */
+  .bp-type { display: flex; flex-wrap: wrap; gap: .3rem; }
+  .bp-type button { min-height: 36px; padding: 0 .9rem; border-radius: 999px; border: 1px solid var(--color-line); background: #fff; font-size: 13px; font-weight: 800; color: var(--color-muted); cursor: pointer; transition: background-color .25s, color .25s, border-color .25s; }
   .bp-type button:hover { color: var(--color-navy); }
-  .bp-type button[aria-pressed="true"] { background: var(--color-navy); color: #fff; }
+  .bp-type button[aria-pressed="true"] { background: var(--color-navy); border-color: var(--color-navy); color: #fff; }
+  /* Расчётный объём — крупной плашкой в углу чертежа */
+  .bp-vol { position: absolute; left: 16px; top: 14px; z-index: 1; padding: 4px 10px; border-radius: 999px; background: var(--color-navy); font-family: var(--font-display); font-size: 14px; font-weight: 500; color: #fff; }
   .bp-tag { position: absolute; right: 16px; bottom: 10px; z-index: 1; padding: 2px 6px; border-radius: 8px; background: #f7fbff; font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #92a9c6; }  /* подложка: размерная линия длины проходит под тегом */
   .bp-svg { display: block; width: 100%; height: 380px; }
   .bp-note { display: flex; flex-wrap: wrap; align-items: center; gap: .45rem; font-size: 14px; font-weight: 600; color: var(--color-muted); }
   .bp-note b { font-weight: 800; color: var(--color-navy); }
   .bp-note button { font-weight: 800; color: var(--color-brand); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
   .bp-note button:hover { color: var(--color-brand-dark); }
-  @media (max-width: 640px) { .bp-svg { height: 280px; } .bp-tag { display: none; } .bp-head { inset: 12px 12px auto; } }
+  @media (max-width: 640px) { .bp-svg { height: 280px; } .bp-tag { display: none; } .bp-type button { padding: 0 .7rem; font-size: 12px; } }
 
   /* ---------- Преимущества ---------- */
   .feature { display: flex; gap: 1rem; }

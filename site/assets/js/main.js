@@ -53,77 +53,229 @@
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !menu.hidden) setMenu(false); });
 
   /* ---------- Калькулятор ёмкости ----------
-     Габариты пересчитываются по формуле цилиндра: V = pi * (D/2)^2 * L.
-     Типоразмеры из каталога клиента на Satu.kz нужны только для подсказки «ближайшая модель»;
+     Четыре формы корпуса (правка клиента): прямоугольная, вертикальная,
+     горизонтальная наземная и подземная. Чертёж перестраивается под форму.
+     Объём считаем по габаритам: цилиндр V = pi*(D/2)^2*L, короб V = L*W*H.
+     Типоразмеры из каталога клиента нужны только для подсказки «ближайшая модель»;
      цены нигде не хранятся. */
   const CATALOG = {
     under: {
-      code: 'EEG-НР-(П)-ЦГ', label: 'подземная',
+      code: 'EEG-НР-(П)-ЦГ', label: 'горизонтальная подземная',
       items: [[5, 3100, 1430], [10, 3500, 1910], [15, 5240, 1910], [20, 7000, 1910], [25, 8800, 1910], [30, 10500, 1910],
         [35, 10100, 2100], [40, 10250, 2230], [45, 11850, 2200], [50, 12250, 2280], [60, 13500, 2390], [70, 13000, 2620],
         [90, 14200, 2860], [100, 15750, 2860]],
     },
     ground: {
-      code: 'EEG-НР-(Н)-ЦГ', label: 'наземная',
+      code: 'EEG-НР-(Н)-ЦГ', label: 'горизонтальная наземная',
       items: [[5, 3100, 1430], [10, 3500, 1910], [15, 5250, 1910], [20, 7000, 1910], [25, 8740, 1910], [30, 8700, 2100],
         [35, 10100, 2100], [40, 11550, 2100], [45, 11350, 2250], [50, 11550, 2350]],
     },
+    rect: {
+      code: 'EEG-НР-(Н)-П', label: 'прямоугольная наземная',
+      boxes: [[2, 1900, 1000, 1100], [3, 2500, 1000, 1200], [4, 2550, 1250, 1250], [5, 2750, 1350, 1350], [6, 2850, 1350, 1500]],
+    },
+    vert: {
+      code: 'EEG-НР-(Н)-ЦВ', label: 'вертикальная наземная',
+      vols: [5, 10, 15, 20, 25, 30],
+    },
   };
-  const LIM = { v: [1, 120], d: [1000, 3000], l: [1500, 20000] };
-  const calc = { type: 'under', v: 10, d: 1900, l: 3530 };
+  const FIELDS = { rect: ['l', 'w', 'h'], vert: ['v', 'd', 'h'], ground: ['v', 'd', 'l'], under: ['v', 'd', 'l'] };
+  const LABELS = { v: 'Объём, м³', d: 'Диаметр, мм', l: 'Длина, мм', w: 'Ширина, мм', h: 'Высота, мм' };
+  const LIM = { v: [1, 120], d: [1000, 3000], l: [1000, 20000], w: [800, 3000], h: [800, 6000] };
+  const PRESETS = {
+    rect: { l: 2550, w: 1250, h: 1250 },
+    vert: { d: 2000, h: 3200 },
+    ground: { d: 1900, l: 3530 },
+    under: { d: 1900, l: 3530 },
+  };
+  const calc = { type: 'under', v: 10, d: 1900, l: 3530, w: 1250, h: 3200 };
 
   const clamp = (x, [a, b]) => Math.min(b, Math.max(a, x));
   const round = (x, s) => Math.round(x / s) * s;
-  const volOf = (d, l) => (Math.PI * (d / 2) ** 2 * l) / 1e9;
-  const lenOf = (v, d) => (v * 1e9) / (Math.PI * (d / 2) ** 2);
   const round1 = (x) => Math.round(x * 10) / 10;
+  const volCyl = (d, len) => (Math.PI * (d / 2) ** 2 * len) / 1e9;   // мм → м³
+  const lenCyl = (v, d) => (v * 1e9) / (Math.PI * (d / 2) ** 2);
+  const volBox = (l, w, h) => (l * w * h) / 1e9;
 
   const sizer = $('.calc');
   const hasCalc = Boolean(sizer);
   const bpSvg = hasCalc ? $('.bp-svg', sizer) : null;
   const note = hasCalc ? $('.bp-note', sizer) : null;
+  const volTag = hasCalc ? $('.bp-vol', sizer) : null;
   const cta = hasCalc ? $('.calc-cta', sizer) : null;
-  const fieldEl = (f) => $(`.stepper[data-field="${f}"] input`, sizer);
-  const stepOf = (f) => (f === 'v' ? (calc.v < 10 ? 1 : 5) : f === 'd' ? 50 : 100);
+  const stepperOf = (f) => $(`.stepper[data-field="${f}"]`, sizer);
+  const fieldEl = (f) => $('input', stepperOf(f));
+  const stepOf = (f) => (f === 'v' ? (calc.v < 10 ? 1 : 5) : f === 'd' ? 50 : f === 'l' ? (calc.type === 'rect' ? 50 : 100) : 50);
+  const isRect = () => calc.type === 'rect';
+  const isVert = () => calc.type === 'vert';
 
   function apply(field, raw) {
     const num = parseFloat(String(raw).replace(',', '.').replace(/[^\d.]/g, ''));
     if (!Number.isFinite(num)) return render();
-    if (field === 'v') {
+    if (isRect()) {
+      calc[field] = clamp(round(num, 10), LIM[field]);
+      calc.v = round1(volBox(calc.l, calc.w, calc.h));
+    } else if (isVert()) {
+      if (field === 'v') {
+        calc.v = round1(clamp(num, LIM.v));
+        calc.h = clamp(round(lenCyl(calc.v, calc.d), 10), LIM.h);
+        if (Math.abs(volCyl(calc.d, calc.h) - calc.v) > 0.15) calc.v = round1(volCyl(calc.d, calc.h));
+      } else if (field === 'd') {
+        calc.d = clamp(round(num, 50), LIM.d);
+        calc.h = clamp(round(lenCyl(calc.v, calc.d), 10), LIM.h);
+        if (Math.abs(volCyl(calc.d, calc.h) - calc.v) > 0.15) calc.v = round1(volCyl(calc.d, calc.h));
+      } else {
+        calc.h = clamp(round(num, 10), LIM.h);
+        calc.v = round1(volCyl(calc.d, calc.h));
+      }
+    } else if (field === 'v') {
       calc.v = round1(clamp(num, LIM.v));
-      calc.l = clamp(round(lenOf(calc.v, calc.d), 10), LIM.l);
-      if (Math.abs(volOf(calc.d, calc.l) - calc.v) > 0.15) calc.v = round1(volOf(calc.d, calc.l));
+      calc.l = clamp(round(lenCyl(calc.v, calc.d), 10), LIM.l);
+      if (Math.abs(volCyl(calc.d, calc.l) - calc.v) > 0.15) calc.v = round1(volCyl(calc.d, calc.l));
     } else if (field === 'd') {
       calc.d = clamp(round(num, 50), LIM.d);
-      calc.l = clamp(round(lenOf(calc.v, calc.d), 10), LIM.l);
-      if (Math.abs(volOf(calc.d, calc.l) - calc.v) > 0.15) calc.v = round1(volOf(calc.d, calc.l));
+      calc.l = clamp(round(lenCyl(calc.v, calc.d), 10), LIM.l);
+      if (Math.abs(volCyl(calc.d, calc.l) - calc.v) > 0.15) calc.v = round1(volCyl(calc.d, calc.l));
     } else {
       calc.l = clamp(round(num, 10), LIM.l);
-      calc.v = round1(volOf(calc.d, calc.l));
+      calc.v = round1(volCyl(calc.d, calc.l));
     }
     render();
   }
 
   function nearest() {
     const c = CATALOG[calc.type];
+    if (isRect()) {
+      const [v, l, w, h] = c.boxes.reduce((a, b) => (Math.abs(b[0] - calc.v) < Math.abs(a[0] - calc.v) ? b : a));
+      return { code: `${c.code}-${v}м3`, text: `${fmt(l)} × ${fmt(w)} × ${fmt(h)} мм`, set: { l, w, h } };
+    }
+    if (isVert()) {
+      const v = c.vols.reduce((a, b) => (Math.abs(b - calc.v) < Math.abs(a - calc.v) ? b : a));
+      return { code: `${c.code}-${v}м3`, text: `ряд ${v} м³, высоту и диаметр подбираем под помещение`, set: null };
+    }
     const [v, l, d] = c.items.reduce((a, b) => (Math.abs(b[0] - calc.v) < Math.abs(a[0] - calc.v) ? b : a));
-    return { code: `${c.code}-${v}м3`, v, l, d };
+    return { code: `${c.code}-${v}м3`, text: `${fmt(l)} × Ø ${fmt(d)} мм`, set: { d, l } };
   }
 
-  function drawBlueprint() {
-    const W = bpSvg.clientWidth;
-    const H = bpSvg.clientHeight;
-    if (!W || !H) return;
+  /* ---- чертёж: общие части ---- */
+  const INK = '#0d2c5c', THIN = '#96acc9', DIM = '#5b7aa6', GLASS = 'rgba(255,255,255,.75)';
+
+  const dimBottom = (s, x1, x2, yFrom, y, text) => {
+    s.push(`<path d="M${x1} ${yFrom} V${y + 7}" stroke="${THIN}" stroke-width="1"/>`);
+    s.push(`<path d="M${x2} ${yFrom} V${y + 7}" stroke="${THIN}" stroke-width="1"/>`);
+    s.push(`<path d="M${x1} ${y} H${x2}" stroke="${DIM}" stroke-width="1" marker-start="url(#ar)" marker-end="url(#ar)"/>`);
+    s.push(`<text x="${(x1 + x2) / 2}" y="${y}" text-anchor="middle" dominant-baseline="middle" font-size="12.5" font-weight="700" fill="${DIM}" stroke="#f7fbff" stroke-width="5" paint-order="stroke">${text}</text>`);
+  };
+
+  const dimLeft = (s, y1, y2, xFrom, x, text, narrow) => {
+    s.push(`<path d="M${xFrom} ${y1} H${x - 7}" stroke="${THIN}" stroke-width="1"/>`);
+    s.push(`<path d="M${xFrom} ${y2} H${x - 7}" stroke="${THIN}" stroke-width="1"/>`);
+    s.push(`<path d="M${x} ${y1} V${y2}" stroke="${DIM}" stroke-width="1" marker-start="url(#ar)" marker-end="url(#ar)"/>`);
+    const ym = (y1 + y2) / 2;
+    s.push(narrow
+      ? `<text x="${x - 8}" y="${ym}" text-anchor="middle" font-size="12" font-weight="700" fill="${DIM}" transform="rotate(-90 ${x - 8} ${ym})">${text}</text>`
+      : `<text x="${x - 10}" y="${ym}" text-anchor="end" dominant-baseline="middle" font-size="12.5" font-weight="700" fill="${DIM}">${text}</text>`);
+  };
+
+  /* ---- чертёж: прямоугольная наземная ---- */
+  function drawRect(W, H, narrow) {
+    const padL = narrow ? 54 : 92, padR = narrow ? 24 : 38, padT = narrow ? 46 : 34, padB = 52;
+    const LID = 90, BASE = 160;                       // крышка и опорная рама, мм
+    const k = Math.min((W - padL - padR) / calc.l, (H - padT - padB) / (calc.h + LID + BASE));
+    const L = calc.l * k, Hh = calc.h * k, base = BASE * k, lid = LID * k;
+    const x = padL + (W - padL - padR - L) / 2;
+    const yB = H - padB - base, yT = yB - Hh;
+    const s = [];
+
+    // опорная рама
+    s.push(`<path d="M${x - 6} ${yB} h${L + 12} v${base} h${-(L + 12)} z" fill="#fff" stroke="${INK}" stroke-width="1.4"/>`);
+    s.push(`<path d="M${Math.max(padL - 30, 6)} ${yB + base} H${W - 8}" stroke="${INK}" stroke-width="1.4"/>`);
+    // корпус
+    s.push(`<rect x="${x}" y="${yT}" width="${L}" height="${Hh}" fill="${GLASS}" stroke="${INK}" stroke-width="1.7"/>`);
+    // вертикальные рёбра жёсткости
+    const ribs = Math.max(2, Math.min(9, Math.round(calc.l / 600)));
+    for (let i = 1; i <= ribs; i++) {
+      const rx = x + (L * i) / (ribs + 1);
+      s.push(`<path d="M${rx} ${yT} V${yB}" stroke="${INK}" stroke-width="1.1" stroke-opacity=".75"/>`);
+    }
+    // стяжные пояса
+    [0.34, 0.72].forEach((t) => {
+      const ry = yT + Hh * t, bh = Math.max(Hh * 0.06, 3);
+      s.push(`<rect x="${x - 4}" y="${ry - bh / 2}" width="${L + 8}" height="${bh}" rx="1.5" fill="#fff" fill-opacity=".9" stroke="${INK}" stroke-width="1.2"/>`);
+    });
+    // крышка и люк
+    s.push(`<rect x="${x - 8}" y="${yT - lid}" width="${L + 16}" height="${lid}" rx="2" fill="#fff" stroke="${INK}" stroke-width="1.4"/>`);
+    const hw = Math.min(L * 0.18, 60), hx = x + L * 0.3;
+    s.push(`<rect x="${hx - hw / 2}" y="${yT - lid - Math.max(lid * 0.7, 4)}" width="${hw}" height="${Math.max(lid * 0.7, 4)}" rx="2" fill="#fff" stroke="${INK}" stroke-width="1.3"/>`);
+    // патрубок
+    s.push(`<path d="M${x} ${yB - Hh * 0.12} h${-14}" stroke="${INK}" stroke-width="3" stroke-linecap="round"/>`);
+
+    dimLeft(s, yT, yB, x, x - 26, fmt(calc.h), narrow);
+    dimBottom(s, x, x + L, yB + base, yB + base + 30, fmt(calc.l));
+    s.push(`<text x="${W - 10}" y="${padT - 14}" text-anchor="end" font-size="11.5" font-weight="700" fill="${DIM}">ширина ${fmt(calc.w)} мм</text>`);
+    return s;
+  }
+
+  /* ---- чертёж: вертикальная наземная ---- */
+  function drawVert(W, H, narrow) {
+    const padL = narrow ? 54 : 92, padR = narrow ? 24 : 38, padT = narrow ? 46 : 34, padB = 52;
+    const SKIRT = 260;                                  // опорная юбка с косынками, мм
+    const cone = calc.v > 3;                            // после 3 м³ ставим конусную крышу
+    const roofH = cone ? Math.max(calc.d * 0.18, 260) : 90;
+    const neck = 420, lid = 80;
+    const k = Math.min((W - padL - padR) / (calc.d * 1.35), (H - padT - padB) / (calc.h + roofH + neck * 0.5 + lid + SKIRT));
+    const D = calc.d * k, Hh = calc.h * k, skirt = SKIRT * k, roof = roofH * k;
+    const x = padL + (W - padL - padR - D) / 2;
+    const yB = H - padB - skirt, yT = yB - Hh, xc = x + D / 2;
+    const s = [];
+
+    // юбка с косынками
+    s.push(`<path d="M${x - D * 0.06} ${yB + skirt} L${x} ${yB} h${D} L${x + D + D * 0.06} ${yB + skirt} z" fill="#fff" stroke="${INK}" stroke-width="1.4"/>`);
+    const gus = 6;
+    for (let i = 1; i <= gus; i++) {
+      const gx = x + (D * i) / (gus + 1);
+      s.push(`<path d="M${gx} ${yB} L${gx} ${yB + skirt}" stroke="${INK}" stroke-width="1.1" stroke-opacity=".7"/>`);
+    }
+    s.push(`<path d="M${Math.max(padL - 30, 6)} ${yB + skirt} H${W - 8}" stroke="${INK}" stroke-width="1.4"/>`);
+
+    // обечайка
+    s.push(`<rect x="${x}" y="${yT}" width="${D}" height="${Hh}" fill="${GLASS}" stroke="${INK}" stroke-width="1.7"/>`);
+    // кольцевые пояса обечайки
+    const belts = Math.max(2, Math.min(8, Math.round(calc.h / 700)));
+    for (let i = 1; i <= belts; i++) {
+      const by = yT + (Hh * i) / (belts + 1);
+      s.push(`<path d="M${x} ${by} H${x + D}" stroke="${INK}" stroke-width="1" stroke-opacity=".6"/>`);
+    }
+    // крыша: конус после 3 м³, иначе плоская
+    if (cone) {
+      s.push(`<path d="M${x - D * 0.04} ${yT} L${xc} ${yT - roof} L${x + D + D * 0.04} ${yT} z" fill="#fff" stroke="${INK}" stroke-width="1.6" stroke-linejoin="round"/>`);
+    } else {
+      s.push(`<rect x="${x - D * 0.04}" y="${yT - roof}" width="${D * 1.08}" height="${roof}" rx="2" fill="#fff" stroke="${INK}" stroke-width="1.5"/>`);
+    }
+    // горловина с люком на крыше
+    const nw = Math.min(D * 0.3, 90), nh = Math.max(neck * 0.42 * k, 16), lh = Math.max(lid * k, 4);
+    const ny = cone ? yT - roof * 0.62 : yT - roof;
+    s.push(`<path d="M${xc - nw / 2} ${ny} v${-nh} h${nw} v${nh}" fill="#fff" stroke="${INK}" stroke-width="1.3"/>`);
+    s.push(`<rect x="${xc - nw * 0.62}" y="${ny - nh - lh}" width="${nw * 1.24}" height="${lh}" rx="${lh / 2}" fill="#fff" stroke="${INK}" stroke-width="1.3"/>`);
+    // нижний патрубок
+    s.push(`<path d="M${x} ${yB - Hh * 0.06} h${-14}" stroke="${INK}" stroke-width="3" stroke-linecap="round"/>`);
+
+    dimLeft(s, yT, yB, x, x - 26, fmt(calc.h), narrow);
+    dimBottom(s, x, x + D, yB + skirt, yB + skirt + 30, `Ø ${fmt(calc.d)}`);
+    if (cone) s.push(`<text x="${W - 10}" y="${padT - 14}" text-anchor="end" font-size="11.5" font-weight="700" fill="${DIM}">конусная крыша</text>`);
+    return s;
+  }
+
+  /* ---- чертёж: горизонтальная (наземная и подземная) ---- */
+  function drawHoriz(W, H, narrow) {
     const under = calc.type === 'under';
-    const NECK_H = 420, LID_H = 90, NECK_W = 700, SUP_H = 320;
-    const narrow = W < 430;
+    const NECK_H = 420, LID_H = 90, NECK_W = 700, SUP_H = 380;
     const padL = narrow ? 56 : 94, padR = narrow ? 24 : 38, padT = narrow ? 62 : 30, padB = 52;
     const k = Math.min((W - padL - padR) / calc.l, (H - padT - padB) / (calc.d + NECK_H + LID_H + (under ? 0 : SUP_H)));
     const L = calc.l * k, D = calc.d * k;
     const x = padL + (W - padL - padR - L) / 2;
     const yB = H - padB - (under ? 0 : SUP_H * k), yT = yB - D, yM = (yT + yB) / 2;
     const cap = Math.min(D * 0.12, L * 0.1);
-    const INK = '#0d2c5c', THIN = '#96acc9', DIM = '#5b7aa6', GLASS = 'rgba(255,255,255,.75)';
     const s = [];
     let groundLabel = '';
 
@@ -135,10 +287,12 @@
       // подпись рисуем последней и с подложкой, иначе крышки горловин её перекрывают
       groundLabel = `<text x="${W - 10}" y="${gy - 9}" text-anchor="end" font-size="11" font-weight="700" fill="#a8895f" stroke="#f7fbff" stroke-width="4" paint-order="stroke">уровень земли</text>`;
     } else {
-      const sw = 420 * k, sh = SUP_H * k;
-      [0.24, 0.76].forEach((t) => {
-        const sx = x + L * t - sw / 2;
-        s.push(`<path d="M${sx} ${yB} h${sw} v${sh} h${-sw} z" fill="#fff" stroke="${INK}" stroke-width="1.3"/>`);
+      // массивные опоры-сёдла (по фото клиента): трапеция с косынками под обечайкой
+      const sw = 900 * k, sh = SUP_H * k;
+      [0.26, 0.74].forEach((t) => {
+        const cx = x + L * t;
+        s.push(`<path d="M${cx - sw / 2} ${yB + sh} L${cx - sw * 0.33} ${yB} h${sw * 0.66} L${cx + sw / 2} ${yB + sh} z" fill="#fff" stroke="${INK}" stroke-width="1.5" stroke-linejoin="round"/>`);
+        [-0.16, 0, 0.16].forEach((g) => s.push(`<path d="M${cx + sw * g} ${yB + sh * 0.1} V${yB + sh}" stroke="${INK}" stroke-width="1" stroke-opacity=".65"/>`));
       });
       s.push(`<path d="M${Math.max(padL - 30, 6)} ${yB + sh} H${W - 8}" stroke="${INK}" stroke-width="1.4"/>`);
     }
@@ -153,69 +307,84 @@
       s.push(`<rect x="${rx - rw / 2}" y="${yT - 3}" width="${rw}" height="${D + 6}" rx="1.5" fill="#fff" fill-opacity=".92" stroke="${INK}" stroke-width="1.2"/>`);
     }
 
-    [0.27, 0.72].forEach((t) => {
-      const nx = x + L * t, nw = NECK_W * k, nh = NECK_H * k, lw = nw * 1.24, lh = Math.max(LID_H * k, 3.5);
+    const necks = under ? [0.27, 0.72] : [0.5];
+    necks.forEach((t) => {
+      const nx = x + L * t, nw = NECK_W * k, nh = NECK_H * k * (under ? 1 : 0.5), lw = nw * 1.24, lh = Math.max(LID_H * k, 3.5);
       s.push(`<path d="M${nx - nw / 2} ${yT} v${-nh} h${nw} v${nh}" fill="#fff" stroke="${INK}" stroke-width="1.3"/>`);
       s.push(`<rect x="${nx - lw / 2}" y="${yT - nh - lh}" width="${lw}" height="${lh}" rx="${lh / 2}" fill="#fff" stroke="${INK}" stroke-width="1.3"/>`);
     });
 
-    const xd = x - 26;
-    s.push(`<path d="M${x} ${yT} H${xd - 7}" stroke="${THIN}" stroke-width="1"/>`);
-    s.push(`<path d="M${x} ${yB} H${xd - 7}" stroke="${THIN}" stroke-width="1"/>`);
-    s.push(`<path d="M${xd} ${yT} V${yB}" stroke="${DIM}" stroke-width="1" marker-start="url(#ar)" marker-end="url(#ar)"/>`);
-    s.push(narrow
-      ? `<text x="${xd - 8}" y="${yM}" text-anchor="middle" font-size="12" font-weight="700" fill="${DIM}" transform="rotate(-90 ${xd - 8} ${yM})">Ø ${fmt(calc.d)}</text>`
-      : `<text x="${xd - 10}" y="${yM}" text-anchor="end" dominant-baseline="middle" font-size="12.5" font-weight="700" fill="${DIM}">Ø ${fmt(calc.d)}</text>`);
-
-    const yd = (under ? yB : yB + SUP_H * k) + 30;
-    s.push(`<path d="M${x} ${under ? yB : yB + SUP_H * k} V${yd + 7}" stroke="${THIN}" stroke-width="1"/>`);
-    s.push(`<path d="M${x + L} ${under ? yB : yB + SUP_H * k} V${yd + 7}" stroke="${THIN}" stroke-width="1"/>`);
-    s.push(`<path d="M${x} ${yd} H${x + L}" stroke="${DIM}" stroke-width="1" marker-start="url(#ar)" marker-end="url(#ar)"/>`);
-    s.push(`<text x="${x + L / 2}" y="${yd}" text-anchor="middle" dominant-baseline="middle" font-size="12.5" font-weight="700" fill="${DIM}" stroke="#f7fbff" stroke-width="5" paint-order="stroke">${fmt(calc.l)}</text>`);
-
+    dimLeft(s, yT, yB, x, x - 26, `Ø ${fmt(calc.d)}`, narrow);
+    const yBase = under ? yB : yB + SUP_H * k;
+    dimBottom(s, x, x + L, yBase, yBase + 30, fmt(calc.l));
     if (groundLabel) s.push(groundLabel);
+    return s;
+  }
 
+  function drawBlueprint() {
+    const W = bpSvg.clientWidth;
+    const H = bpSvg.clientHeight;
+    if (!W || !H) return;
+    const narrow = W < 430;
+    const s = isRect() ? drawRect(W, H, narrow) : isVert() ? drawVert(W, H, narrow) : drawHoriz(W, H, narrow);
     bpSvg.setAttribute('viewBox', `0 0 ${W} ${H}`);
     bpSvg.innerHTML = `<defs><marker id="ar" markerWidth="9" markerHeight="9" refX="8.5" refY="4.5" orient="auto-start-reverse" markerUnits="userSpaceOnUse"><path d="M0 0 L9 4.5 L0 9 Z" fill="${DIM}"/></marker></defs>${s.join('')}`;
-    bpSvg.setAttribute('aria-label', `Чертёж: ${calc.type === 'under' ? 'подземная' : 'наземная'} горизонтальная ёмкость ${calc.v} м³, диаметр ${calc.d} мм, длина ${calc.l} мм`);
+    bpSvg.setAttribute('aria-label', `Чертёж: ${CATALOG[calc.type].label} ёмкость ${calc.v} м³`);
   }
 
   function render() {
-    fieldEl('v').value = Number.isInteger(calc.v) ? calc.v : calc.v.toFixed(1).replace('.', ',');
-    fieldEl('d').value = fmt(calc.d);
-    fieldEl('l').value = fmt(calc.l);
+    const fields = FIELDS[calc.type];
+    $$('.stepper', sizer).forEach((st) => {
+      const f = st.dataset.field;
+      st.hidden = !fields.includes(f);
+      $('label', st).textContent = LABELS[f];
+    });
+    fields.forEach((f) => {
+      fieldEl(f).value = f === 'v'
+        ? (Number.isInteger(calc.v) ? calc.v : calc.v.toFixed(1).replace('.', ','))
+        : fmt(calc[f]);
+    });
+    if (volTag) volTag.textContent = `${Number.isInteger(calc.v) ? calc.v : String(calc.v).replace('.', ',')} м³`;
+
     const n = nearest();
-    note.innerHTML = `Ближайший типоразмер из каталога: <b>${n.code}</b> · ${fmt(n.l)} × Ø ${fmt(n.d)} мм <button type="button" class="bp-use">подставить</button>`;
-    $('.bp-use', note).addEventListener('click', () => {
-      calc.d = n.d; calc.l = n.l; calc.v = round1(volOf(n.d, n.l)); render();
+    note.innerHTML = `Ближайший типоразмер из каталога: <b>${n.code}</b> · ${n.text}` +
+      (n.set ? ' <button type="button" class="bp-use">подставить</button>' : '');
+    const use = $('.bp-use', note);
+    if (use) use.addEventListener('click', () => {
+      Object.assign(calc, n.set);
+      calc.v = round1(isRect() ? volBox(calc.l, calc.w, calc.h) : volCyl(calc.d, calc.l));
+      render();
     });
     drawBlueprint();
   }
 
-  if (hasCalc) {
-  $$('.stepper', sizer).forEach((st) => {
-    const f = st.dataset.field;
-    const input = $('input', st);
-    $$('button', st).forEach((b) => b.addEventListener('click', () => {
-      apply(f, calc[f] + Number(b.dataset.step) * stepOf(f));
-    }));
-    input.addEventListener('change', () => apply(f, input.value));
-    input.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); apply(f, input.value); } });
-  });
-
-  $$('.bp-type button', sizer).forEach((b) => b.addEventListener('click', () => {
-    calc.type = b.dataset.type;
-    $$('.bp-type button', sizer).forEach((o) => o.setAttribute('aria-pressed', String(o === b)));
+  function setType(type) {
+    calc.type = type;
+    Object.assign(calc, PRESETS[type]);
+    calc.v = round1(isRect() ? volBox(calc.l, calc.w, calc.h) : isVert() ? volCyl(calc.d, calc.h) : volCyl(calc.d, calc.l));
+    $$('.bp-type button', sizer).forEach((o) => o.setAttribute('aria-pressed', String(o.dataset.type === type)));
     render();
-  }));
-
-  new ResizeObserver(drawBlueprint).observe(bpSvg);
-  render();
   }
 
-  // Карточка каталога открывает калькулятор в нужном исполнении
+  if (hasCalc) {
+    $$('.stepper', sizer).forEach((st) => {
+      const f = st.dataset.field;
+      const input = $('input', st);
+      $$('button', st).forEach((b) => b.addEventListener('click', () => {
+        apply(f, calc[f] + Number(b.dataset.step) * stepOf(f));
+      }));
+      input.addEventListener('change', () => apply(f, input.value));
+      input.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); apply(f, input.value); } });
+    });
 
+    $$('.bp-type button', sizer).forEach((b) => b.addEventListener('click', () => setType(b.dataset.type)));
 
+    // на странице типа форма зафиксирована: переключатель не показываем
+    const start = sizer.dataset.calc || 'under';
+    if (sizer.hasAttribute('data-calc-fixed')) $('.bp-type', sizer).hidden = true;
+    new ResizeObserver(drawBlueprint).observe(bpSvg);
+    setType(start);
+  }
 
   /* ---------- Формы заявки: в секции и в попапе ---------- */
   const forms = $$('.request-form');
@@ -293,7 +462,10 @@
   if (cta) cta.addEventListener('click', () => openModal({
     purpose: 'Ёмкости',
     volume: Number.isInteger(calc.v) ? calc.v : String(calc.v).replace('.', ','),
-    comment: `Горизонтальная ${CATALOG[calc.type].label} ёмкость: диаметр ${calc.d} мм, длина ${calc.l} мм.`,
+    comment: `${CATALOG[calc.type].label[0].toUpperCase()}${CATALOG[calc.type].label.slice(1)} ёмкость: ` + (
+      calc.type === 'rect' ? `${calc.l} × ${calc.w} × ${calc.h} мм.`
+        : calc.type === 'vert' ? `диаметр ${calc.d} мм, высота ${calc.h} мм.`
+          : `диаметр ${calc.d} мм, длина ${calc.l} мм.`),
   }));
 
   /* ---------- Карта проектов ---------- */
