@@ -883,7 +883,7 @@ def about_page(base="../"):
     <div class="mt-10 grid gap-8 md:grid-cols-3">
       <div class="eq-group"><h3 class="font-display text-lg font-medium text-navy">Производство</h3><p class="mt-3 leading-relaxed text-muted">Ёмкости и резервуары до 100 м³, КНС, локальные очистные сооружения, септики, жиро-, песко- и песконефтеуловители.</p></div>
       <div class="eq-group"><h3 class="font-display text-lg font-medium text-navy">Услуги</h3><p class="mt-3 leading-relaxed text-muted">Проектирование и чертежи, шефмонтаж и пусконаладка, футеровка бетонных и стальных резервуаров, ремонт оборудования и компрессоров.</p></div>
-      <div class="eq-group"><h3 class="font-display text-lg font-medium text-navy">Поставка</h3><p class="mt-3 leading-relaxed text-muted">Компрессоры HIBLOW, AirMac и Jecod, фильтроэлементы «Технофильтр», станции биоочистки Юнилос и Астра, биопрепараты.</p></div>
+      <div class="eq-group"><h3 class="font-display text-lg font-medium text-navy">Поставка</h3><p class="mt-3 leading-relaxed text-muted">Представляем в Казахстане <b class="font-bold text-navy">Salher</b>, <b class="font-bold text-navy">Hiblow</b>, <b class="font-bold text-navy">«Технофильтр»</b> и <b class="font-bold text-navy">«Юнилос»</b>. Поставляем компрессоры HIBLOW, AirMac и Jecod, фильтроэлементы, станции биологической очистки и биопрепараты.</p></div>
     </div>
   </div>
 </section>
