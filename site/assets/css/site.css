@@ -132,12 +132,13 @@
       linear-gradient(0deg, rgba(6, 22, 58, .94) 0%, rgba(6, 22, 58, .6) 36%, rgba(6, 22, 58, 0) 68%),
       linear-gradient(90deg, rgba(6, 22, 58, .5) 0%, rgba(6, 22, 58, 0) 62%);
   }
-  /* На телефоне текст занимает почти весь кадр, а первый слайд светлый — затемняем плотнее */
-  @media (max-width: 767px) {
+  /* На телефоне и планшете текст лежит поверх всего кадра, а первый слайд светлый — затемняем плотнее */
+  @media (max-width: 1023px) {
     .hero-shade {
       background:
         linear-gradient(180deg, rgba(6, 22, 58, .62) 0%, rgba(6, 22, 58, .1) 30%),
-        linear-gradient(0deg, rgba(6, 22, 58, .95) 0%, rgba(6, 22, 58, .74) 42%, rgba(6, 22, 58, .2) 74%);
+        linear-gradient(0deg, rgba(6, 22, 58, .95) 0%, rgba(6, 22, 58, .78) 46%, rgba(6, 22, 58, .35) 78%),
+        linear-gradient(0deg, rgba(6, 22, 58, .32), rgba(6, 22, 58, .32));  /* ровная плёнка: текст лежит поверх всего кадра */
     }
   }
   .glass { background: rgba(255, 255, 255, .13); border: 1px solid rgba(255, 255, 255, .24); backdrop-filter: blur(18px) saturate(140%); -webkit-backdrop-filter: blur(18px) saturate(140%); box-shadow: 0 30px 60px rgba(4, 16, 40, .28); }
