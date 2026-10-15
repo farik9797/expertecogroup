@@ -51,10 +51,12 @@ def relink(html, base):
     return html
 
 
-def layout(*, path, title, description, body, base, head_extra="", body_extra=""):
+def layout(*, path, title, description, body, base, head_extra="", body_extra="", purpose=None):
     head_chrome = relink(HEADER + "\n" + MOBILE_MENU, base)
     tail_chrome = relink(MODAL + "\n" + TOTOP + "\n" + QUICKBAR + "\n" + FOOTER, base)
     theme = block(r'<style type="text/tailwindcss">.*?</style>')
+    # на странице раздела в форме заявки оставляем только его назначение (правка клиента)
+    purpose_attr = f' data-purpose="{purpose}"' if purpose else ""
     return f"""<!doctype html>
 <html lang="ru">
 <head>
@@ -73,7 +75,7 @@ def layout(*, path, title, description, body, base, head_extra="", body_extra=""
   <link rel="stylesheet" href="{base}assets/css/site.css?v={ASSET_V}">
   {head_extra}
 </head>
-<body class="font-sans text-ink antialiased page-inner">
+<body class="font-sans text-ink antialiased page-inner"{purpose_attr}>
 <a href="#main" class="skip-link">К содержимому</a>
 
 {head_chrome}
@@ -369,7 +371,7 @@ def tank_type_page(t, base="../../../"):
 {cta_band(base, "Рассчитаем резервуар под ваш объект")}"""
     return layout(path="", title=f'{s["title"]} из полипропилена — Expert ECO Group',
                   description=f'{s["title"]}: {s["lead"]} Вода, химия и противопожарный запас. Производство в Каскелене, доставка по Казахстану и СНГ.',
-                  body=body, base=base)
+                  body=body, base=base, purpose="Ёмкости")
 
 
 def tanks_page(base="../../"):
@@ -421,7 +423,7 @@ def tanks_page(base="../../"):
 {cta_band(base, "Рассчитаем резервуар под ваш объект")}"""
     return layout(path="", title="Ёмкости и резервуары из полипропилена — Expert ECO Group",
                   description="Ёмкости из полипропилена для воды, противопожарного запаса и химии: горизонтальные наземные и подземные, вертикальные, прямоугольные. От 2 до 100 м³, производство в Каскелене.",
-                  body=body, base=base)
+                  body=body, base=base, purpose="Ёмкости")
 
 
 # ---------------------------------------------------------------- разделы оборудования
@@ -642,6 +644,17 @@ def section_photos(cat, base):
     return [(f'{base}assets/img/catalog/other/{p["image"]}', p["alt"]) for p in SECTION_PHOTOS.get(cat["slug"], [])]
 
 
+# Какое назначение подставлять в форму заявки на странице раздела (правка клиента:
+# на странице КНС в форме должна остаться только КНС, на очистных — только очистные).
+SECTION_PURPOSE = {
+    "kns": "КНС",
+    "los": "Очистные",
+    "peskouloviteli": "Очистные",
+    "zhirouloviteli": "Очистные",
+    "septiki": "Очистные",
+}
+
+
 def section_page(cat, base="../../"):
     meta = SECTIONS[cat["slug"]]
     # Присланные клиентом кадры раздела показываем первыми, затем выгрузку с Satu
@@ -704,7 +717,8 @@ def section_page(cat, base="../../"):
 
 {cta_band(base, "Подберём оборудование под вашу задачу")}"""
     return layout(path="", title=f'{cat["title"]} — Expert ECO Group',
-                  description=cat["lead"][:180], body=body, base=base)
+                  description=cat["lead"][:180], body=body, base=base,
+                  purpose=SECTION_PURPOSE.get(cat["slug"], "Другое"))
 
 
 # ---------------------------------------------------------------- каталог

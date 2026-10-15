@@ -392,6 +392,30 @@
   const modalForm = $('.request-form', modal);
 
   const setPurpose = (form, p) => { const r = $(`input[name="purpose"][value="${p}"]`, form); if (r) r.checked = true; };
+
+  // На странице раздела заявку принимаем только по этому направлению (правка клиента):
+  // лишние варианты «Назначения» убираем, подпись поля подгоняем под оборудование.
+  const pagePurpose = document.body.dataset.purpose;
+  const VOLUME_FIELD = {
+    'Ёмкости': ['Объём, м³', 'Например, 25 м³'],
+    'КНС': ['Производительность, м³/ч', 'Например, 20 м³/ч'],
+    'Очистные': ['Расход, л/с', 'Например, 10 л/с'],
+  };
+  if (pagePurpose) {
+    forms.forEach((form) => {
+      $$('input[name="purpose"]', form).forEach((r) => {
+        const fit = r.value === pagePurpose;
+        r.checked = fit;
+        r.closest('label').hidden = !fit;
+      });
+      const field = VOLUME_FIELD[pagePurpose];
+      if (field) {
+        const vol = form.elements.volume;
+        $('span', vol.closest('.field')).textContent = field[0];
+        vol.placeholder = field[1];
+      }
+    });
+  }
   const addComment = (form, text) => {
     const c = form.elements.comment;
     if (!c.value.includes(text)) c.value = c.value ? `${c.value}\n${text}` : text;
