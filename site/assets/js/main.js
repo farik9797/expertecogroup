@@ -695,6 +695,19 @@
     });
   }
 
+  /* ---------- Таблица типоразмеров: подсказка о прокрутке вбок ---------- */
+  $$('.size-table-box').forEach((box) => {
+    const wrap = box.querySelector('.size-table-wrap');
+    const sync = () => {
+      const can = wrap.scrollWidth > wrap.clientWidth + 1;
+      box.classList.toggle('is-scrollable', can);
+      box.classList.toggle('is-end', can && wrap.scrollLeft + wrap.clientWidth >= wrap.scrollWidth - 2);
+    };
+    wrap.addEventListener('scroll', sync, { passive: true });
+    window.addEventListener('resize', sync);
+    sync();
+  });
+
   $$('.year').forEach((y) => { y.textContent = new Date().getFullYear(); });
 
   /* ---------- Появление блоков при прокрутке ----------

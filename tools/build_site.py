@@ -159,11 +159,14 @@ def size_table(series, current=None, base="", cat_slug=None):
         weight = f'{r["weight"]} кг' if r["weight"] else "—"
         cls = ' class="is-current"' if current == r["v"] else ""
         rows.append(f'<tr{cls}><td><b>{r["v"]} м³</b></td><td>{dims_text(r, series["shape"])}</td><td>{weight}</td><td>{series["code"]}-{r["v"]}м3{link}</td></tr>')
-    return f"""<div class="size-table-wrap">
-  <table class="size-table">
-    <thead><tr><th>Объём</th><th>{head}</th><th>Вес</th><th>Модель</th></tr></thead>
-    <tbody>{"".join(rows)}</tbody>
-  </table>
+    return f"""<div class="size-table-box">
+  <div class="size-table-wrap">
+    <table class="size-table">
+      <thead><tr><th>Объём</th><th>{head}</th><th>Вес</th><th>Модель</th></tr></thead>
+      <tbody>{"".join(rows)}</tbody>
+    </table>
+  </div>
+  <p class="size-table-swipe"><i data-lucide="move-horizontal"></i>Листайте таблицу вбок</p>
 </div>
 <p class="mt-3 text-sm font-semibold text-muted">Размеры по данным каталога. Нужен другой объём или нестандартная форма — изготовим по вашим чертежам.</p>"""
 
@@ -776,14 +779,17 @@ def sizes_table(kind):
     rows = "".join(
         f"<tr><td><b>{m}</b></td><td>{d}</td><td>{q}</td><td>{ls}</td><td>{z}</td><td>{i}</td><td>{o}</td><td>{dn}</td></tr>"
         for m, d, q, ls, z, i, o, dn in BYT_SIZES)
-    return f"""<div class="size-table-wrap">
-  <table class="size-table size-table--wide">
-    <thead>
-      <tr><th rowspan="2">{name}</th><th rowspan="2">Габариты Д×Ш×В, мм</th><th colspan="2">Производительность</th><th rowspan="2">Залповый сброс, л</th><th colspan="3">Подводящий/отводящий патрубок</th></tr>
-      <tr><th>м³/ч</th><th>л/с</th><th>вход</th><th>выход</th><th>Ø</th></tr>
-    </thead>
-    <tbody>{rows}</tbody>
-  </table>
+    return f"""<div class="size-table-box">
+  <div class="size-table-wrap">
+    <table class="size-table size-table--wide">
+      <thead>
+        <tr><th rowspan="2">{name}</th><th rowspan="2">Габариты Д×Ш×В, мм</th><th colspan="2">Производительность</th><th rowspan="2">Залповый сброс, л</th><th colspan="3">Подводящий/отводящий патрубок</th></tr>
+        <tr><th>м³/ч</th><th>л/с</th><th>вход</th><th>выход</th><th>Ø</th></tr>
+      </thead>
+      <tbody>{rows}</tbody>
+    </table>
+  </div>
+  <p class="size-table-swipe"><i data-lucide="move-horizontal"></i>Листайте таблицу вбок</p>
 </div>
 <p class="mt-3 text-sm font-semibold text-muted">Высота подводящего и отводящего патрубка указана от дна корпуса. Нестандартный размер изготовим по вашим чертежам.</p>"""
 

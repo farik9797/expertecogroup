@@ -407,6 +407,13 @@
   .chip--link { color: var(--color-brand); transition: background-color .25s, color .25s; }
   .chip--link:hover { background: var(--color-brand); color: #fff; }
 
+  .size-table-box { position: relative; }
+  .size-table-box::after { content: ""; position: absolute; top: 1px; bottom: 1px; right: 1px; width: 46px; border-radius: 0 20px 20px 0; background: linear-gradient(90deg, rgba(255,255,255,0), #fff 78%); opacity: 0; transition: opacity .25s ease; pointer-events: none; }
+  .size-table-box.is-scrollable::after { opacity: 1; }
+  .size-table-box.is-end::after { opacity: 0; }
+  .size-table-swipe { display: none; margin-top: .7rem; align-items: center; gap: .4rem; font-size: 14px; font-weight: 700; color: var(--color-muted); }
+  .size-table-swipe svg { width: 1.05rem; height: 1.05rem; }
+  .size-table-box.is-scrollable .size-table-swipe { display: flex; }
   .size-table-wrap { overflow-x: auto; border-radius: 20px; border: 1px solid var(--color-line); background: #fff; }
   .size-table { width: 100%; border-collapse: collapse; font-size: 15px; }
   .size-table th, .size-table td { padding: .85rem 1rem; text-align: left; white-space: nowrap; }
