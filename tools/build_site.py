@@ -171,6 +171,25 @@ def size_table(series, current=None, base="", cat_slug=None):
 <p class="mt-3 text-sm font-semibold text-muted">Размеры по данным каталога. Нужен другой объём или нестандартная форма — изготовим по вашим чертежам.</p>"""
 
 
+def webp_width(path):
+    """Ширина WebP из заголовка файла: нужна, чтобы не растягивать мелкие кадры каталога."""
+    try:
+        d = Path(path).read_bytes()[:32]
+    except OSError:
+        return 0
+    if d[:4] != b"RIFF" or d[8:12] != b"WEBP":
+        return 0
+    chunk = d[12:16]
+    if chunk == b"VP8X":
+        return int.from_bytes(d[24:27], "little") + 1
+    if chunk == b"VP8L":
+        bits = int.from_bytes(d[21:25], "little")
+        return (bits & 0x3FFF) + 1
+    if chunk == b"VP8 ":
+        return int.from_bytes(d[26:28], "little") & 0x3FFF
+    return 0
+
+
 def img_src(name, base, small=False):
     """Фото клиента лежат в assets/img/photo, выгрузка с Satu — в assets/img/catalog."""
     folder = "" if name.startswith("photo/") else "catalog/"
@@ -803,7 +822,14 @@ def section_page(cat, base="../../"):
         f'<li class="feature"><span class="feature__icon"><i data-lucide="{icon}"></i></span><div><h3>{title}</h3><p>{txt}</p></div></li>'
         for icon, title, txt in meta["points"])
     uses = "".join(f"<li>{u}</li>" for u in meta["uses"])
-    lead_photo = (f'<img class="reveal aspect-[4/3] w-full rounded-[28px] object-cover" data-anim="fade-left" data-delay="300" src="{photos[0][0]}" alt="{cat["title"]}" loading="lazy">'
+    # Кадры из выгрузки каталога бывают шириной 260–560 px: на планшете колонка шире,
+    # и без ограничения такая обложка заметно мылит.
+    cover_cls = ""
+    if photos:
+        cover_file = Path("site") / photos[0][0][len(base):]
+        if 0 < webp_width(cover_file) < 720:
+            cover_cls = " sec-cover--small"
+    lead_photo = (f'<img class="reveal aspect-[4/3] w-full rounded-[28px] object-cover{cover_cls}" data-anim="fade-left" data-delay="300" src="{photos[0][0]}" alt="{cat["title"]}" loading="lazy">'
                   if photos else "")
     rest = "".join(
         f'<figure class="album-photo"><img src="{src}" alt="{alt}" loading="lazy"></figure>'

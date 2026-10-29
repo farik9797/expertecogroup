@@ -81,7 +81,7 @@
   .reveal.is-in { opacity: 1; transform: none; }
   /* На узких экранах боковые смещения не нужны — всё всплывает снизу, без риска прокрутки вбок */
   @media (max-width: 767px) {
-    .reveal[data-anim="fade-right"], .reveal[data-anim="fade-left"] { transform: translate3d(0, 44px, 0); }
+    .reveal[data-anim="fade-right"]:not(.is-in), .reveal[data-anim="fade-left"]:not(.is-in) { transform: translate3d(0, 44px, 0); }
   }
   @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
 
@@ -406,6 +406,10 @@
 
   .chip--link { color: var(--color-brand); transition: background-color .25s, color .25s; }
   .chip--link:hover { background: var(--color-brand); color: #fff; }
+
+  /* Обложка раздела: часть фото из выгрузки каталога шириной 260–560 px.
+     На планшете колонка шире фото, и без ограничения кадр расплывается. */
+  .sec-cover--small { max-width: 560px; margin-inline: auto; }
 
   .size-table-box { position: relative; }
   .size-table-box::after { content: ""; position: absolute; top: 1px; bottom: 1px; right: 1px; width: 46px; border-radius: 0 20px 20px 0; background: linear-gradient(90deg, rgba(255,255,255,0), #fff 78%); opacity: 0; transition: opacity .25s ease; pointer-events: none; }
