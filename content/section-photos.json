@@ -79,12 +79,6 @@
       "alt": "Мембраны для компрессора AirMac DB-120"
     }
   ],
-  "nasosy": [
-    {
-      "image": "200846895_pogruzhnoj-nasos-50wqd10-10-075.webp",
-      "alt": "Погружной насос 50WQD10-10-0.75"
-    }
-  ],
   "shkafy": [
     {
       "image": "115769323_shkaf-upravleniya-kns.webp",
@@ -129,20 +123,6 @@
     {
       "image": "239630577_filtroderzhateli.webp",
       "alt": "Фильтродержатели"
-    }
-  ],
-  "yunilos-astra": [
-    {
-      "image": "197759884_septik-evrolos.webp",
-      "alt": "Септик Евролос"
-    },
-    {
-      "image": "178989966_septik-yunilos-astra.webp",
-      "alt": "Септик Юнилос Астра 4"
-    },
-    {
-      "image": "239178583_septik-individualnyj.webp",
-      "alt": "Септик индивидуальный"
     }
   ],
   "zhirouloviteli-bytovye": [
@@ -201,8 +181,34 @@
   ],
   "servis": [
     {
+      "image": "uslugi-servis.webp",
+      "alt": "Сервисный люк ёмкости из полипропилена"
+    }
+  ],
+  "servis-aos": [
+    {
+      "image": "178989966_septik-yunilos-astra.webp",
+      "alt": "Станция биологической очистки Юнилос Астра"
+    }
+  ],
+  "remont-kompressorov": [
+    {
       "image": "240199212_remont-kompressorov-hiblow.webp",
       "alt": "Ремонт компрессоров Hiblow"
+    }
+  ],
+  "avtonomnye-ochistnye": [
+    {
+      "image": "197759884_septik-evrolos.webp",
+      "alt": "Септик Евролос"
+    },
+    {
+      "image": "178989966_septik-yunilos-astra.webp",
+      "alt": "Септик Юнилос Астра 4"
+    },
+    {
+      "image": "239178583_septik-individualnyj.webp",
+      "alt": "Септик индивидуальный"
     }
   ]
 }

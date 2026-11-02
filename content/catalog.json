@@ -329,6 +329,46 @@
               "H": 1500,
               "weight": null,
               "thickness": 12
+            },
+            {
+              "v": 8,
+              "L": null,
+              "W": null,
+              "H": null,
+              "weight": null,
+              "thickness": null
+            },
+            {
+              "v": 10,
+              "L": null,
+              "W": null,
+              "H": null,
+              "weight": null,
+              "thickness": null
+            },
+            {
+              "v": 15,
+              "L": null,
+              "W": null,
+              "H": null,
+              "weight": null,
+              "thickness": null
+            },
+            {
+              "v": 20,
+              "L": null,
+              "W": null,
+              "H": null,
+              "weight": null,
+              "thickness": null
+            },
+            {
+              "v": 25,
+              "L": null,
+              "W": null,
+              "H": null,
+              "weight": null,
+              "thickness": null
             }
           ],
           "images": [
@@ -404,6 +444,38 @@
             },
             {
               "v": 30,
+              "L": null,
+              "W": null,
+              "H": null,
+              "weight": null,
+              "thickness": null
+            },
+            {
+              "v": 35,
+              "L": null,
+              "W": null,
+              "H": null,
+              "weight": null,
+              "thickness": null
+            },
+            {
+              "v": 40,
+              "L": null,
+              "W": null,
+              "H": null,
+              "weight": null,
+              "thickness": null
+            },
+            {
+              "v": 45,
+              "L": null,
+              "W": null,
+              "H": null,
+              "weight": null,
+              "thickness": null
+            },
+            {
+              "v": 50,
               "L": null,
               "W": null,
               "H": null,

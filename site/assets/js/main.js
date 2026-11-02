@@ -82,6 +82,8 @@
   const FIELDS = { rect: ['l', 'w', 'h'], vert: ['v', 'd', 'h'], ground: ['v', 'd', 'l'], under: ['v', 'd', 'l'] };
   const LABELS = { v: 'Объём, м³', d: 'Диаметр, мм', l: 'Длина, мм', w: 'Ширина, мм', h: 'Высота, мм' };
   const LIM = { v: [1, 120], d: [1000, 3000], l: [1000, 20000], w: [800, 3000], h: [800, 6000] };
+  // Вертикальные корпуса делаем шире горизонтальных: до 3600 мм (правка клиента)
+  const VERT_D = [1000, 3600];
   const PRESETS = {
     rect: { l: 2550, w: 1250, h: 1250 },
     vert: { d: 2000, h: 3200 },
@@ -108,12 +110,13 @@
   const stepOf = (f) => (f === 'v' ? (calc.v < 10 ? 1 : 5) : f === 'd' ? 50 : f === 'l' ? (calc.type === 'rect' ? 50 : 100) : 50);
   const isRect = () => calc.type === 'rect';
   const isVert = () => calc.type === 'vert';
+  const limOf = (f) => (f === 'd' && isVert() ? VERT_D : LIM[f]);
 
   function apply(field, raw) {
     const num = parseFloat(String(raw).replace(',', '.').replace(/[^\d.]/g, ''));
     if (!Number.isFinite(num)) return render();
     if (isRect()) {
-      calc[field] = clamp(round(num, 10), LIM[field]);
+      calc[field] = clamp(round(num, 10), limOf(field));
       calc.v = round1(volBox(calc.l, calc.w, calc.h));
     } else if (isVert()) {
       if (field === 'v') {
@@ -121,7 +124,7 @@
         calc.h = clamp(round(lenCyl(calc.v, calc.d), 10), LIM.h);
         if (Math.abs(volCyl(calc.d, calc.h) - calc.v) > 0.15) calc.v = round1(volCyl(calc.d, calc.h));
       } else if (field === 'd') {
-        calc.d = clamp(round(num, 50), LIM.d);
+        calc.d = clamp(round(num, 50), limOf('d'));
         calc.h = clamp(round(lenCyl(calc.v, calc.d), 10), LIM.h);
         if (Math.abs(volCyl(calc.d, calc.h) - calc.v) > 0.15) calc.v = round1(volCyl(calc.d, calc.h));
       } else {
@@ -133,7 +136,7 @@
       calc.l = clamp(round(lenCyl(calc.v, calc.d), 10), LIM.l);
       if (Math.abs(volCyl(calc.d, calc.l) - calc.v) > 0.15) calc.v = round1(volCyl(calc.d, calc.l));
     } else if (field === 'd') {
-      calc.d = clamp(round(num, 50), LIM.d);
+      calc.d = clamp(round(num, 50), limOf('d'));
       calc.l = clamp(round(lenCyl(calc.v, calc.d), 10), LIM.l);
       if (Math.abs(volCyl(calc.d, calc.l) - calc.v) > 0.15) calc.v = round1(volCyl(calc.d, calc.l));
     } else {
@@ -686,6 +689,18 @@
   const galMain = $('.gal__main');
   if (galMain) {
     const thumbs = $$('.gal__thumb');
+    // Вертикальный снимок в рамке 4:3 терял половину кадра — такие показываем целиком
+    const fitMain = () => {
+      const r = galMain.getBoundingClientRect();
+      const natAR = galMain.naturalWidth / galMain.naturalHeight;
+      if (!r.height || !Number.isFinite(natAR) || !natAR) return;
+      const boxAR = r.width / r.height;
+      const keep = Math.min(boxAR, natAR) / Math.max(boxAR, natAR);
+      galMain.classList.toggle('is-contain', keep < 0.72);
+    };
+    galMain.addEventListener('load', fitMain);
+    window.addEventListener('resize', fitMain);
+    if (galMain.complete) fitMain();
     thumbs.forEach((t, i) => {
       if (i === 0) t.setAttribute('aria-current', 'true');
       t.addEventListener('click', () => {
