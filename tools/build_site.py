@@ -998,7 +998,7 @@ def catalog_page(base="../"):
             src = f'{base}assets/img/catalog/other/{name}' if name else f'{base}assets/img/cat-water.webp'
             local = Path("site/assets/img/catalog/other") / name if name else Path("site/assets/img/cat-water.webp")
             tiles += tile(c["title"], f'{base}catalog/{c["slug"]}/', src,
-                          SECTIONS[c["slug"]]["facts"][0][0], base, fit=fit_class(local))
+                          SECTIONS[c["slug"]]["facts"][0][0], base)
         groups_html += f"""<section class="px-4 py-8 md:px-6" id="{anchors.get(group, '')}">
   <div class="mx-auto max-w-7xl">
     <h2 class="section-title reveal" data-anim="fade-right" data-delay="150">{group}</h2>
