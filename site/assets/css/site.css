@@ -101,9 +101,9 @@
   .hero-bg__img.is-active { opacity: 1; }
   /* Узкий панорамный кадр (2,2:1) в режиме cover увеличивался в 1,7 раза и терял края.
      Показываем его целиком, а пустое место заполняет размытая копия кадра (background-image в разметке).
-     На телефоне экран вертикальный — кадр целиком стал бы узкой полоской, там остаётся заполнение. */
+     На вертикальных экранах (телефон, планшет стоя) кадр целиком стал бы узкой полоской — там остаётся заполнение. */
   .hero-bg__img--whole { background-size: cover; background-position: center; }
-  @media (min-width: 768px) { .hero-bg__img--whole { object-fit: contain; } }
+  @media (min-width: 768px) and (orientation: landscape) { .hero-bg__img--whole { object-fit: contain; } }
   .hero-tabs { display: flex; flex-wrap: wrap; gap: .5rem; }
   .hero-tab { padding: .6rem 1rem; border-radius: 999px; font-size: 14px; font-weight: 700; line-height: 1.2; color: rgba(255, 255, 255, .85); background: rgba(255, 255, 255, .12); border: 1px solid rgba(255, 255, 255, .22); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); cursor: pointer; transition: background-color .3s, color .3s, border-color .3s; }
   .hero-tab:hover { background: rgba(255, 255, 255, .24); color: #fff; }
@@ -547,7 +547,12 @@
   .lightbox__next { right: 16px; top: 50%; transform: translateY(-50%); }
   .lightbox.is-single .lightbox__prev, .lightbox.is-single .lightbox__next { display: none; }
   .lightbox__count { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); font-size: 14px; font-weight: 800; color: rgba(255, 255, 255, .8); }
-  @media (max-width: 767px) {
+  /* на горизонтальном экране оставляем поля под стрелки по бокам */
+  @media (min-width: 768px) and (orientation: landscape) {
+    .lightbox__img { max-width: calc(100vw - 10rem); }
+  }
+  /* на вертикальном экране снимок во всю ширину — стрелки уходят вниз, чтобы не лежать поверх него */
+  @media (max-width: 767px), (orientation: portrait) {
     .lightbox__prev, .lightbox__next { top: auto; bottom: 10px; transform: none; }
   }
 
