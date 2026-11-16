@@ -1208,8 +1208,8 @@ ALBUMS = [
       "photo/gorizontalnaya-tral.webp", "proj-horizontal.webp"]),
     ("rezervuar-vertikalnyj-nazemnyj", "Резервуар цилиндрический вертикальный наземный", "Вертикальные резервуары в насосных, на объектах и при отгрузке.",
      ["photo/vertikalnaya-lyuk-1.webp", "photo/vertikalnye-osnovanie.webp", "photo/vertikalnye-nasosnaya.webp",
-      "photo/vertikalnaya-obekt-1.webp", "catalog/vertikalnaya-nazemnaya-1.webp", "catalog/vertikalnaya-nazemnaya-2.webp",
-      "photo/otgruzka-vertikalnyh.webp"]),
+      "photo/vertikalnaya-obekt-1.webp", "catalog/vertikalnaya-nazemnaya-2.webp",
+      "photo/otgruzka-vertikalnyh.webp"]),   # vertikalnaya-nazemnaya-1 не берём: исходник 250 px, на телефоне мылит
     ("rezervuar-pryamougolnyj", "Резервуар прямоугольный", "Прямоугольные ёмкости в металлическом каркасе.",
      ["catalog/pryamougolnaya-nazemnaya-1.webp", "photo/pryamougolnaya-nasosnaya.webp"]),
     ("zhirouloviteli-promyshlennye", "Жироуловитель промышленный", "Жироуловители для столовых, ресторанов и пищевых производств.",
