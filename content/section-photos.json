@@ -31,8 +31,8 @@
       "alt": "Очистное сооружение ливневых сточных вод 50 л/сек"
     },
     {
-      "image": "125384769_ochistnoe-sooruzhenie-livnevyh.webp",
-      "alt": "Очистное сооружение ливневых сточных вод от 1 до 80 л/сек"
+      "image": "ochistnye-stanciya.webp",
+      "alt": "Очистное сооружение на объекте перед засыпкой"
     }
   ],
   "kompressory": [
@@ -133,8 +133,8 @@
   ],
   "zhirouloviteli-promyshlennye": [
     {
-      "image": "73302226_zhiroulovitel-promyshlennyj-iz.webp",
-      "alt": "Жироуловитель промышленный из полипропилена KR 3,6-240"
+      "image": "zhiroulovitel-promyshlennyj-1200.webp",
+      "alt": "Промышленный жироуловитель из полипропилена"
     },
     {
       "image": "107355522_zhiroulovitel-iz-polipropilena.webp",
@@ -186,6 +186,10 @@
     }
   ],
   "servis-aos": [
+    {
+      "image": "servis-aos-1280.webp",
+      "alt": "Обслуживание подземных станций биологической очистки на объекте"
+    },
     {
       "image": "178989966_septik-yunilos-astra.webp",
       "alt": "Станция биологической очистки Юнилос Астра"

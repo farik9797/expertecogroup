@@ -308,7 +308,9 @@ TANK_TYPES = [
         "title": "Прямоугольная наземная ёмкость",
         "short": "Прямоугольная наземная",
         "lead": "Резервуар из листового полипропилена в металлическом каркасе: компактно встаёт вдоль стены и в технические помещения. Типовые объёмы 2–25 м³.",
-        "extra_images": ["himicheskaya-pryamougolnaya-1", "himicheskaya-pryamougolnaya-2"],
+        "extra_images": ["himicheskaya-pryamougolnaya-1", "himicheskaya-pryamougolnaya-2",
+                         "photo/pryamougolnaya-nasosnaya"],
+        "lead_image": "pryamougolnaya-nazemnaya-1",  # клиент просил фото «просто добавить», главное не менять
         # Правка клиента: кадры 2, 3 и 5 сняты; 4-й — копия 1-го, поэтому тоже убран
         "drop_images": ["pryamougolnaya-nazemnaya-2", "pryamougolnaya-nazemnaya-3",
                         "himicheskaya-pryamougolnaya-1", "himicheskaya-pryamougolnaya-2"],
@@ -329,6 +331,9 @@ def tank_type(t):
     s["images"] = fresh + s["images"] + [i for i in extra if i not in fresh]
     drop = set(t.get("drop_images", []))  # кадры, зачёркнутые клиентом в правках
     s["images"] = [i for i in s["images"] if i not in drop]
+    lead = t.get("lead_image")
+    if lead in s["images"]:
+        s["images"] = [lead] + [i for i in s["images"] if i != lead]
     s["uses"] = s["uses"] + [u for u in t["extra_uses"] if u not in s["uses"]]
     s["title"] = t["title"]
     s["short"] = t["short"]
@@ -943,7 +948,7 @@ def section_page(cat, base="../../"):
 # ---------------------------------------------------------------- каталог
 DIRECTIONS = [
     # Порядок задан клиентом цифрами на скриншоте: очистные → КНС → ёмкости.
-    ("Очистные сооружения", "catalog/los/", "assets/img/hero-los-1280.webp",
+    ("Очистные сооружения", "catalog/los/", "assets/img/cat-ochistnye.webp",
      "Песко- и нефтеуловители, комбинированные установки, очистные ливневых стоков. Подбор по расходу и составу стока.",
      "1–50 л/с"),
     ("Канализационные насосные станции", "catalog/kns/", "assets/img/hero-kns-1280.webp",
