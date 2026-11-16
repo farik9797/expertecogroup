@@ -19,6 +19,7 @@ s = re.sub(r'(href|src)="(?!https?:|#|tel:|mailto:|//)([^"]+)"', lambda m: f'{m.
 s = re.sub(r'(imagesrcset|srcset)="([^"]+)"',
            lambda m: f'{m.group(1)}="' + re.sub(r'(^|,\s*)(?!https?:)', lambda x: x.group(1) + '../', m.group(2)) + '"', s)
 s = s.replace('href="#', 'href="../index.html#')
+s = s.replace('url(assets/', 'url(../assets/')  # подложка фона слайда задана в style
 
 # фон первого слайда — монтаж на объекте
 s = re.sub(r'src="\.\./assets/img/hero-obzor-1280\.webp" srcset="[^"]+"',

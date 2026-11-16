@@ -10,7 +10,7 @@
 """
 from pathlib import Path
 
-from PIL import Image, ImageDraw, ImageFont, ImageStat
+from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont, ImageStat
 
 ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / "content/client-photos"
@@ -113,12 +113,12 @@ JOBS = {
         (None, [("hero-ochistnye-1280.webp", {"width": 1280}), ("hero-ochistnye-800.webp", {"width": 800}),
                 ("catalog/other/ochistnye-stanciya.webp", {"width": 1280})] + photo_set("ochistnye-stanciya")),
         ("crop43", [("cat-ochistnye.webp", {"width": 768})]),
+        ("blur", [("hero-ochistnye-blur.webp", {"width": 480})]),
     ],
     "zhiroulovitel-promyshlennyj.jpg": [("pad43", [("catalog/other/zhiroulovitel-promyshlennyj-1200.webp", {"width": 1200})])],
     "servis.jpg": [
         (None, [("servis-1400.webp", {"width": 1400}), ("servis-800.webp", {"width": 800})]),
         ("crop43-left", [("catalog/other/servis-aos-1280.webp", {"width": 1280})]),    # люки станций
-        ("crop43-right", [("catalog/other/uslugi-servis.webp", {"width": 1280})]),     # проверка автоматики
     ],
 }
 
@@ -128,20 +128,25 @@ PREP = {
     "crop43-left": lambda im: crop43(im, "left"),
     "crop43-right": lambda im: crop43(im, "right"),
     "pad43": lambda im: pad43(im, (247, 247, 247)),
+    # подложка для фона слайда: размытая и притемнённая копия того же кадра
+    "blur": lambda im: ImageEnhance.Brightness(fit(im, width=480).filter(ImageFilter.GaussianBlur(14))).enhance(.8),
 }
+
+# Фоны слайдов на главной: надпись по центру кадра попадает ровно под заголовок, поэтому на них её нет.
+# Подложку тоже не подписываем — она размыта.
+NO_WATERMARK = {"hero-ochistnye-1280.webp", "hero-ochistnye-800.webp", "hero-ochistnye-blur.webp"}
 
 
 def main():
     for src, variants in JOBS.items():
         base = Image.open(SRC / src).convert("RGB")
         for prep, outputs in variants:
-            master = PREP[prep](base)
-            if src not in AI_IMAGES:
-                master = watermark(master)
+            clean = PREP[prep](base)
+            marked = clean if src in AI_IMAGES else watermark(clean)
             for rel, size in outputs:
                 dest = IMG / rel
                 dest.parent.mkdir(parents=True, exist_ok=True)
-                fit(master, **size).save(dest, "WEBP", quality=84, method=6)
+                fit(clean if rel in NO_WATERMARK else marked, **size).save(dest, "WEBP", quality=84, method=6)
                 print(f"{rel:52} {Image.open(dest).size}")
 
 
