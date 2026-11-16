@@ -733,6 +733,74 @@
     });
   }
 
+  /* ---------- Просмотр фото крупно: альбомы и галерея товара ----------
+     Клик по снимку открывает его во весь экран; стрелки, свайп и Esc. */
+  const albumImgs = $$('.album-photo img');
+  if (albumImgs.length || galMain) {
+    const box = document.createElement('dialog');
+    box.className = 'lightbox';
+    box.setAttribute('aria-label', 'Просмотр фото');
+    box.innerHTML = `
+      <img class="lightbox__img" alt="">
+      <button type="button" class="lightbox__btn lightbox__close" aria-label="Закрыть"><i data-lucide="x"></i></button>
+      <button type="button" class="lightbox__btn lightbox__prev" aria-label="Предыдущее фото"><i data-lucide="chevron-left"></i></button>
+      <button type="button" class="lightbox__btn lightbox__next" aria-label="Следующее фото"><i data-lucide="chevron-right"></i></button>
+      <span class="lightbox__count"></span>`;
+    document.body.appendChild(box);
+    icons();
+    const big = $('.lightbox__img', box);
+    let list = [];
+    let pos = 0;
+    const draw = () => {
+      big.src = list[pos].src;
+      big.alt = list[pos].alt;
+      $('.lightbox__count', box).textContent = list.length > 1 ? `${pos + 1} / ${list.length}` : '';
+      box.classList.toggle('is-single', list.length < 2);
+    };
+    const step = (d) => { pos = (pos + d + list.length) % list.length; draw(); };
+    const open = (items, start) => {
+      list = items;
+      pos = start;
+      draw();
+      box.showModal();
+      document.body.style.overflow = 'hidden';
+    };
+    const close = () => { box.close(); document.body.style.overflow = ''; };
+    box.addEventListener('close', () => { document.body.style.overflow = ''; });
+    box.addEventListener('cancel', (e) => { e.preventDefault(); close(); });
+    box.addEventListener('click', (e) => { if (e.target === box) close(); });
+    $('.lightbox__close', box).addEventListener('click', close);
+    $('.lightbox__prev', box).addEventListener('click', () => step(-1));
+    $('.lightbox__next', box).addEventListener('click', () => step(1));
+    box.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') step(-1);
+      if (e.key === 'ArrowRight') step(1);
+    });
+    let x0 = null;
+    box.addEventListener('pointerdown', (e) => { x0 = e.clientX; });
+    box.addEventListener('pointerup', (e) => {
+      if (x0 === null || list.length < 2) return;
+      const dx = e.clientX - x0;
+      x0 = null;
+      if (Math.abs(dx) > 50) step(dx < 0 ? 1 : -1);
+    });
+
+    // в альбоме — исходный файл, а не уменьшенная копия из srcset
+    const albumItems = albumImgs.map((i) => ({ src: i.getAttribute('src'), alt: i.alt }));
+    albumImgs.forEach((img, k) => img.addEventListener('click', () => open(albumItems, k)));
+
+    if (galMain) {
+      galMain.addEventListener('click', () => {
+        const thumbs = $$('.gal__thumb');
+        const items = thumbs.length
+          ? thumbs.map((t) => ({ src: t.dataset.full, alt: galMain.alt }))
+          : [{ src: galMain.getAttribute('src'), alt: galMain.alt }];
+        const cur = thumbs.findIndex((t) => t.getAttribute('aria-current') === 'true');
+        open(items, Math.max(0, cur));
+      });
+    }
+  }
+
   /* ---------- Таблица типоразмеров: подсказка о прокрутке вбок ---------- */
   $$('.size-table-box').forEach((box) => {
     const wrap = box.querySelector('.size-table-wrap');

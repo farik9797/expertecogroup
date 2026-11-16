@@ -1,5 +1,6 @@
 """Фото клиента: из исходников в content/client-photos собирает все версии для сайта
-и наносит на каждую неброскую надпись «Expert ECO Group» (правка клиента № 9).
+и наносит на реальные снимки неброскую надпись «Expert ECO Group» (правка клиента № 9).
+Картинки, сгенерированные нейросетью (AI_IMAGES), идут без надписи — так попросил клиент.
 
 Запуск: python3 tools/client_photos.py   (нужен Pillow: python3 -m pip install pillow)
 
@@ -21,6 +22,11 @@ FONTS = [
     "C:/Windows/Fonts/timesi.ttf",
 ]
 TEXT = "Expert ECO Group"
+
+# Сгенерированы нейросетью: у kns-kotlovan и servis в оригиналах метка C2PA «trainedAlgorithmicMedia»
+# от OpenAI, у остальных — формат вывода генератора (1672×941, 1024×1536) и сама картинка-рендер.
+AI_IMAGES = {"kns-kotlovan.jpg", "servis.jpg", "zhiroulovitel-promyshlennyj.jpg",
+             "los-razrez.webp", "los-montazh-kran.webp", "scheme-project.webp"}
 
 
 def font_path():
@@ -129,7 +135,9 @@ def main():
     for src, variants in JOBS.items():
         base = Image.open(SRC / src).convert("RGB")
         for prep, outputs in variants:
-            master = watermark(PREP[prep](base))
+            master = PREP[prep](base)
+            if src not in AI_IMAGES:
+                master = watermark(master)
             for rel, size in outputs:
                 dest = IMG / rel
                 dest.parent.mkdir(parents=True, exist_ok=True)

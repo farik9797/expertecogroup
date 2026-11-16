@@ -527,6 +527,24 @@
   .album-photo { overflow: hidden; border-radius: 22px; background: var(--color-mist); }
   .album-photo img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; transition: transform .8s var(--ease); }
   .album-photo:hover img { transform: scale(1.04); }
+  .album-photo img, .gal__main { cursor: zoom-in; }
+
+  /* Просмотр фото крупно (альбомы, галерея товара) */
+  .lightbox { width: 100vw; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: rgb(6, 22, 58); overflow: hidden; }
+  .lightbox[open] { display: grid; place-items: center; }
+  .lightbox::backdrop { background: transparent; }
+  .lightbox__img { max-width: calc(100vw - 2rem); max-height: calc(100dvh - 7rem); object-fit: contain; border-radius: 14px; user-select: none; -webkit-user-drag: none; }
+  .lightbox__btn { position: absolute; display: grid; place-items: center; width: 48px; height: 48px; border-radius: 999px; background: rgba(255, 255, 255, .14); color: #fff; cursor: pointer; transition: background-color .25s; }
+  .lightbox__btn:hover { background: rgba(255, 255, 255, .26); }
+  .lightbox__btn svg { width: 24px; height: 24px; }
+  .lightbox__close { top: 16px; right: 16px; }
+  .lightbox__prev { left: 16px; top: 50%; transform: translateY(-50%); }
+  .lightbox__next { right: 16px; top: 50%; transform: translateY(-50%); }
+  .lightbox.is-single .lightbox__prev, .lightbox.is-single .lightbox__next { display: none; }
+  .lightbox__count { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); font-size: 14px; font-weight: 800; color: rgba(255, 255, 255, .8); }
+  @media (max-width: 767px) {
+    .lightbox__prev, .lightbox__next { top: auto; bottom: 10px; transform: none; }
+  }
 
   /* ---------- Карта проектов ---------- */
   .map-layout { display: grid; gap: 1.25rem; }
