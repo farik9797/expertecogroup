@@ -35,7 +35,7 @@
       --ease-out-expo: cubic-bezier(.22, 1, .36, 1);
     }
   </style>
-  <link rel="stylesheet" href="../assets/css/site.css?v=100">
+  <link rel="stylesheet" href="../assets/css/site.css?v=101">
 </head>
 <body class="font-sans text-ink antialiased">
 <a href="../index.html#main" class="skip-link">К содержимому</a>
@@ -56,10 +56,7 @@
       <a class="nav-in nav-link" href="../proekty/">Проекты</a>
       <a class="nav-in nav-link" href="../kontakty/">Контакты</a>
     </nav>
-    <a href="tel:+77774841822" class="nav-in nav-phone ml-auto inline-flex shrink-0 items-center gap-2 rounded-full px-3 py-2 text-[15px] font-bold xl:ml-0" aria-label="Позвонить: +7 777 484-18-22">
-      <i data-lucide="phone" class="size-4"></i><span class="hidden xl:inline">+7 777 484-18-22</span>
-    </a>
-    <a href="../index.html#request" class="nav-in btn btn-primary btn-sm shrink-0"><span class="sm:hidden">Заявка</span><span class="max-sm:hidden">Рассчитать стоимость</span></a>
+    <a href="../index.html#request" class="nav-in btn btn-primary btn-sm ml-auto shrink-0 lg:ml-0"><span class="sm:hidden">Заявка</span><span class="max-sm:hidden">Рассчитать стоимость</span></a>
     <button type="button" class="nav-in burger grid size-11 shrink-0 place-items-center rounded-full lg:hidden" aria-label="Открыть меню" aria-expanded="false" aria-controls="mobile-menu">
       <i data-lucide="menu" class="size-6"></i>
     </button>
@@ -360,7 +357,7 @@
           </figcaption>
         </figure>
         <figure class="srv-panel" data-srv="servis">
-          <img src="../assets/img/photo/vertikalnye-nasosnaya.webp" alt="Сервисное обслуживание: вертикальные ёмкости в насосной" loading="lazy">
+          <img src="../assets/img/servis-1400.webp" srcset="../assets/img/servis-800.webp 800w, ../assets/img/servis-1400.webp 1400w" sizes="(max-width: 899px) 100vw, 60vw" alt="Сервисное обслуживание: проверка станций и автоматики на объекте" loading="lazy">
           <figcaption>
             <h3>Сервисное обслуживание</h3>
             <p>Регламентное обслуживание очистных и насосных станций, футеровка бетонных и стальных резервуаров, ремонт полипропиленового оборудования и компрессоров.</p>
@@ -444,20 +441,20 @@
         <p class="mt-4 max-w-xl leading-relaxed text-muted">Ёмкости, КНС и очистные сооружения: изготовление в Каскелене, отгрузка и монтаж на объектах заказчиков.</p>
       </div>
       <div class="flex flex-wrap gap-3">
-        <a href="../fotoalbom/" class="btn btn-primary">Фотоальбом <i data-lucide="images" class="size-5"></i></a>
-        <a href="../karta-proektov/" class="btn btn-ghost">Карта проектов <i data-lucide="map-pin" class="size-5"></i></a>
+        <a href="../proekty/#fotoalbom" class="btn btn-primary">Фотоальбом <i data-lucide="images" class="size-5"></i></a>
+        <a href="../proekty/" class="btn btn-ghost">Карта проектов <i data-lucide="map-pin" class="size-5"></i></a>
       </div>
     </div>
 
     <div class="photo-show reveal mt-12" data-photoshow data-anim="fade-up" data-delay="300">
-      <a class="photo-show__frame" href="../fotoalbom/" aria-label="Открыть фотоальбом">
+      <a class="photo-show__frame" href="../proekty/#fotoalbom" aria-label="Открыть фотоальбом">
         <span class="photo-show__stack">
           <img class="photo-show__img is-active" data-photo="0" src="../assets/img/photo/montazh-podzemnoy-1.webp" alt="Монтаж подземного резервуара в котловане" width="1280" height="960" loading="lazy">
           <img class="photo-show__img" data-photo="1" src="../assets/img/photo/podzemnye-ploschadka-2.webp" alt="Партия подземных резервуаров перед отгрузкой" width="1280" height="960" loading="lazy">
           <img class="photo-show__img" data-photo="2" src="../assets/img/photo/otgruzka-vertikalnyh.webp" alt="Погрузка вертикальных резервуаров на трал краном" width="1280" height="720" loading="lazy">
           <img class="photo-show__img" data-photo="3" src="../assets/img/catalog/other/202618504_kns-kanalizatsionnaya-nasosnaya.webp" alt="Канализационная насосная станция в сборе с насосами и шкафом управления" width="914" height="603" loading="lazy">
           <img class="photo-show__img" data-photo="4" src="../assets/img/photo/gorizontalnaya-krupnaya.webp" alt="Крупная горизонтальная ёмкость с рёбрами жёсткости" width="1280" height="960" loading="lazy">
-          <img class="photo-show__img" data-photo="5" src="../assets/img/photo/los-montazh.webp" alt="Монтаж очистных сооружений ливневых стоков в траншее" width="1032" height="581" loading="lazy">
+          <img class="photo-show__img" data-photo="5" src="../assets/img/photo/ochistnye-stanciya.webp" alt="Очистное сооружение на объекте: блоки станции перед засыпкой" width="1280" height="576" loading="lazy">
           <img class="photo-show__img" data-photo="6" src="../assets/img/photo/gorizontalnaya-tral.webp" alt="Горизонтальная ёмкость на трале перед отправкой" width="1280" height="960" loading="lazy">
         </span>
         <span class="photo-show__bar">
@@ -601,8 +598,8 @@
       <ul class="footer-list">
         <li><a href="../o-kompanii/">О компании</a></li>
         <li><a href="../proekty/">Проекты</a></li>
-        <li><a href="../fotoalbom/">Фотоальбом</a></li>
-        <li><a href="../karta-proektov/">Карта проектов</a></li>
+        <li><a href="../proekty/#fotoalbom">Фотоальбом</a></li>
+        <li><a href="../proekty/">Карта проектов</a></li>
         <li><a href="../index.html#request">Расчёт стоимости</a></li>
       </ul>
     </div>

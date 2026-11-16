@@ -111,27 +111,30 @@ def crumbs(items, base):
     return f'<nav class="crumbs" aria-label="Хлебные крошки">{"".join(parts)}</nav>'
 
 
-def page_head(*, title, lead, base, crumb_items, actions=True, facts=None):
+def page_head(*, title, lead, base, crumb_items, actions=True, facts=None, extra=""):
     cta = f"""
       <div class="mt-8 flex flex-wrap gap-3">
         <a href="{base}index.html#request" class="btn btn-primary">Рассчитать стоимость <i data-lucide="arrow-right" class="size-5"></i></a>
         <a href="{WA}" class="btn btn-ghost" target="_blank" rel="noopener"><img src="https://cdn.simpleicons.org/whatsapp/0e8a4a" alt="" class="size-5" width="20" height="20">WhatsApp</a>
       </div>""" if actions else ""
-    facts = facts or [
-        ("с 2015 года", "собственное производство"),
-        ("до 100 м³", "объём ёмкостей"),
-        ("24 месяца", "гарантия на изделия"),
-        ("РК и СНГ", "доставка и монтаж"),
-    ]
-    facts_html = "".join(f"<li><b>{a}</b><span>{b}</span></li>" for a, b in facts)
+    if facts is None:
+        facts = [
+            ("с 2015 года", "собственное производство"),
+            ("до 100 м³", "объём ёмкостей"),
+            ("24 месяца", "гарантия на изделия"),
+            ("РК и СНГ", "доставка и монтаж"),
+        ]
+    # facts=False — страница без плашек (контакты: клиент их зачеркнул)
+    facts_html = "".join(f"<li><b>{a}</b><span>{b}</span></li>" for a, b in facts) if facts else ""
+    facts_block = (f'\n    <ul class="page-hero__facts reveal" data-anim="fade-up" data-delay="300">{facts_html}</ul>'
+                   if facts_html else "")
     return f"""<section class="page-hero">
   <div class="mx-auto max-w-7xl px-4 md:px-6">
     {crumbs(crumb_items, base)}
     <div class="reveal mt-7 max-w-3xl" data-anim="fade-right" data-delay="150">
       <h1 class="section-title">{title}</h1>
-      <p class="mt-5 text-[17px] leading-relaxed text-muted">{lead}</p>{cta}
-    </div>
-    <ul class="page-hero__facts reveal" data-anim="fade-up" data-delay="300">{facts_html}</ul>
+      <p class="mt-5 text-[17px] leading-relaxed text-muted">{lead}</p>{extra}{cta}
+    </div>{facts_block}
   </div>
 </section>"""
 
@@ -277,7 +280,7 @@ TANK_TYPES = [
         # Клиент вычеркнул кадры без опор-сёдел: на этой странице показываем только ёмкости на ногах.
         "extra_images": ["pozharnaya-nazemnaya-1"],
         "extra_uses": ["Противопожарный запас на площадке", "Технологические ёмкости на производстве"],
-        "marks": "EEG-НР-(Н)-ЦГ (вода), EEG-ПР-(Н)-ЦГ (противопожарный запас)",
+        "marks": [("EEG-НР-(Н)-ЦГ", "вода"), ("EEG-ПР-(Н)-ЦГ", "пожарный резервуар")],
     },
     {
         "slug": "gorizontalnaya-podzemnaya",
@@ -288,7 +291,7 @@ TANK_TYPES = [
         "lead": "Подземный резервуар с частыми рёбрами жёсткости и горловиной под люк: не занимает место на участке и не промерзает. Типовые объёмы 5–100 м³.",
         "extra_images": ["photo/montazh-podzemnoy-1", "photo/podzemnye-ploschadka-2", "photo/montazh-podzemnoy-2", "pozharnaya-podzemnaya-1"],
         "extra_uses": ["Неприкосновенный противопожарный запас", "Склады, логистические комплексы, посёлки"],
-        "marks": "EEG-НР-(П)-ЦГ (вода), EEG-ПР-(П)-ЦГ (противопожарный запас)",
+        "marks": [("EEG-НР-(П)-ЦГ", "вода"), ("EEG-ПР-(П)-ЦГ", "пожарный резервуар")],
     },
     {
         "slug": "vertikalnaya-nazemnaya",
@@ -299,7 +302,7 @@ TANK_TYPES = [
         "lead": "Вертикальный цилиндр с плоским дном: занимает минимум площади, удобен в насосных и помещениях с высоким потолком. Типовые объёмы 5–50 м³.",
         "extra_images": ["photo/vertikalnaya-lyuk-1", "photo/vertikalnye-osnovanie", "photo/vertikalnye-nasosnaya", "photo/vertikalnaya-obekt-1"],
         "extra_uses": ["Реагентное хозяйство", "Растворные узлы"],
-        "marks": "EEG-НР-(Н)-ЦВ (вода), EEG-ХР-(Н)-ЦВ (химические реагенты)",
+        "marks": [("EEG-НР-(Н)-ЦВ", "вода"), ("EEG-ХР-(Н)-ЦВ", "химические реагенты"), ("EEG-ПР-(Н)-ЦВ", "пожарный резервуар")],
     },
     {
         "slug": "pryamougolnaya-nazemnaya",
@@ -315,7 +318,7 @@ TANK_TYPES = [
         "drop_images": ["pryamougolnaya-nazemnaya-2", "pryamougolnaya-nazemnaya-3",
                         "himicheskaya-pryamougolnaya-1", "himicheskaya-pryamougolnaya-2"],
         "extra_uses": ["Кислоты, щёлочи и реагенты", "Гальванические растворы"],
-        "marks": "EEG-НР-(Н)-П (вода), EEG-ХР-(Н)-П (химия)",
+        "marks": [("EEG-НР-(Н)-П", "вода"), ("EEG-ХР-(Н)-П", "химические реагенты"), ("EEG-ПР-(Н)-П", "пожарный резервуар")],
     },
 ]
 
@@ -363,7 +366,11 @@ def tank_type_page(t, base="../../../"):
         ("Гарантия", "24 месяца"),
         ("Срок службы", "около 50 лет"),
     ]
-    spec_rows = "".join(f"<div><dt>{k}</dt><dd>{v}</dd></div>" for k, v in specs)
+    marks_dd = "".join(f'<span class="mark-line"><b>{code}</b> {what}</span>' for code, what in s["marks"])
+    spec_rows = "".join(f"<div><dt>{k}</dt><dd>{marks_dd if k == 'Маркировка' else v}</dd></div>" for k, v in specs)
+    # Маркировки — то, что ищут по рекламе: показываем их сразу под заголовком страницы
+    marks_chips = "".join(f'<li><b>{code}</b><span>{what}</span></li>' for code, what in s["marks"])
+    marks_codes = ", ".join(code for code, _ in s["marks"])
     uses = "".join(f"<li>{u}</li>" for u in s["uses"])
     text = "".join(f'<p class="mt-4">{p}</p>' for p in s["text"])
     body = f"""{page_head(
@@ -372,6 +379,7 @@ def tank_type_page(t, base="../../../"):
         base=base,
         crumb_items=[("Каталог", f"{base}catalog/"), ("Ёмкости и резервуары", f"{base}catalog/emkosti/"), (s["short"], None)],
         actions=False,
+        extra=f'\n      <ul class="mark-chips" aria-label="Маркировки">{marks_chips}</ul>',
         facts=[(f'{min(vols)}–{max(vols)} м³', "типовые объёмы"), ("Вода и химия", "любая среда"),
                ("8–19 мм", "толщина листа"), ("По чертежам", "нестандартные размеры")],
     )}
@@ -422,7 +430,7 @@ def tank_type_page(t, base="../../../"):
 
 {cta_band(base, "Рассчитаем резервуар под ваш объект")}"""
     return layout(path="", title=f'{s["title"]} из полипропилена — Expert ECO Group',
-                  description=f'{s["title"]}: {s["lead"]} Вода, химия и противопожарный запас. Производство в Каскелене, доставка по Казахстану и СНГ.',
+                  description=f'{s["title"]}: {s["lead"]} Маркировки {marks_codes}. Производство в Каскелене, доставка по Казахстану и СНГ.',
                   body=body, base=base, purpose="Ёмкости")
 
 
@@ -898,7 +906,7 @@ def section_page(cat, base="../../"):
     <h2 class="section-title reveal" data-anim="fade-right" data-delay="150">Фото</h2>
     <p class="mt-4 max-w-2xl text-[17px] leading-relaxed text-muted">Наши изделия и объекты. Больше снимков — в фотоальбоме.</p>
     <div class="album-grid reveal mt-8" data-anim="fade-up" data-delay="300">{rest}</div>
-    <a href="{base}fotoalbom/" class="btn btn-ghost mt-8">Открыть фотоальбом <i data-lucide="images" class="size-5"></i></a>
+    <a href="{base}proekty/#fotoalbom" class="btn btn-ghost mt-8">Открыть фотоальбом <i data-lucide="images" class="size-5"></i></a>
   </div>
 </section>""" if rest else ""
 
@@ -1034,45 +1042,50 @@ def catalog_page(base="../"):
                   body=body, base=base)
 
 
-PROJECTS = [
-    ("proj-loading", "Отгрузка вертикальных резервуаров", "Погрузка на трал краном, крепление и отправка заказчику."),
-    ("photo/montazh-podzemnoy-1", "Монтаж подземного резервуара", "Установка в котлован на песчаное основание перед обратной засыпкой."),
-    ("proj-horizontal", "Горизонтальная наземная ёмкость", "Резервуар на опорах, подготовлен к подключению обвязки."),
-    ("proj-rect", "Прямоугольная ёмкость с патрубками", "Ёмкость в металлическом каркасе с выведенными патрубками."),
-    ("plant-hall", "Вертикальные ёмкости в насосной", "Смонтированная пара ёмкостей с насосной группой и щитом управления."),
-    ("proj-vertical", "Вертикальные ёмкости на трале", "Отгрузка двух вертикальных резервуаров с производства."),
-]
-
-
 def projects_page(base="../"):
-    items = "".join(f"""<a class="proj-card" href="{base}fotoalbom/">
-  <img src="{base}assets/img/{img}.webp" alt="{title}" loading="lazy">
-  <span class="proj-card__cap"><b>{title}</b><span>{text}</span></span>
-</a>""" for img, title, text in PROJECTS)
+    """Проекты (правка клиента № 9): при открытии сразу карта объектов, рядом вкладка «Фотоальбом»."""
     body = f"""{page_head(
-        title="С производства на объект",
-        lead="Фотографии с нашего производства и объектов заказчиков: изготовление, отгрузка и монтаж ёмкостей из полипропилена.",
+        title="Проекты",
+        lead="Объекты, куда мы поставляли и монтировали оборудование, и фотографии наших изделий по видам: очистные, КНС, резервуары, жиро- и пескоуловители.",
         base=base,
         crumb_items=[("Проекты", None)],
         actions=False,
+        facts=False,
     )}
 
-<section class="px-4 pb-8 md:px-6">
-  <div class="mx-auto flex max-w-7xl flex-wrap gap-3">
-    <a href="{base}karta-proektov/" class="btn btn-primary">Карта проектов <i data-lucide="map-pin" class="size-5"></i></a>
-    <a href="{base}fotoalbom/" class="btn btn-ghost">Фотоальбом <i data-lucide="images" class="size-5"></i></a>
+<section class="px-4 pb-16 md:px-6">
+  <div class="mx-auto max-w-7xl">
+    <div class="proj-tabs" role="tablist" aria-label="Проекты">
+      <button type="button" class="btn btn-primary" role="tab" id="tab-karta" aria-controls="karta" aria-selected="true" data-tab="karta">Карта проектов <i data-lucide="map-pin" class="size-5"></i></button>
+      <button type="button" class="btn btn-ghost" role="tab" id="tab-fotoalbom" aria-controls="fotoalbom" aria-selected="false" data-tab="fotoalbom">Фотоальбом <i data-lucide="images" class="size-5"></i></button>
+    </div>
+
+    <div class="proj-pane mt-8" id="karta" role="tabpanel" aria-labelledby="tab-karta">
+      {map_block()}
+    </div>
+
+    <div class="proj-pane mt-8" id="fotoalbom" role="tabpanel" aria-labelledby="tab-fotoalbom" hidden>
+      <div class="album-cards">{album_cards(base)}</div>
+    </div>
   </div>
 </section>
 
-<section class="px-4 pb-10 md:px-6">
-  <div class="mx-auto grid max-w-7xl gap-6 md:grid-cols-2 lg:grid-cols-3">{items}</div>
-  <p class="mx-auto mt-8 max-w-7xl text-sm font-semibold text-muted">Объекты, города и объёмы добавим после согласования с заказчиками.</p>
-</section>
-
 {cta_band(base)}"""
-    return layout(path="", title="Проекты и объекты — Expert ECO Group",
-                  description="Фотографии производства и объектов: изготовление, отгрузка и монтаж ёмкостей из полипропилена по Казахстану.",
-                  body=body, base=base)
+    return layout(path="", title="Проекты: карта объектов и фотоальбом — Expert ECO Group",
+                  description="Карта объектов Expert ECO Group по Казахстану и фотоальбом изделий: очистные сооружения, КНС, резервуары из полипропилена, жиро- и пескоуловители.",
+                  body=body, base=base, head_extra=LEAFLET_CSS, body_extra=LEAFLET_JS)
+
+
+def redirect_page(target):
+    """Старые адреса (карта и фотоальбом были отдельными страницами) ведут на вкладки «Проектов»."""
+    return f"""<!doctype html>
+<html lang="ru"><head><meta charset="utf-8">
+<title>Проекты — Expert ECO Group</title>
+<meta name="robots" content="noindex">
+<meta http-equiv="refresh" content="0; url={target}">
+<link rel="canonical" href="{target}">
+</head><body><p><a href="{target}">Перейти к проектам</a></p></body></html>
+"""
 
 
 def about_page(base="../"):
@@ -1139,7 +1152,7 @@ def contacts_page(base="../"):
         ("+7 777 484-18-22", "tel:+77774841822", "Отдел продаж, Сергей"),
         ("+7 708 626-57-49", "tel:+77086265749", "Отдел продаж, Артём"),
         ("+7 771 228-22-03", "tel:+77712282203", "Генеральный директор"),
-        ("+7 771 228-22-08", "tel:+77712282208", "Заместитель директора"),
+        ("+7 771 228-22-08", "tel:+77712282208", "Отдел продаж, Вадим"),
     ]
     rows = "".join(f"""<li><a href="{href}" class="contact-row contact-row--light"><i data-lucide="phone"></i><span><b>{num}</b><small>{who}</small></span></a></li>""" for num, href, who in phones)
     body = f"""{page_head(
@@ -1148,6 +1161,7 @@ def contacts_page(base="../"):
         base=base,
         crumb_items=[("Контакты", None)],
         actions=False,
+        facts=False,
     )}
 
 <section class="px-4 pb-16 md:px-6">
@@ -1175,26 +1189,42 @@ def contacts_page(base="../"):
 
 
 
+# Фотоальбом — 12 разделов в порядке клиента (правка № 9). Фото — реальные снимки
+# клиента и с Satu; кадры, зачёркнутые клиентом, и снимки с зелёными трубами сюда не входят.
 ALBUMS = [
-    ("proizvodstvo", "Производство", "Цех в Каскелене: раскрой листа, сварка, сборка ёмкостей и очистных.",
-     "plant-hall.webp", ["plant-hall.webp", "proj-rect.webp"]),
-    ("emkosti", "Ёмкости и резервуары", "Готовые ёмкости для воды, химии и противопожарного запаса.",
-     "photo/gorizontalnaya-krupnaya.webp",
-     ["photo/gorizontalnaya-krupnaya.webp", "photo/podzemnye-ploschadka-2.webp", "photo/gorizontalnye-u-tseha.webp", "photo/vertikalnaya-lyuk-1.webp", "photo/vertikalnye-osnovanie.webp", "cat-water.webp", "proj-horizontal.webp",
-      "catalog/gorizontalnaya-nazemnaya-1.webp", "catalog/pryamougolnaya-nazemnaya-1.webp"]),
-    ("montazh", "Монтаж на объектах", "Установка подземных и наземных резервуаров, обвязка и пусконаладка.",
-     "photo/montazh-podzemnoy-1.webp",
-     ["photo/montazh-podzemnoy-1.webp", "photo/montazh-podzemnoy-2.webp", "photo/vertikalnaya-obekt-1.webp", "photo/vertikalnye-nasosnaya.webp", "cat-fire.webp", "proj-trench.webp",
-      "catalog/gorizontalnaya-podzemnaya-2.webp"]),
-    ("otgruzka", "Отгрузка и доставка", "Погрузка краном, крепление на трале и доставка по Казахстану и СНГ.",
-     "photo/otgruzka-vertikalnyh.webp",
-     ["photo/otgruzka-vertikalnyh.webp", "photo/gorizontalnaya-tral.webp",
-      "proj-vertical.webp", "hero-1200.webp"]),
-    ("kns", "КНС и очистные сооружения", "Канализационные насосные станции, ЛОС, жиро- и пескоуловители.", "prod/kns.webp", []),
-    ("himiya", "Химическое оборудование", "Ёмкости для кислот, щелочей и реагентов, гальванические ванны.", "cat-chem.webp", []),
-    ("septiki", "Септики", "Септики собственного производства, Юнилос и Евролос.", "prod/septiki.webp", []),
-    ("futerovka", "Футеровка и ремонт", "Облицовка бетонных и стальных резервуаров, ремонт оборудования.", "prod/los.webp", []),
+    ("ochistnye-sooruzheniya", "Очистные сооружения", "Станции очистки и песко-нефтеуловители на объектах.",
+     ["photo/ochistnye-stanciya.webp", "prod/los.webp"]),
+    ("kns", "Канализационные насосные станции", "КНС в котлованах, на отгрузке и в сборе с насосами и шкафом управления.",
+     ["hero-kns-kotlovan-1280.webp", "hero-kns-1280.webp", "prod/kns.webp",
+      "catalog/other/202618504_kns-kanalizatsionnaya-nasosnaya.webp", "proj-trench.webp",
+      "catalog/other/228335975_kns-kanalizatsionnaya-nasosnaya.webp", "catalog/other/202618676_kns-kanalizatsionnaya-nasosnaya.webp"]),
+    ("rezervuar-gorizontalnyj-podzemnyj", "Резервуар цилиндрический горизонтальный подземный", "Монтаж в котлован, площадка с готовыми резервуарами, отгрузка.",
+     ["photo/montazh-podzemnoy-1.webp", "photo/podzemnye-ploschadka-2.webp", "photo/montazh-podzemnoy-2.webp",
+      "catalog/gorizontalnaya-podzemnaya-1.webp", "catalog/gorizontalnaya-podzemnaya-2.webp", "catalog/gorizontalnaya-podzemnaya-3.webp",
+      "photo/gorizontalnaya-krupnaya.webp", "photo/gorizontalnye-u-tseha.webp", "cat-fire.webp"]),
+    ("rezervuar-vertikalnyj-podzemnyj", "Резервуар цилиндрический вертикальный подземный", "Вертикальные резервуары для установки под землёй.", []),
+    ("rezervuar-gorizontalnyj-nazemnyj", "Резервуар цилиндрический горизонтальный наземный", "Резервуары на опорах — на производстве и на отгрузке.",
+     ["catalog/gorizontalnaya-nazemnaya-1.webp", "catalog/gorizontalnaya-nazemnaya-2.webp", "catalog/gorizontalnaya-nazemnaya-3.webp",
+      "photo/gorizontalnaya-tral.webp", "proj-horizontal.webp"]),
+    ("rezervuar-vertikalnyj-nazemnyj", "Резервуар цилиндрический вертикальный наземный", "Вертикальные резервуары в насосных, на объектах и при отгрузке.",
+     ["photo/vertikalnaya-lyuk-1.webp", "photo/vertikalnye-osnovanie.webp", "photo/vertikalnye-nasosnaya.webp",
+      "photo/vertikalnaya-obekt-1.webp", "catalog/vertikalnaya-nazemnaya-1.webp", "catalog/vertikalnaya-nazemnaya-2.webp",
+      "photo/otgruzka-vertikalnyh.webp"]),
+    ("rezervuar-pryamougolnyj", "Резервуар прямоугольный", "Прямоугольные ёмкости в металлическом каркасе.",
+     ["catalog/pryamougolnaya-nazemnaya-1.webp", "photo/pryamougolnaya-nasosnaya.webp"]),
+    ("zhirouloviteli-promyshlennye", "Жироуловитель промышленный", "Жироуловители для столовых, ресторанов и пищевых производств.",
+     ["catalog/other/zhiroulovitel-promyshlennyj-1200.webp", "catalog/other/107355522_zhiroulovitel-iz-polipropilena.webp",
+      "catalog/other/121928028_zhiroulovitel-iz-polipropilena.webp"]),
+    ("zhirouloviteli-bytovye", "Жироуловитель бытовой", "Жироуловители под мойку для домов, кафе и небольших кухонь.",
+     ["catalog/other/191049502_zhiroulovitel-pod-mojku.webp"]),
+    ("peskouloviteli-promyshlennye", "Пескоуловитель промышленный", "Пескоуловители для автомоек, стоянок и производственных площадок.",
+     ["catalog/other/178378130_peskouloviteli-v-15.webp"]),
+    ("peskouloviteli-bytovye", "Пескоуловитель бытовой", "Компактные пескоуловители для частных домов и небольших объектов.",
+     ["catalog/other/189428251_peskouloviteli-bytovye-0540.webp"]),
+    ("komanda", "Фотографии нашей команды", "Производство в Каскелене и люди, которые делают оборудование.", []),
 ]
+# иконки Lucide для альбомов, где фотографий пока нет
+ALBUM_EMPTY_ICON = {"komanda": "users"}
 
 
 def photo_img(ph, base, alt, cls=""):
@@ -1208,15 +1238,36 @@ def photo_img(ph, base, alt, cls=""):
     return f'<img{attrs} src="{src}" alt="{alt}" loading="lazy">'
 
 
+def album_cards(base):
+    cards = []
+    for slug, title, lead, photos in ALBUMS:
+        if photos:
+            ph = (f'<span class="album-card__ph{fit_class(SITE / "assets/img" / photos[0])}">'
+                  f'<img src="{base}assets/img/{photos[0]}" alt="{title}" loading="lazy">'
+                  f'<span class="album-card__count">{len(photos)} фото</span></span>')
+        else:
+            icon = ALBUM_EMPTY_ICON.get(slug, "camera")
+            ph = (f'<span class="album-card__ph album-card__ph--empty"><i data-lucide="{icon}"></i>'
+                  f'<span class="album-card__count album-card__count--soon">скоро</span></span>')
+        inner = f"""{ph}
+    <span class="album-card__body">
+      <span class="album-card__title">{title}</span>
+      <span class="album-card__lead">{lead}</span>
+    </span>"""
+        cards.append(f'<a class="album-card" href="{base}fotoalbom/{slug}/">{inner}</a>' if photos
+                     else f'<span class="album-card album-card--soon">{inner}</span>')
+    return "".join(cards)
+
+
 def album_page(slug, title, lead, photos, base="../../"):
     items = "".join(
-        f'<figure class="album-photo">{photo_img(ph, base, title)}</figure>'
+        f'<figure class="album-photo{fit_class(SITE / "assets/img" / ph)}">{photo_img(ph, base, title)}</figure>'
         for ph in photos)
     body = f"""{page_head(
         title=title,
         lead=lead,
         base=base,
-        crumb_items=[("Фотоальбом", f"{base}fotoalbom/"), (title, None)],
+        crumb_items=[("Проекты", f"{base}proekty/"), ("Фотоальбом", f"{base}proekty/#fotoalbom"), (title, None)],
         actions=False,
         facts=[("Фото", "с производства и объектов"), ("Свой цех", "в Каскелене"),
                ("РК и СНГ", "география работ"), ("2015", "год запуска производства")],
@@ -1225,7 +1276,7 @@ def album_page(slug, title, lead, photos, base="../../"):
 <section class="px-4 pb-16 md:px-6">
   <div class="mx-auto max-w-7xl">
     <div class="album-grid">{items}</div>
-    <p class="mt-6 text-sm font-semibold text-muted">Фотоальбом пополняется — клиент передаёт съёмку с производства и объектов.</p>
+    <a href="{base}proekty/#fotoalbom" class="btn btn-ghost mt-8">Все альбомы <i data-lucide="images" class="size-5"></i></a>
   </div>
 </section>
 
@@ -1233,40 +1284,15 @@ def album_page(slug, title, lead, photos, base="../../"):
     return layout(path="", title=f"{title} — фотоальбом Expert ECO Group", description=lead, body=body, base=base)
 
 
-def albums_page(base="../"):
-    cards = []
-    for slug, title, lead, cover, photos in ALBUMS:
-        has = bool(photos)
-        badge = f'<span class="album-card__count">{len(photos)} фото</span>' if has else '<span class="album-card__count album-card__count--soon">скоро</span>'
-        inner = f"""<span class="album-card__ph"><img src="{base}assets/img/{cover}" alt="{title}" loading="lazy">{badge}</span>
-    <span class="album-card__body">
-      <span class="album-card__title">{title}</span>
-      <span class="album-card__lead">{lead}</span>
-    </span>"""
-        cards.append(f'<a class="album-card" href="{base}fotoalbom/{slug}/">{inner}</a>' if has
-                     else f'<span class="album-card album-card--soon">{inner}</span>')
-    body = f"""{page_head(
-        title="Фотоальбом",
-        lead="Съёмка с производства в Каскелене и с объектов заказчиков: изготовление, отгрузка, монтаж и готовые системы. Альбомы пополняются.",
-        base=base,
-        crumb_items=[("Фотоальбом", None)],
-        facts=[("Свой цех", "в Каскелене"), ("Объекты", "по Казахстану и СНГ"),
-               ("с 2015 года", "собственный цех"), ("Фото", "пополняем"),],
-    )}
-
-<section class="px-4 pb-16 md:px-6">
-  <div class="mx-auto max-w-7xl">
-    <div class="album-cards">{"".join(cards)}</div>
-  </div>
-</section>
-
-{cta_band(base)}"""
-    return layout(path="", title="Фотоальбом — Expert ECO Group",
-                  description="Фотографии производства ёмкостей из полипропилена в Каскелене и объектов заказчиков по Казахстану.",
-                  body=body, base=base)
+LEAFLET_CSS = ('<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" '
+               'integrity="sha512-h9FcoyWjHcOcmEVkxOfTLnmZFWIH0iZhZT1H2TbOq55xssQGEJHEaIm+PgoUaZbRvQTNTluNOEfb1ZRy6D3BOw==" '
+               'crossorigin="anonymous" referrerpolicy="no-referrer">')
+LEAFLET_JS = ('<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" '
+              'integrity="sha512-puJW3E/qXDqYp9IfhAI54BJEaWIfloJ7JWs7OeD5i6ruC9JZL1gERT1wjtwXFlh7CjE7ZJ+/vcRZRkIYIb6p4g==" '
+              'crossorigin="anonymous" referrerpolicy="no-referrer"></script>')
 
 
-def map_page(base="../"):
+def map_block():
     cards = []
     for p in MAP_PROJECTS:
         done = "".join(f"<li>{d}</li>" for d in p["done"])
@@ -1285,36 +1311,11 @@ def map_page(base="../"):
     {f'<ul class="uses mt-4">{done}</ul>' if done else ''}
   </div>
 </article>""")
-    body = f"""{page_head(
-        title="Карта проектов",
-        lead="Объекты, куда поставляли и монтировали оборудование. Нажмите точку на карте или карточку в списке — раскроется описание работ.",
-        base=base,
-        crumb_items=[("Проекты", f"{base}proekty/"), ("Карта проектов", None)],
-        actions=False,
-        facts=[("РК и СНГ", "география поставок"), ("Каскелен", "собственное производство"),
-               ("с 2015 года", "на рынке"), ("Данные", "пополняем")],
-    )}
-
-<section class="px-4 pb-16 md:px-6">
-  <div class="mx-auto max-w-7xl">
-    <div class="map-layout">
-      <div id="kz-map" class="kz-map" data-projects='{json.dumps(MAP_PROJECTS, ensure_ascii=False)}'></div>
-      <div class="pin-list">{"".join(cards)}</div>
-    </div>
-    <p class="mt-5 text-sm font-semibold text-muted">Адреса, объёмы и фотографии объектов уточняем у клиента — карточки со статусом «уточняется» заменим реальными проектами.</p>
-  </div>
-</section>
-
-{cta_band(base)}"""
-    head = ('<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" '
-            'integrity="sha512-h9FcoyWjHcOcmEVkxOfTLnmZFWIH0iZhZT1H2TbOq55xssQGEJHEaIm+PgoUaZbRvQTNTluNOEfb1ZRy6D3BOw==" '
-            'crossorigin="anonymous" referrerpolicy="no-referrer">')
-    body_extra = ('<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" '
-                  'integrity="sha512-puJW3E/qXDqYp9IfhAI54BJEaWIfloJ7JWs7OeD5i6ruC9JZL1gERT1wjtwXFlh7CjE7ZJ+/vcRZRkIYIb6p4g==" '
-                  'crossorigin="anonymous" referrerpolicy="no-referrer"></script>')
-    return layout(path="", title="Карта проектов — Expert ECO Group",
-                  description="Интерактивная карта объектов Expert ECO Group по Казахстану: где поставляли и монтировали ёмкости и очистные сооружения.",
-                  body=body, base=base, head_extra=head, body_extra=body_extra)
+    return f"""<div class="map-layout">
+        <div id="kz-map" class="kz-map" data-projects='{json.dumps(MAP_PROJECTS, ensure_ascii=False)}'></div>
+        <div class="pin-list">{"".join(cards)}</div>
+      </div>
+      <p class="mt-5 text-sm font-semibold text-muted">Нажмите точку на карте или карточку в списке — раскроется описание работ. Адреса и объёмы объектов уточняем у клиента.</p>"""
 
 
 def main():
@@ -1326,11 +1327,16 @@ def main():
     for cat in OTHER:
         made.append(write(f'catalog/{cat["slug"]}/index.html', section_page(cat)))
     made.append(write("proekty/index.html", projects_page()))
-    made.append(write("fotoalbom/index.html", albums_page()))
-    for slug, title, lead, cover, photos in ALBUMS:
+    # прежние альбомы (производство, отгрузка, монтаж…) заменены разделами по видам продукции
+    keep = {slug for slug, *_ in ALBUMS}
+    for old_album in (SITE / "fotoalbom").glob("*/"):
+        if old_album.name not in keep:
+            shutil.rmtree(old_album, ignore_errors=True)
+    for slug, title, lead, photos in ALBUMS:
         if photos:
             made.append(write(f"fotoalbom/{slug}/index.html", album_page(slug, title, lead, photos)))
-    made.append(write("karta-proektov/index.html", map_page()))
+    made.append(write("fotoalbom/index.html", redirect_page("../proekty/#fotoalbom")))
+    made.append(write("karta-proektov/index.html", redirect_page("../proekty/")))
     made.append(write("o-kompanii/index.html", about_page()))
     made.append(write("kontakty/index.html", contacts_page()))
     # страницы старой структуры (категории вода/пожарные/химия, карточки товаров, «Другое оборудование»)

@@ -81,7 +81,7 @@
   };
   const FIELDS = { rect: ['l', 'w', 'h'], vert: ['v', 'd', 'h'], ground: ['v', 'd', 'l'], under: ['v', 'd', 'l'] };
   const LABELS = { v: 'Объём, м³', d: 'Диаметр, мм', l: 'Длина, мм', w: 'Ширина, мм', h: 'Высота, мм' };
-  const LIM = { v: [1, 120], d: [1000, 3000], l: [1000, 20000], w: [800, 3000], h: [800, 6000] };
+  const LIM = { v: [1, 120], d: [1000, 3000], l: [1000, 20000], w: [800, 3600], h: [800, 6000] };
   // Вертикальные корпуса делаем шире горизонтальных: до 3600 мм (правка клиента)
   const VERT_D = [1000, 3600];
   const PRESETS = {
@@ -500,6 +500,8 @@
   if (mapEl && window.L) {
     const projects = JSON.parse(mapEl.dataset.projects);
     const map = L.map(mapEl, { scrollWheelZoom: false }).setView([48.3, 67.5], 4);
+    // при показе вкладки с картой Leaflet должен пересчитать размер, иначе плитки рисуются в углу
+    mapEl.leafletMap = map;
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 18,
       attribution: '&copy; OpenStreetMap',
@@ -533,6 +535,27 @@
       if (!isOpen) openCard(c.dataset.pin, true);
     }));
     cards[0]?.classList.add('is-open');
+  }
+
+  /* ---------- Проекты: вкладки «Карта проектов» / «Фотоальбом» ----------
+     Карта открыта сразу; адрес #fotoalbom (ссылки с главной и из подвала) открывает альбомы. */
+  const projTabs = $$('.proj-tabs [role="tab"]');
+  if (projTabs.length) {
+    const show = (id, push) => {
+      projTabs.forEach((t) => {
+        const on = t.dataset.tab === id;
+        t.setAttribute('aria-selected', String(on));
+        t.classList.toggle('btn-primary', on);
+        t.classList.toggle('btn-ghost', !on);
+        document.getElementById(t.dataset.tab).hidden = !on;
+      });
+      if (id === 'karta') mapEl?.leafletMap?.invalidateSize();
+      if (push) history.replaceState(null, '', id === 'fotoalbom' ? '#fotoalbom' : location.pathname);
+    };
+    projTabs.forEach((t) => t.addEventListener('click', () => show(t.dataset.tab, true)));
+    const fromHash = () => show(location.hash === '#fotoalbom' ? 'fotoalbom' : 'karta', false);
+    window.addEventListener('hashchange', fromHash);
+    fromHash();
   }
 
   /* ---------- Наши услуги: переключение ---------- */
