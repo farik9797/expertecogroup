@@ -397,7 +397,7 @@ $r_discount = $f('request_discount');
       <div class="form-ok" hidden role="status">
         <span class="grid size-14 place-items-center rounded-full bg-mist text-brand"><i data-lucide="check" class="size-7"></i></span>
         <p class="mt-5 font-display text-2xl font-medium">Заявка принята</p>
-        <p class="mt-2 text-muted">Менеджер перезвонит в рабочее время: <?php echo esc_html(mb_strtolower(eeg_hours())); ?>.</p>
+        <p class="mt-2 text-muted">Менеджер перезвонит в рабочее время: <?php echo esc_html(eeg_lower(eeg_hours())); ?>.</p>
       </div>
     </form>
   </div>

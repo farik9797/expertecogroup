@@ -11,7 +11,8 @@ import urllib.request
 from html.parser import HTMLParser
 
 STATIC = "http://localhost:5178/"
-WP = "http://localhost:8890/"
+import os
+WP = os.environ.get("EEG_WP", "http://localhost:8890/")
 SKIP_ATTRS = {"src", "srcset", "href", "style", "data-full", "width", "height", "sizes", "imagesrcset", "loading",
               "decoding", "fetchpriority", "id", "aria-describedby", "aria-labelledby", "aria-controls", "for"}
 

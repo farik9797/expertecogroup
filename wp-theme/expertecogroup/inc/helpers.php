@@ -5,6 +5,25 @@
  */
 defined('ABSPATH') || exit;
 
+/**
+ * Нижний регистр для русского текста. На хостинге может не быть расширения mbstring
+ * (expertecogroup.kz, 17.11.2026), поэтому без него переводим кириллицу таблицей.
+ */
+function eeg_lower($s)
+{
+    $s = (string) $s;
+    if (function_exists('mb_strtolower')) {
+        return mb_strtolower($s, 'UTF-8');
+    }
+    static $map = null;
+    if ($map === null) {
+        $up = preg_split('//u', 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯӘҒҚҢӨҰҮҺІ', -1, PREG_SPLIT_NO_EMPTY);
+        $lo = preg_split('//u', 'абвгдеёжзийклмнопрстуфхцчшщъыьэюяәғқңөұүһі', -1, PREG_SPLIT_NO_EMPTY);
+        $map = array_combine($up, $lo);
+    }
+    return strtr(strtolower($s), $map);
+}
+
 /* ---------- ссылки ---------- */
 
 /** Ссылка на страницу сайта по пути из макета: eeg_url('catalog/kns/'), eeg_url('proekty/#fotoalbom'). */
@@ -291,7 +310,7 @@ function eeg_cta_band($text = 'Рассчитаем стоимость под в
       <div class="cta-band__actions reveal" data-anim="fade-left" data-delay="300">
         <a href="' . esc_url(eeg_req()) . '" class="btn btn-primary w-full justify-center">Оставить заявку <i data-lucide="arrow-right" class="size-5"></i></a>
         ' . eeg_wa_btn('glass', 'Написать в WhatsApp', 'w-full justify-center') . '
-        <p class="cta-band__hours"><i data-lucide="clock"></i>Отвечаем ' . esc_html(mb_strtolower(eeg_hours())) . '</p>
+        <p class="cta-band__hours"><i data-lucide="clock"></i>Отвечаем ' . esc_html(eeg_lower(eeg_hours())) . '</p>
       </div>
     </div>
   </div>

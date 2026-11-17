@@ -61,7 +61,7 @@ $company = eeg_opt('company', 'ТОО «Expert ECO Group»');
   <div class="modal__card">
     <button type="button" class="modal__close" aria-label="Закрыть"><i data-lucide="x"></i></button>
     <h2 id="modal-title" class="modal__title ">Рассчитаем <span class="accent text-brand">стоимость</span></h2>
-    <p class="modal__lead mt-2">Оставьте номер — перезвоним в рабочее время, <?php echo esc_html(mb_strtolower(eeg_hours())); ?>.</p>
+    <p class="modal__lead mt-2">Оставьте номер — перезвоним в рабочее время, <?php echo esc_html(eeg_lower(eeg_hours())); ?>.</p>
 
     <form class="request-form mt-5" novalidate>
       <fieldset>
@@ -85,7 +85,7 @@ $company = eeg_opt('company', 'ТОО «Expert ECO Group»');
       <div class="form-ok" hidden role="status">
         <span class="grid size-12 place-items-center rounded-full bg-mist text-brand"><i data-lucide="check" class="size-7"></i></span>
         <p class="mt-4 font-display text-xl font-medium">Заявка принята</p>
-        <p class="mt-2 text-muted">Менеджер перезвонит в рабочее время: <?php echo esc_html(mb_strtolower(eeg_hours())); ?>.</p>
+        <p class="mt-2 text-muted">Менеджер перезвонит в рабочее время: <?php echo esc_html(eeg_lower(eeg_hours())); ?>.</p>
         <button type="button" class="btn btn-ghost btn-sm mt-5 modal__ok-close">Закрыть</button>
       </div>
     </form>

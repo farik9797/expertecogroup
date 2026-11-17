@@ -10,7 +10,10 @@
 - **Локальная проверка:** `wp-local/` (WordPress 7.1.4 на SQLite, не в git), сервер — launch.json «wp» (:8890), сверка с макетом — `tools/compare_wp.py <путь>`.
 - **Выкладка:** `tools/deploy_wp.sh theme` (тема + плагин + `site-hardening.php` в mu-plugins), затем `tools/deploy_wp.sh setup` (одноразовый mu-plugin с токеном: тема, ЧПУ, фото партиями, страницы; удаляется сам). До сдачи `blog_public=0`.
 - **main.js:** форма заявки отправляет в admin-ajax, если есть `window.EEG` (в статике по-прежнему только показывает «Заявка принята»).
-- Дальше: собрать Tailwind в CSS вместо браузерной сборки; 301 со старых адресов Satu; проверка безопасности `check.sh` после установки; открыть индексацию после согласования.
+- **17.11 выложено на expertecogroup.kz:** WordPress 7.1.4, PHP 8.3.36 (LSPHP, LiteSpeed — до переключения домен работал на 8.2 без mysqli), тема + Secure Custom Fields 6.9.9, 41 страница, 91 фото, `blog_public=0`. `compare_wp.py` с `EEG_WP=https://expertecogroup.kz/` — все 37 страниц совпадают с макетом. Tailwind собран в `assets/css/tailwind.css` (вёрстка сверена с макетом на 1440 и 390).
+- **Особенности хостинга:** нет расширения `mbstring` (в теме `eeg_lower()` вместо `mb_strtolower`), `serialize_precision=17` (JSON карты — через `ini_set` в `eeg_company_json`). `.htaccess` WordPress залит руками из `wp-theme/htaccess` (с фронта WP его не пишет).
+- **Безопасность (check.sh 17.11):** ядро 7.1.4 ок; REST batch/users, ?author, oEmbed, регистрация, листинг — закрыты (`site-hardening.php`). Открыто: `wp-cron.php` снаружи (нужно DISABLE_WP_CRON + крон в Plesk), `wp-admin/install.php` доступен — закрыть после «да».
+- Дальше: тестовая заявка с живого сайта (дошло ли письмо на info_eeg@mail.ru); 301 со старых адресов Satu; попросить хостинг включить mbstring; открыть индексацию после согласования; DISALLOW_FILE_EDIT после сдачи.
 
 ## Бриф (22.09.2026, от заказчика/менеджера)
 - Товары берём с текущего сайта https://expertecogroup.kz/ (он на конструкторе Satu.kz). Остальную информацию клиент пришлёт позже.

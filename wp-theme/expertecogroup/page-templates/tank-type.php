@@ -39,7 +39,7 @@ foreach ((array) eeg_field('tank_specs', [], $id) as $r) {
     if ($k === '' && $v === '') {
         continue;
     }
-    $dd = mb_strtolower($k) === 'маркировка' && $lines ? $lines : esc_html($v);
+    $dd = eeg_lower($k) === 'маркировка' && $lines ? $lines : esc_html($v);
     $specs .= '<div><dt>' . esc_html($k) . '</dt><dd>' . $dd . '</dd></div>';
 }
 $text = eeg_paragraphs(eeg_field('tank_text', '', $id));

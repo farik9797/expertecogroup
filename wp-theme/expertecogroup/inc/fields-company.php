@@ -162,7 +162,11 @@ function eeg_company_marked($text, $open, $close)
  */
 function eeg_company_json($data)
 {
+    // на хостинге serialize_precision = 17 — без этого координаты выходят как 43.198900000000002
+    $prev = ini_get('serialize_precision');
+    ini_set('serialize_precision', '-1');
     $json = (string) wp_json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    ini_set('serialize_precision', $prev);
     $json = preg_replace('~,\n\s*~', ', ', $json);
     return preg_replace('~\n\s*~', '', $json);
 }
