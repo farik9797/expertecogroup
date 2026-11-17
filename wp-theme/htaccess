@@ -1,8 +1,9 @@
 # BEGIN Защита (wordpress-security playbook)
-# wp-cron.php запускает планировщик Plesk из консоли, снаружи он не нужен; install.php после установки не нужен
-<Files "wp-cron.php">
+# wp-cron.php запускает планировщик Plesk из консоли, снаружи он не нужен; install.php после установки не нужен;
+# xmlrpc.php закрыт: Jetpack и мобильное приложение WordPress не используются (17.11.2026)
+<FilesMatch "^(wp-cron|xmlrpc)\.php$">
   Require all denied
-</Files>
+</FilesMatch>
 <IfModule mod_rewrite.c>
 RewriteEngine On
 RewriteRule ^wp-admin/install\.php$ - [F,L]
