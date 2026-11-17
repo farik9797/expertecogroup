@@ -1,3 +1,14 @@
+# BEGIN Защита (wordpress-security playbook)
+# wp-cron.php запускает планировщик Plesk из консоли, снаружи он не нужен; install.php после установки не нужен
+<Files "wp-cron.php">
+  Require all denied
+</Files>
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule ^wp-admin/install\.php$ - [F,L]
+</IfModule>
+# END Защита
+
 # BEGIN WordPress
 <IfModule mod_rewrite.c>
 RewriteEngine On

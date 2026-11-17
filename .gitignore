@@ -15,3 +15,6 @@ tools/tailwind/node_modules/
 # тема WordPress: assets и import собирает tools/deploy_wp.sh (копия site/assets + Tailwind, выгрузка контента)
 wp-theme/expertecogroup/assets/
 wp-theme/expertecogroup/import/
+
+# бэкапы с хостинга (wp-config.php с паролем БД) — не в git
+backups/
