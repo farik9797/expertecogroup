@@ -136,6 +136,22 @@ add_action('wp_loaded', function () {
             }
             break;
 
+        case 'heroimg':
+            // фон слайда «Ёмкости и резервуары»: кадр без надписи вместо hero-2390.webp (имена зашиты здесь).
+            // Старое вложение остаётся в медиатеке.
+            $front = (int) get_option('page_on_front');
+            $map = get_option('eeg_img_map', []);
+            $old = (int) ($map['hero-2390.webp'] ?? 0);
+            $new = eeg_import_image('hero-emkosti-2390.webp', 'Кран поднимает подземный резервуар Expert ECO Group');
+            $out += ['old' => $old, 'new' => $new];
+            for ($i = 0, $n = (int) get_post_meta($front, 'hero_slides', true); $i < $n && $old && $new; $i++) {
+                if ((int) get_post_meta($front, "hero_slides_{$i}_bg", true) === $old) {
+                    update_post_meta($front, "hero_slides_{$i}_bg", $new);
+                    $out['slide'] = $i;
+                }
+            }
+            break;
+
         case 'cleanup':
             // стандартные темы и выключенные плагины установки, корзина (список зашит здесь)
             require_once ABSPATH . 'wp-admin/includes/file.php';
