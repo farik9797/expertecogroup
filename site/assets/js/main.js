@@ -518,7 +518,7 @@
   const mapEl = $('#kz-map');
   if (mapEl && window.L) {
     const projects = JSON.parse(mapEl.dataset.projects);
-    const map = L.map(mapEl, { scrollWheelZoom: false }).setView([48.3, 67.5], 4);
+    const map = L.map(mapEl).setView([48.3, 67.5], 4);  // колесико мыши увеличивает карту (просьба клиента)
     // при показе вкладки с картой Leaflet должен пересчитать размер, иначе плитки рисуются в углу
     mapEl.leafletMap = map;
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {

@@ -5,7 +5,7 @@
  */
 defined('ABSPATH') || exit;
 
-define('EEG_VER', '1.0.1');
+define('EEG_VER', '1.0.2');
 
 require_once __DIR__ . '/inc/helpers.php';
 require_once __DIR__ . '/inc/fields-common.php';
