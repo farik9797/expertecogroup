@@ -152,6 +152,40 @@ add_action('wp_loaded', function () {
             }
             break;
 
+        case 'delold':
+            // удалить старый фон слайда hero-2390.webp (с надписью), только если на него больше ничего не ссылается
+            global $wpdb;
+            $map = get_option('eeg_img_map', []);
+            $old = (int) ($map['hero-2390.webp'] ?? 0);
+            if (!$old || get_post_type($old) !== 'attachment') {
+                $out['error'] = 'вложение не найдено';
+                break;
+            }
+            $s = (string) $old;
+            $refs = [
+                'meta'    => (int) $wpdb->get_var($wpdb->prepare(
+                    "SELECT COUNT(*) FROM $wpdb->postmeta m JOIN $wpdb->posts p ON p.ID = m.post_id WHERE p.post_type <> 'revision' AND m.post_id <> %d AND m.meta_key NOT LIKE %s AND (m.meta_value = %s OR m.meta_value LIKE %s)",
+                    $old, $wpdb->esc_like('_') . '%', $s, '%"' . $s . '"%')),
+                'content' => (int) $wpdb->get_var($wpdb->prepare(
+                    "SELECT COUNT(*) FROM $wpdb->posts WHERE post_content LIKE %s OR post_content LIKE %s",
+                    '%wp-image-' . $s . '"%', '%hero-2390%')),
+                'options' => (int) (get_option('site_icon') == $old)
+                    + (int) (class_exists('WPSEO_Options') && in_array($old, [(int) WPSEO_Options::get('company_logo_id'), (int) WPSEO_Options::get('og_default_image_id')], true)),
+            ];
+            $out += ['old' => $old, 'file' => get_attached_file($old), 'refs' => $refs];
+            // ревизии страниц хранят копии полей старых версий: ссылкой не считаются, но показываются
+            $out['meta_rows'] = $wpdb->get_results($wpdb->prepare(
+                "SELECT m.post_id, p.post_type, p.post_parent, m.meta_key, LEFT(m.meta_value, 120) AS v FROM $wpdb->postmeta m JOIN $wpdb->posts p ON p.ID = m.post_id WHERE m.post_id <> %d AND m.meta_key NOT LIKE %s AND (m.meta_value = %s OR m.meta_value LIKE %s)",
+                $old, $wpdb->esc_like('_') . '%', $s, '%"' . $s . '"%'));
+            if (array_sum($refs) === 0) {
+                $out['deleted'] = (bool) wp_delete_attachment($old, true);
+                if ($out['deleted']) {
+                    unset($map['hero-2390.webp']);
+                    update_option('eeg_img_map', $map, false);
+                }
+            }
+            break;
+
         case 'cleanup':
             // стандартные темы и выключенные плагины установки, корзина (список зашит здесь)
             require_once ABSPATH . 'wp-admin/includes/file.php';
