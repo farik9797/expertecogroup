@@ -577,21 +577,17 @@
     fromHash();
   }
 
-  /* ---------- Наши услуги: переключение ---------- */
+  /* ---------- Наши услуги: наведение или фокус меняет фото, клик ведёт на страницу услуги ---------- */
   const srvTabs = $$('.srv-tab');
   if (srvTabs.length) {
     const panels = $$('.srv-panel');
     const show = (slug) => {
-      srvTabs.forEach((t) => {
-        const on = t.dataset.srv === slug;
-        t.classList.toggle('is-active', on);
-        t.setAttribute('aria-pressed', String(on));
-      });
+      srvTabs.forEach((t) => t.classList.toggle('is-active', t.dataset.srv === slug));
       panels.forEach((p) => p.classList.toggle('is-active', p.dataset.srv === slug));
     };
     srvTabs.forEach((t) => {
-      t.addEventListener('click', () => show(t.dataset.srv));
       t.addEventListener('mouseenter', () => show(t.dataset.srv));
+      t.addEventListener('focus', () => show(t.dataset.srv));
     });
   }
 

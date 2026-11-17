@@ -114,6 +114,28 @@ add_action('wp_loaded', function () {
             $out['migrate'] = eeg_yoast_migrate();
             break;
 
+        case 'srvlinks':
+            // «Наши услуги» на главной: только поле «Куда ведёт» из import/content.json, по коду услуги
+            $data = json_decode((string) file_get_contents(get_theme_file_path('import/content.json')), true);
+            $front = (int) get_option('page_on_front');
+            $links = [];
+            foreach ((array) ($data['pages'] ?? []) as $p) {
+                if (!empty($p['front'])) {
+                    foreach ((array) ($p['fields']['services'] ?? []) as $s) {
+                        $links[$s['slug']] = $s['link'] ?? '';
+                    }
+                }
+            }
+            for ($i = 0, $n = (int) get_post_meta($front, 'services', true); $i < $n; $i++) {
+                $slug = get_post_meta($front, "services_{$i}_slug", true);
+                if (!empty($links[$slug]) && get_post_meta($front, "services_{$i}_link", true) === '') {
+                    update_post_meta($front, "services_{$i}_link", $links[$slug]);
+                    update_post_meta($front, "_services_{$i}_link", 'field_eeg_home_srv_link');
+                    $out['set'][$slug] = $links[$slug];
+                }
+            }
+            break;
+
         case 'cleanup':
             // стандартные темы и выключенные плагины установки, корзина (список зашит здесь)
             require_once ABSPATH . 'wp-admin/includes/file.php';

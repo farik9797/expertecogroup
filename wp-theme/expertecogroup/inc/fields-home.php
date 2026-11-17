@@ -123,12 +123,13 @@ add_action('acf/init', function () {
             ['key' => 'field_eeg_home_services_lead', 'name' => 'services_lead', 'label' => 'Текст справа от заголовка', 'type' => 'textarea', 'rows' => 2, 'new_lines' => ''],
             [
                 'key' => 'field_eeg_home_services', 'name' => 'services', 'label' => 'Услуги', 'type' => 'repeater',
-                'instructions' => 'Переключаются вкладками справа от фото.',
+                'instructions' => 'Плитки справа от фото: наведение меняет фото, клик ведёт на страницу услуги.',
                 'layout' => 'block', 'button_label' => 'Добавить услугу', 'max' => 4, 'collapsed' => 'field_eeg_home_srv_title',
                 'sub_fields' => [
                     ['key' => 'field_eeg_home_srv_title', 'name' => 'title', 'label' => 'Название', 'type' => 'text', 'wrapper' => ['width' => 50]],
                     ['key' => 'field_eeg_home_srv_slug', 'name' => 'slug', 'label' => 'Код для переключателя', 'type' => 'text', 'wrapper' => ['width' => 50],
                      'instructions' => 'Латиницей, без пробелов, у каждой услуги свой. Например: servis.'],
+                    ['key' => 'field_eeg_home_srv_link', 'name' => 'link', 'label' => 'Куда ведёт', 'type' => 'text', 'instructions' => $link],
                     ['key' => 'field_eeg_home_srv_text', 'name' => 'text', 'label' => 'Описание', 'type' => 'textarea', 'rows' => 3, 'new_lines' => ''],
                     ['key' => 'field_eeg_home_srv_image', 'name' => 'image', 'label' => 'Фото', 'type' => 'image', 'return_format' => 'id', 'preview_size' => 'medium',
                      'instructions' => 'Описание (alt) — в медиатеке.'],

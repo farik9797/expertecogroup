@@ -118,11 +118,13 @@ def catalog():
 def services():
     sec = _section(r'<section id="services"')
     out = []
+    links = dict(re.findall(r'<a class="srv-tab[^"]*" data-srv="([^"]*)" href="([^"]*)">', sec))
     for slug, body in re.findall(r'<figure class="srv-panel[^"]*" data-srv="([^"]*)">(.*?)</figure>', sec, re.S):
         tag = _find(r'(<img [^>]*>)', body)
         out.append({
             "title": _text(_find(r'<h3>(.*?)</h3>', body)),
             "slug": slug,
+            "link": links.get(slug, ""),
             "text": _text(_find(r'<p>(.*?)</p>', body)),
             "image": _img(_main_frame(tag), _attr(tag, "alt")),
         })

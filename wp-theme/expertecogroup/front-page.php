@@ -191,9 +191,9 @@ if ($services) :
       </div>
       <div class="srv__tabs srv__tabs--<?php echo count($services); ?>">
         <?php foreach ($services as $i => $s) : ?>
-        <button type="button" class="srv-tab<?php echo $i === 0 ? ' is-active' : ''; ?>" data-srv="<?php echo esc_attr($s['slug']); ?>" aria-pressed="<?php echo $i === 0 ? 'true' : 'false'; ?>">
+        <a class="srv-tab<?php echo $i === 0 ? ' is-active' : ''; ?>" data-srv="<?php echo esc_attr($s['slug']); ?>" href="<?php echo esc_url(eeg_url($s['link'] ?? '')); ?>">
           <span><?php echo esc_html($s['title']); ?></span><i data-lucide="arrow-up-right"></i>
-        </button>
+        </a>
         <?php endforeach; ?>
       </div>
     </div>
