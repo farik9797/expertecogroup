@@ -87,6 +87,33 @@ add_action('wp_loaded', function () {
             flush_rewrite_rules();
             break;
 
+        case 'yoast':
+            // ставит Yoast SEO с wordpress.org (адрес зашит здесь) и включает его
+            require_once ABSPATH . 'wp-admin/includes/plugin.php';
+            $plugin = 'wordpress-seo/wp-seo.php';
+            if (!file_exists(WP_PLUGIN_DIR . '/' . $plugin)) {
+                require_once ABSPATH . 'wp-admin/includes/file.php';
+                require_once ABSPATH . 'wp-admin/includes/misc.php';
+                require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+                $skin = new Automatic_Upgrader_Skin();
+                $r = (new Plugin_Upgrader($skin))->install('https://downloads.wordpress.org/plugin/wordpress-seo.latest-stable.zip');
+                $out['install'] = is_wp_error($r) ? $r->get_error_message() : ($r ? 'ok' : implode(' | ', (array) $skin->get_upgrade_messages()));
+            }
+            $r = is_plugin_active($plugin) ? true : activate_plugin($plugin);
+            $out['activate'] = is_wp_error($r) ? $r->get_error_message() : 'ok';
+            break;
+
+        case 'seo':
+            // title/description из import/content.json → Yoast, noindex служебных страниц, настройки Yoast
+            if (!function_exists('eeg_import_seo')) {
+                $out['error'] = 'тема не активна';
+                break;
+            }
+            $data = json_decode((string) file_get_contents(get_theme_file_path('import/content.json')), true);
+            $out['seo'] = eeg_import_seo($data);
+            $out['migrate'] = eeg_yoast_migrate();
+            break;
+
         default:
             $out['error'] = 'неизвестный шаг';
     }

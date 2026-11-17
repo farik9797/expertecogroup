@@ -66,7 +66,10 @@ def layout(*, path, title, description, body, base, head_extra="", body_extra=""
   <meta name="robots" content="noindex, nofollow">
   <title>{title}</title>
   <meta name="description" content="{description}">
-  <link rel="icon" href="{base}assets/img/logo-eeg.webp">
+  <link rel="icon" href="{base}assets/img/favicon/favicon.ico" sizes="48x48">
+  <link rel="icon" type="image/png" sizes="32x32" href="{base}assets/img/favicon/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="{base}assets/img/favicon/favicon-192.png">
+  <link rel="apple-touch-icon" href="{base}assets/img/favicon/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500;1,600&family=Nunito:wght@400;600;700;800&family=Unbounded:wght@400;500;600&display=swap" rel="stylesheet">

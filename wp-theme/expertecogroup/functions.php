@@ -11,6 +11,7 @@ require_once __DIR__ . '/inc/helpers.php';
 require_once __DIR__ . '/inc/fields-common.php';
 require_once __DIR__ . '/inc/request-form.php';
 require_once __DIR__ . '/inc/importer.php';
+require_once __DIR__ . '/inc/seo-yoast.php';
 // поля шаблонов страниц: по файлу на шаблон (inc/fields-*.php)
 foreach (glob(__DIR__ . '/inc/fields-*.php') as $f) {
     require_once $f;
@@ -48,8 +49,16 @@ add_action('wp_enqueue_scripts', function () {
    его собирает tools/deploy_wp.sh из классов шаблонов: tools/tailwind/input.css. */
 
 add_action('wp_head', function () {
-    echo '<link rel="icon" href="' . esc_url(eeg_asset('img/logo-eeg.webp')) . '">' . "\n";
-    $desc = eeg_seo_description();
+    // фавикон из эмблемы логотипа (tools/make_favicon.py); если в «Внешний вид → Настроить» задан
+    // значок сайта, WordPress выводит свои теги — тогда наши не нужны
+    if (!has_site_icon()) {
+        $f = eeg_asset('img/favicon/');
+        echo '<link rel="icon" href="' . esc_url($f . 'favicon.ico') . '" sizes="48x48">' . "\n"
+            . '<link rel="icon" type="image/png" sizes="32x32" href="' . esc_url($f . 'favicon-32.png') . '">' . "\n"
+            . '<link rel="icon" type="image/png" sizes="192x192" href="' . esc_url($f . 'favicon-192.png') . '">' . "\n"
+            . '<link rel="apple-touch-icon" href="' . esc_url($f . 'apple-touch-icon.png') . '">' . "\n";
+    }
+    $desc = eeg_has_yoast() ? '' : eeg_seo_description(); // с Yoast description выводит он
     if ($desc) {
         echo '<meta name="description" content="' . esc_attr($desc) . '">' . "\n";
     }
@@ -57,6 +66,9 @@ add_action('wp_head', function () {
 
 /* SEO-заголовок страницы из поля seo_title */
 add_filter('pre_get_document_title', function ($title) {
+    if (eeg_has_yoast()) {
+        return $title; // с Yoast заголовок задаётся в его блоке на странице
+    }
     $id = get_queried_object_id();
     $t = $id ? eeg_field('seo_title', '', $id) : '';
     return $t ?: $title;

@@ -80,7 +80,8 @@ add_action('acf/init', function () {
         ]],
     ]);
 
-    acf_add_local_field_group([
+    // с Yoast SEO title и description правятся в его блоке, поля темы не нужны
+    if (!defined('WPSEO_VERSION')) acf_add_local_field_group([
         'key'        => 'group_eeg_seo',
         'title'      => 'SEO',
         'menu_order' => 100,

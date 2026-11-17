@@ -190,6 +190,11 @@ function eeg_import($data, $opts = [])
         }
         $keys = eeg_import_field_keys($id);
         foreach ((array) ($p['fields'] ?? []) as $name => $value) {
+            $yoast = ['seo_title' => '_yoast_wpseo_title', 'seo_description' => '_yoast_wpseo_metadesc'];
+            if (isset($yoast[$name]) && function_exists('eeg_has_yoast') && eeg_has_yoast()) {
+                update_post_meta($id, $yoast[$name], $value); // с Yoast SEO-поля темы выключены
+                continue;
+            }
             if (!isset($keys[$name])) {
                 $log[] = "/$path/: нет поля $name в шаблоне " . ($p['template'] ?? 'default');
                 continue;

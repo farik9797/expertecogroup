@@ -38,6 +38,14 @@ def main():
     dup = {p for p in paths if paths.count(p) > 1}
     if dup:
         raise SystemExit(f"страницы с одинаковым адресом: {dup}")
+    # title/description поверх генератора — правки SEO (content/seo-meta.json)
+    seo = json.loads((HERE.parent / "content/seo-meta.json").read_text())
+    for p in pages:
+        o = seo.get(p["path"].strip("/"), {})
+        if "title" in o:
+            p["fields"]["seo_title"] = o["title"]
+        if "description" in o:
+            p["fields"]["seo_description"] = o["description"]
     data = {"options": common.options(), "pages": pages}
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(data, ensure_ascii=False, indent=1))

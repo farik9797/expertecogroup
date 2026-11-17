@@ -27,6 +27,16 @@ case "${1:-}" in
     fi
     echo "тема выложена"
     ;;
+  run)
+    # отдельные шаги установочного модуля: tools/deploy_wp.sh run yoast seo info
+    shift
+    TOKEN=$(openssl rand -hex 24)
+    TMP=$(mktemp -d)
+    sed "s/__TOKEN__/$TOKEN/" tools/wp_setup_mu.php > "$TMP/eeg-setup.php"
+    trap 'ftp "rm -f $REMOTE/wp-content/mu-plugins/eeg-setup.php" >/dev/null 2>&1 || true; rm -rf "$TMP"; echo "установочный модуль удалён"' EXIT
+    ftp "mkdir -pf $REMOTE/wp-content/mu-plugins; put $TMP/eeg-setup.php -o $REMOTE/wp-content/mu-plugins/eeg-setup.php"
+    for step in "$@"; do curl -sS --max-time 320 "$SITE_URL/?eeg_setup=$TOKEN&step=$step"; echo; done
+    ;;
   setup)
     TOKEN=$(openssl rand -hex 24)
     TMP=$(mktemp -d)
