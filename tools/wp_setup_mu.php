@@ -114,6 +114,29 @@ add_action('wp_loaded', function () {
             $out['migrate'] = eeg_yoast_migrate();
             break;
 
+        case 'cleanup':
+            // стандартные темы и выключенные плагины установки, корзина (список зашит здесь)
+            require_once ABSPATH . 'wp-admin/includes/file.php';
+            require_once ABSPATH . 'wp-admin/includes/theme.php';
+            require_once ABSPATH . 'wp-admin/includes/plugin.php';
+            foreach (['twentytwentythree', 'twentytwentyfour', 'twentytwentyfive'] as $t) {
+                if (wp_get_theme($t)->exists() && get_stylesheet() !== $t && get_template() !== $t) {
+                    $r = delete_theme($t);
+                    $out['themes'][$t] = is_wp_error($r) ? $r->get_error_message() : ($r ? 'удалена' : 'не удалось');
+                }
+            }
+            $plugins = array_values(array_filter(['hello.php', 'akismet/akismet.php'],
+                fn($p) => file_exists(WP_PLUGIN_DIR . '/' . $p) && !is_plugin_active($p)));
+            if ($plugins) {
+                $r = delete_plugins($plugins);
+                $out['plugins'] = is_wp_error($r) ? $r->get_error_message() : ($r ? $plugins : 'не удалось');
+            }
+            foreach (get_posts(['post_type' => ['post', 'page'], 'post_status' => 'trash', 'numberposts' => 50]) as $p) {
+                wp_delete_post($p->ID, true);
+                $out['trash'][] = $p->post_title;
+            }
+            break;
+
         default:
             $out['error'] = 'неизвестный шаг';
     }

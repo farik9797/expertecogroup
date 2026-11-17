@@ -12,6 +12,7 @@ require_once __DIR__ . '/inc/fields-common.php';
 require_once __DIR__ . '/inc/request-form.php';
 require_once __DIR__ . '/inc/importer.php';
 require_once __DIR__ . '/inc/seo-yoast.php';
+require_once __DIR__ . '/inc/redirects.php';
 // поля шаблонов страниц: по файлу на шаблон (inc/fields-*.php)
 foreach (glob(__DIR__ . '/inc/fields-*.php') as $f) {
     require_once $f;
