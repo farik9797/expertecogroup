@@ -1,0 +1,94 @@
+<?php
+/**
+ * Одноразовая настройка сайта на хостинге (без SSH и WP-CLI).
+ * tools/deploy_wp.sh кладёт копию в wp-content/mu-plugins/ с подставленным токеном, вызывает шаги и сразу удаляет.
+ *
+ *   ?eeg_setup=ТОКЕН&step=info                       версии, расширения, активная тема и плагины
+ *   ?eeg_setup=ТОКЕН&step=activate                   плагин полей, тема, ЧПУ, часовой пояс, закрыть от индексации
+ *   ?eeg_setup=ТОКЕН&step=images&offset=0&limit=15   фото в медиатеку партиями
+ *   ?eeg_setup=ТОКЕН&step=pages                      страницы и поля из import/content.json темы
+ *
+ * Ничего не принимает из запроса, кроме номера шага и чисел партии; файлы читает только из папки темы.
+ */
+defined('ABSPATH') || exit;
+
+const EEG_SETUP_TOKEN = '__TOKEN__';
+
+add_action('wp_loaded', function () {
+    // токен подставляет deploy_wp.sh (48 hex-символов); без него модуль ничего не делает
+    if (!isset($_GET['eeg_setup']) || strlen(EEG_SETUP_TOKEN) < 32 || !hash_equals(EEG_SETUP_TOKEN, (string) $_GET['eeg_setup'])) {
+        return;
+    }
+    @set_time_limit(300);
+    nocache_headers();
+    $step = sanitize_key($_GET['step'] ?? 'info');
+    $out = ['step' => $step];
+
+    switch ($step) {
+        case 'info':
+            global $wp_version;
+            $out += [
+                'php'        => PHP_VERSION,
+                'wp'         => $wp_version,
+                'theme'      => get_stylesheet(),
+                'plugins'    => get_option('active_plugins'),
+                'webp_gd'    => function_exists('imagewebp'),
+                'imagick'    => extension_loaded('imagick'),
+                'memory'     => ini_get('memory_limit'),
+                'max_time'   => ini_get('max_execution_time'),
+                'blog_public'=> get_option('blog_public'),
+                'permalinks' => get_option('permalink_structure'),
+                'pages'      => (int) wp_count_posts('page')->publish,
+                'images'     => count((array) get_option('eeg_img_map', [])),
+            ];
+            break;
+
+        case 'activate':
+            require_once ABSPATH . 'wp-admin/includes/plugin.php';
+            $plugin = 'secure-custom-fields/secure-custom-fields.php';
+            $r = is_plugin_active($plugin) ? true : activate_plugin($plugin);
+            $out['plugin'] = is_wp_error($r) ? $r->get_error_message() : 'ok';
+            if (wp_get_theme('expertecogroup')->exists()) {
+                switch_theme('expertecogroup');
+            }
+            $out['theme'] = get_stylesheet();
+            update_option('permalink_structure', '/%postname%/');
+            update_option('timezone_string', 'Asia/Almaty');
+            update_option('date_format', 'd.m.Y');
+            update_option('blog_public', 0); // до сдачи сайт закрыт от поисковиков
+            update_option('blogname', 'Expert ECO Group');
+            update_option('blogdescription', 'Оборудование из полипропилена');
+            // стандартные записи и страницы новой установки — в корзину (не удаляем насовсем)
+            foreach (get_posts(['post_type' => ['post', 'page'], 'post_status' => 'any', 'numberposts' => 20,
+                                'post_name__in' => ['hello-world', 'sample-page', 'privet-mir', 'primer-stranitsy']]) as $p) {
+                wp_trash_post($p->ID);
+                $out['trashed'][] = $p->post_name;
+            }
+            flush_rewrite_rules();
+            break;
+
+        case 'images':
+            if (!function_exists('eeg_import_images')) {
+                $out['error'] = 'тема не активна';
+                break;
+            }
+            $data = json_decode((string) file_get_contents(get_theme_file_path('import/content.json')), true);
+            $r = eeg_import_images($data, max(0, (int) ($_GET['offset'] ?? 0)), min(50, max(1, (int) ($_GET['limit'] ?? 15))));
+            $out += ['total' => $r['total'], 'done' => $r['done'],
+                     'failed' => array_keys(array_filter($r['log'], fn($id) => !$id))];
+            break;
+
+        case 'pages':
+            if (!function_exists('eeg_import_file')) {
+                $out['error'] = 'тема не активна';
+                break;
+            }
+            $out['log'] = eeg_import_file();
+            flush_rewrite_rules();
+            break;
+
+        default:
+            $out['error'] = 'неизвестный шаг';
+    }
+    wp_send_json($out);
+});

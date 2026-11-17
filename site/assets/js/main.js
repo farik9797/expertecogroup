@@ -427,6 +427,7 @@
   forms.forEach((form, i) => {
     const phone = form.elements.phone;
     const err = $('.field__err', form);
+    const errText = err.textContent;
     err.id = `phone-err-${i}`;
     phone.setAttribute('aria-describedby', err.id);
     phone.addEventListener('input', () => { phone.removeAttribute('aria-invalid'); err.hidden = true; });
@@ -434,12 +435,30 @@
       e.preventDefault();
       if (phone.value.replace(/\D/g, '').length < 10) {
         phone.setAttribute('aria-invalid', 'true');
+        err.textContent = errText;
         err.hidden = false;
         phone.focus();
         return;
       }
-      // КОНЦЕПТ: отправка не подключена. Канал (email / Telegram / WhatsApp) согласовать с клиентом.
-      $('.form-ok', form).hidden = false;
+      // В статическом макете отправки нет; в теме WordPress (window.EEG) заявка уходит в admin-ajax
+      if (!window.EEG) { $('.form-ok', form).hidden = false; return; }
+      const btn = $('button[type="submit"]', form);
+      const fd = new FormData(form);
+      fd.append('action', 'eeg_request');
+      fd.append('nonce', window.EEG.nonce);
+      fd.append('page', location.href);
+      btn.disabled = true;
+      fetch(window.EEG.ajax, { method: 'POST', body: fd, credentials: 'same-origin' })
+        .then((r) => r.json())
+        .then((res) => {
+          if (!res.success) throw new Error(res.data && res.data.msg);
+          $('.form-ok', form).hidden = false;
+        })
+        .catch((er) => {
+          err.textContent = er.message || 'Не удалось отправить. Позвоните или напишите в WhatsApp.';
+          err.hidden = false;
+        })
+        .finally(() => { btn.disabled = false; });
     });
   });
 

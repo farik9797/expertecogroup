@@ -1,0 +1,24 @@
+/* Сборка Tailwind для темы WordPress (вместо браузерной сборки макета).
+   Тема цветов и шрифтов — та же, что в <style type="text/tailwindcss"> в site/index.html. */
+@import "tailwindcss" source(none);
+@source "../../wp-theme/expertecogroup/**/*.php";
+@source "../../site/assets/js/main.js";
+@source "../../content/calc-block.html";
+
+@theme static {
+  --color-brand: #1e65ff;
+  --color-brand-dark: #0f4bd1;
+  --color-sky: #379eff;
+  --color-sky-soft: #67b5ff;
+  --color-navy: #081f46;
+  --color-navy-deep: #06163a;
+  --color-ink: #13284d;
+  --color-muted: #55657d;
+  --color-mist: #eef9ff;
+  --color-line: #d9e8f7;
+  --font-display: "Unbounded", "Nunito", sans-serif;
+  --font-sans: "Nunito", system-ui, sans-serif;
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+  --shadow-soft: 0 10px 75px rgba(41, 112, 250, .15);
+  --ease-out-expo: cubic-bezier(.22, 1, .36, 1);
+}

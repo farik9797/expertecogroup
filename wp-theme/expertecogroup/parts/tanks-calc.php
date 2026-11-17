@@ -1,0 +1,84 @@
+<?php
+/**
+ * Калькулятор ёмкости (разметка content/calc-block.html макета, JS — assets/js/main.js читает data-calc / data-calc-fixed).
+ * $args: shape — форма по умолчанию (rect | vert | ground | under), fixed — форма зафиксирована (страница типа ёмкости).
+ */
+defined('ABSPATH') || exit;
+$shape = in_array($args['shape'] ?? '', ['rect', 'vert', 'ground', 'under'], true) ? $args['shape'] : 'under';
+$fixed = !empty($args['fixed']);
+?>
+<div class="calc reveal grid gap-10 rounded-[32px] bg-white p-5 shadow-soft sm:p-7 lg:grid-cols-[minmax(0,.85fr)_minmax(0,1.15fr)] lg:gap-14 lg:p-10" data-calc="<?php echo esc_attr($shape); ?>"<?php echo $fixed ? ' data-calc-fixed' : ''; ?>>
+
+      <div class="flex flex-col">
+        <h2 class="section-title">Рассчитайте ёмкость <span class="accent text-brand">под вашу</span> задачу</h2>
+        <p class="mt-5 leading-relaxed text-muted">Выберите форму и укажите размеры — чертёж перестроится, а мы подберём толщину листа и комплектацию и посчитаем стоимость.</p>
+        <ul class="mt-8 space-y-4">
+          <li class="calc-feat"><span><i data-lucide="ruler"></i></span>Точные размеры</li>
+          <li class="calc-feat"><span><i data-lucide="file-text"></i></span>Чертежи и спецификация</li>
+          <li class="calc-feat"><span><i data-lucide="clock"></i></span>Сроки и стоимость</li>
+        </ul>
+        <a href="<?php echo esc_url(eeg_req()); ?>" class="calc-cta btn btn-primary mt-9 self-start">Рассчитать проект <i data-lucide="arrow-right" class="size-5"></i></a>
+        <p class="mt-6 text-sm font-semibold leading-relaxed text-muted">Нужен нестандартный размер? Изготовим по вашим чертежам — напишите об этом в заявке.</p>
+      </div>
+
+      <div class="calc-panel">
+        <div class="bp-type" role="group" aria-label="Форма резервуара">
+          <button type="button" data-type="rect" aria-pressed="false">Прямоугольный</button>
+          <button type="button" data-type="vert" aria-pressed="false">Вертикальный</button>
+          <button type="button" data-type="ground" aria-pressed="false">Горизонтальный наземный</button>
+          <button type="button" data-type="under" aria-pressed="true">Горизонтальный подземный</button>
+        </div>
+
+        <div class="calc-fields mt-3 grid gap-3 sm:grid-cols-3">
+          <div class="stepper" data-field="v">
+            <label for="calc-v">Объём, м³</label>
+            <div class="stepper__box">
+              <button type="button" data-step="-1" aria-label="Уменьшить объём"><i data-lucide="minus"></i></button>
+              <input id="calc-v" type="text" inputmode="decimal" autocomplete="off" value="10">
+              <button type="button" data-step="1" aria-label="Увеличить объём"><i data-lucide="plus"></i></button>
+            </div>
+          </div>
+          <div class="stepper" data-field="d">
+            <label for="calc-d">Диаметр, мм</label>
+            <div class="stepper__box">
+              <button type="button" data-step="-1" aria-label="Уменьшить диаметр"><i data-lucide="minus"></i></button>
+              <input id="calc-d" type="text" inputmode="numeric" autocomplete="off" value="1900">
+              <button type="button" data-step="1" aria-label="Увеличить диаметр"><i data-lucide="plus"></i></button>
+            </div>
+          </div>
+          <div class="stepper" data-field="l">
+            <label for="calc-l">Длина, мм</label>
+            <div class="stepper__box">
+              <button type="button" data-step="-1" aria-label="Уменьшить длину"><i data-lucide="minus"></i></button>
+              <input id="calc-l" type="text" inputmode="numeric" autocomplete="off" value="3530">
+              <button type="button" data-step="1" aria-label="Увеличить длину"><i data-lucide="plus"></i></button>
+            </div>
+          </div>
+          <div class="stepper" data-field="w" hidden>
+            <label for="calc-w">Ширина, мм</label>
+            <div class="stepper__box">
+              <button type="button" data-step="-1" aria-label="Уменьшить ширину"><i data-lucide="minus"></i></button>
+              <input id="calc-w" type="text" inputmode="numeric" autocomplete="off" value="1500">
+              <button type="button" data-step="1" aria-label="Увеличить ширину"><i data-lucide="plus"></i></button>
+            </div>
+          </div>
+          <div class="stepper" data-field="h" hidden>
+            <label for="calc-h">Высота, мм</label>
+            <div class="stepper__box">
+              <button type="button" data-step="-1" aria-label="Уменьшить высоту"><i data-lucide="minus"></i></button>
+              <input id="calc-h" type="text" inputmode="numeric" autocomplete="off" value="1600">
+              <button type="button" data-step="1" aria-label="Увеличить высоту"><i data-lucide="plus"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="blueprint mt-4">
+          <span class="bp-tag">Схема в масштабе</span>
+          <span class="bp-vol"></span>
+          <svg class="bp-svg" role="img" aria-label="Чертёж ёмкости с размерами"></svg>
+        </div>
+
+        <p class="bp-note mt-4"></p>
+      </div>
+
+    </div>

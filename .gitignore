@@ -7,3 +7,11 @@ password.md
 
 # macOS
 .DS_Store
+
+# локальный WordPress для проверки темы
+wp-local/
+tools/tailwind/node_modules/
+
+# тема WordPress: assets и import собирает tools/deploy_wp.sh (копия site/assets + Tailwind, выгрузка контента)
+wp-theme/expertecogroup/assets/
+wp-theme/expertecogroup/import/

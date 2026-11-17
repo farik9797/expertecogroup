@@ -4,8 +4,28 @@
     {
       "name": "site",
       "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "5178", "--directory", "site"],
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "5178",
+        "--directory",
+        "site"
+      ],
       "port": 5178
+    },
+    {
+      "name": "wp",
+      "runtimeExecutable": "php",
+      "runtimeArgs": [
+        "-d",
+        "memory_limit=512M",
+        "-S",
+        "localhost:8890",
+        "-t",
+        "wp-local",
+        "wp-local/router.php"
+      ],
+      "port": 8890
     }
   ]
 }
